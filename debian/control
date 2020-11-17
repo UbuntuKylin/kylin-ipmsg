@@ -1,0 +1,28 @@
+Source: kylin-ipmsg
+Section: net
+Priority: optional
+Maintainer: Kylin Development Team <zdcp@kylinos.cn>
+Build-Depends: debhelper,
+               qtbase5-dev (>= 5.6),
+			   qt5-qmake,
+			   qtdeclarative5-dev,
+			   libqt5x11extras5-dev,
+               qtchooser,
+               qtscript5-dev,
+               qttools5-dev-tools,
+               qtbase5-dev-tools
+Standards-Version: 4.4.0
+Homepage: https://github.com/ubuntukylin/kylin-ipmsg
+Vcs-Browser: https://github.com/ubuntukylin/kylin-ipmsg
+Vcs-Bzr: lp://dev/kylin-ipmsg
+
+Package: kylin-ipmsg
+Architecture: any
+Depends: ${misc:Depends},
+               wmctrl (>= 1.07-6)
+Conflicts: kylin-dukto
+Description: Kylin Ipmsg
+ Kylin Ipmsg is a LAN chat tool with beautiful Gui.
+ .
+ Features:
+  * .

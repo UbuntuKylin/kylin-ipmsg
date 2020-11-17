@@ -1,0 +1,171 @@
+kylin-ipmsg (1.1.10kord) v101; urgency=medium
+
+  * 使用QtSingleApplication兼容vnc单例模式.
+
+ -- caoliang <caoliang@kylinos.cn>  Mon, 26 Oct 2020 14:30:25 +0800
+
+kylin-ipmsg (1.1.9kord) v101; urgency=medium
+
+  * 解决禅道bug22399 : 使用IP地址与自己发消息的界面未适配英文环境.
+  * 解决禅道bug22156 : 英文系统状态下，接收到文件夹、文件的提示未国际化.
+  * 解决禅道bug22153 : 英文系统状态下，change nickname显示不全.	
+  * 解决禅道bug22149 : 更改主题颜色对话框的颜色没有同步.
+
+ -- fengyongfan <fengyongfan@kylinos.cn>  Fri, 23 Oct 2020 14:30:25 +0800
+
+kylin-ipmsg (1.1.8kord) v101; urgency=medium
+
+  * 解决禅道bug20256 : 禁用获取好友头像的功能，防止龙芯架构下麒麟传书闪退的问题.
+
+ -- caoliang <caoliang@kylinos.cn>  Mon, 19 Oct 2020 14:30:25 +0800
+
+kylin-ipmsg (1.1.7kord) v101; urgency=medium
+
+  * 解决禅道bug20455 : 麒麟传书同时在网络和社区分组里面，修改为只出现在社区分组里面. 
+
+ -- fengyongfan <fengyongfan@kylinos.cn>  Wed, 30 Sep 2020 13:30:25 +0800
+
+kylin-ipmsg (1.1.6kord) v101; urgency=medium
+
+  * 将所有按钮字体大小固定，以免随系统字体大小变化而出现显示不全的问题.
+
+ -- fengyongfan <fengyongfan@kylinos.cn>  Wed, 30 Sep 2020 13:30:25 +0800
+
+kylin-ipmsg (1.1.5kord) v101; urgency=medium
+
+  * 解决禅道bug20419 : 麒麟传书消息界面“修改备注”按钮和IP地址有遮挡.
+  * 解决禅道bug20474 : 控制面板设置字体“16”，部分界面字体显示不全 
+
+ -- fengyongfan <fengyongfan@kylinos.cn>  Tue, 29 Sep 2020 14:30:25 +0800
+
+kylin-ipmsg (1.1.4kord) v101; urgency=medium
+
+  * 实现将好友头像保存到本地文件夹的功能(兼容龙芯处理器）
+  * 修复源码版权信息 
+
+ -- caoliang <caoliang@kylinos.cn>  Wed, 23 Sep 2020 15:00:25 +0800
+
+kylin-ipmsg (1.1.3) unstable; urgency=medium
+
+  * 解决禅道bug13953 : 修复未识别出本机IP地址的问题.
+  * 解决禅道bug16237 : 修复V10系统中同一局域网下不能互相看到的问题.
+  * 解决禅道bug18368 : 修复系统语言为英文时，修改备注和确认修改按钮仍显示中文的问题.
+  * 解决禅道bug17926 : 实现F1以及功能按钮打开麒麟传书用户手册的功能.
+  * 修复龙芯处理器下可能出现的闪退问题.
+
+ -- caoliang <caoliang@kylinos.cn>  Tue, 15 Sep 2020 10:00:25 +0800
+
+kylin-ipmsg (1.1.2) unstable; urgency=medium
+
+  * 修复首次打开时，关于界面图标未加载的问题.
+
+ -- caoliang <caoliang@kylinos.cn>  Thu, 27 Aug 2020 10:40:25 +0800
+
+kylin-ipmsg (1.1.1) unstable; urgency=medium
+
+  * 对4K屏幕进行适配.
+
+ -- caoliang <caoliang@kylinos.cn>  Sat, 22 Aug 2020 10:32:25 +0800
+
+kylin-ipmsg (1.1.0) unstable; urgency=medium
+
+  * 将麒麟传书从QT4升级到QT5,修复相关的问题.
+
+ -- fengyongfan <fengyongfan@kylinos.cn>  Fri, 21 Aug 2020 10:32:25 +0800
+
+kylin-ipmsg (1.0.12kord) v100; urgency=medium
+
+  * 修改IP地址匹配规则，对不合法的IP地址进行判定.
+  * 修改菜单栏图标、任务栏图标、关于界面图标不一致的问题.
+  * 修复消息界面修改备注按钮异常消失的问题.
+
+ -- fengyongfan <fengyongfan@kylinos.cn>  Thu, 20 Aug 2020 10:32:25 +0800
+
+kylin-ipmsg (1.0.11kord) v100; urgency=medium
+
+  * 修改关于界面版本号.
+
+ -- fengyongfan <fengyongfan@kylinos.cn>  Thu, 13 Aug 2020 16:20:25 +0800
+
+kylin-ipmsg (1.0.10kord) v100; urgency=medium
+
+  * 解决使用IP地址，输入IP后退出，再次打开出现修改备注按钮的bug.
+
+ -- fengyongfan <fengyongfan@kylinos.cn>  Tue, 11 Aug 2020 16:10:25 +0800
+
+kylin-ipmsg (1.0.9kord) v100; urgency=medium
+
+  * 解决使用IP地址时输入本机IP，不提示本机IP的bug.
+  * 解决菜单图标和关于界面图标不一致的bug.
+  * 解决应用实际版本号和关于界面版本好不一致的bug.
+
+ -- fengyongfan <fengyongfan@kylinos.cn>  Sat, 08 Aug 2020 17:20:25 +0800
+
+kylin-ipmsg (1.0.8kord) v100; urgency=medium
+
+  * 新增添加备注功能
+
+ -- liuyuhui <liuyuhui@kylinos.cn>  Wed, 05 Aug 2020 13:52:25 +0800
+
+kylin-ipmsg (1.0.7kord) v100; urgency=medium
+
+ * 增加一些信息内容.
+
+ -- lixiang <lixiang@kylinos.cn>  Fri, 22 May 2020 11:36:02 +0800
+
+kylin-ipmsg (1.0.6kord) juniper; urgency=medium
+
+  * 解决禅道bug1412 : 版本号显示错误.
+
+ -- huangsheng <huangsheng@kylinos.cn> Wed, 17 Jul 2019 11:07:09 +0800
+
+kylin-ipmsg (1.0.5kord) juniper; urgency=medium
+
+  * 解决禅道bug644 : 发送空文件夹导致聊天界面卡住.
+
+ -- huangsheng <huangsheng@kylinos.cn> Wed, 17 Jul 2019 11:07:09 +0800
+
+kylin-ipmsg (1.0.4kord) juniper; urgency=medium
+
+  * 国际化,目前支持英文和中文.
+
+ -- huangsheng <huangsheng@kylinos.cn>  Wed, 08 Nov 2017 14:41:40 +0800
+
+kylin-ipmsg (1.0.3kord) juniper; urgency=medium
+
+  * 解决接收文件时无法点击返回按钮关闭对话框的bug.
+
+ -- huangsheng <huangsheng@kylinos.cn>  Fri, 04 Aug 2017 11:59:42 +0800
+
+kylin-ipmsg (1.0.2kord) juniper; urgency=medium
+
+  * 解决关于界面链接点击无效的bug.
+  * 修改部分配置参数.
+
+ -- huangsheng <huangsheng@kylinos.cn>  Sat, 15 Jul 2017 15:33:25 +0800
+
+kylin-ipmsg (1.0.1kord) juniper; urgency=medium
+
+  * 禁止通过输入IP给自己发消息.
+  * 解决禅道bug 4112, 4121, 4104, 4105, 4109, 4117, 4116.
+
+ -- huangsheng <huangsheng@kylinos.cn>  Thu, 22 Jun 2017 11:41:52 +0800
+
+kylin-ipmsg (1.0.0kord) juniper; urgency=medium
+
+  * 重写全部逻辑，只保留开源软件的qml控件和图标.
+  * 支持收发并行、批量传输文件、文件重名重命名.
+  * 文件传输取消功能、断线连接功能.
+  * 向上层IP发起聊天功能、增强广播功能.
+  * 新消息提醒、聊天界面多种提示、控件自带右键菜单汉化.
+
+ -- huangsheng <huangsheng@kylinos.cn>  Fri, 16 Jun 2017 15:34:59 +0800
+
+kylin-ipmsg (0.9.1kord) juniper; urgency=medium
+
+  * 会话模式聊天功能开发.
+  * 最近聊天对象列表开发.
+  * 动画和事件开发, 文件传输相关功能增强.
+  * qml界面开发、自定义控件js等开发.
+
+ -- huangsheng <huangsheng@kylinos.cn>  Wed, 10 May 2017 10:01:06 +0800
