@@ -1,0 +1,10 @@
+#!/bin/bash
+
+rm .qmake.stash
+rm -rf build
+mkdir build
+cd build
+qmake ..
+make -j6
+sudo make install
+./$1

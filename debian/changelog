@@ -1,3 +1,24 @@
+kylin-ipmsg (1.1.13kord) v101; urgency=medium
+
+  * 解决禅道bug#28763 : 设置对麒麟传书的网络为禁止时，使用麒麟传书发送信息闪退.
+
+ -- caoliang <caoliang@kylinos.cn>  Fri, 25 Dec 2020 13:50:25 +0800
+
+kylin-ipmsg (1.1.12kord) v101; urgency=medium
+
+  * 将麒麟传书图标和主题图标库保持一致.
+
+ -- caoliang <caoliang@kylinos.cn>  Fri, 18 Dec 2020 16:30:25 +0800
+
+kylin-ipmsg (1.1.11kord) v101; urgency=medium
+
+  * 解决禅道bug#23186 : 版本号不一致. 
+  * 解决禅道bug#23832 : 切换好友、最近、关于时界面显示不正确.	
+  * 解决禅道bug#23860 : 点击设置和更改主题颜色都会弹出消息界面.
+  * 解决禅道bug#24040 : 主界面和消息对话框界面的备注显示字符串长度不一致.
+
+ -- caoliang <caoliang@kylinos.cn>  Wed, 18 Nov 2020 16:30:25 +0800
+
 kylin-ipmsg (1.1.10kord) v101; urgency=medium
 
   * 使用QtSingleApplication兼容vnc单例模式.

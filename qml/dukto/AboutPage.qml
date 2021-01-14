@@ -41,7 +41,7 @@ Item {
         x: 22
         y: 85
         font.pixelSize: 72
-        text: qsTr("Kylin Ipmsg") + " 1.1.11"
+        text: qsTr("Kylin Ipmsg") + " 1.1.13"
         color: theme.color4
     }
 

@@ -695,8 +695,15 @@ void KSocket::sendCancel(){
 void KSocket::finishThread(){
     qDebug() << "KSocket::finishThread()";
 
-    disconnect(socket, SIGNAL(disconnected()), this, SLOT(finishThread()));
-    disconnect(socketSecondary, SIGNAL(disconnected()), this, SLOT(finishThread()));
+    if (socket) {
+        disconnect(socket, SIGNAL(disconnected()), this, SLOT(finishThread()));
+    }
+    if (socketSecondary) {
+        disconnect(socketSecondary, SIGNAL(disconnected()), this, SLOT(finishThread()));
+    }
+
+//    disconnect(socket, SIGNAL(disconnected()), this, SLOT(finishThread()));
+//    disconnect(socketSecondary, SIGNAL(disconnected()), this, SLOT(finishThread()));
 
     qDebug() << "this->isConnected" << this->isConnected;
     if(this->isConnected == true){

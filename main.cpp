@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
     QTranslator trans_global, trans_menu;
     if(locale == "zh_CN"){
         trans_global.load(":/qml/kylin-ipmsg_zh_CN.qm");
+//        trans_global.load(":/qml/kylin-ipmsg_bo_CN.qm");
         trans_menu.load(":/qml/qt_zh_CN.qm");
         app.installTranslator(&trans_global);
         app.installTranslator(&trans_menu);
@@ -62,7 +63,8 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    app.setWindowIcon(QIcon("/usr/share/pixmaps/kylin-ipmsg.png"));
+//    app.setWindowIcon(QIcon("/usr/share/pixmaps/kylin-ipmsg.png"));
+    app.setWindowIcon(QIcon::fromTheme("kylin-ipmsg"));
 
     DuktoWindow viewer;
 //    app.setActivationWindow(&viewer, true);

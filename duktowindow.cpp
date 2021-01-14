@@ -26,7 +26,8 @@ DuktoWindow::DuktoWindow(QWindow *parent) :
     QmlApplicationViewer(parent), mGuiBehind(NULL){
 
     this->setTitle(tr("Kylin Ipmsg"));
-    this->setIcon(QIcon("/usr/share/pixmaps/kylin-ipmsg.png"));
+//    this->setIcon(QIcon("/usr/share/pixmaps/kylin-ipmsg.png"));
+    this->setIcon(QIcon::fromTheme("kylin-ipmsg"));
 
     // 响应用户手册
     mDaemonIpcDbus = new DaemonIpcDbus();
@@ -44,7 +45,8 @@ DuktoWindow::DuktoWindow(QWindow *parent) :
         }
     }
 
-    this->setIcon(QIcon(iconPath));
+//    this->setIcon(QIcon(iconPath));
+    this->setIcon(QIcon::fromTheme("kylin-ipmsg"));
 
     setOrientation(QmlApplicationViewer::ScreenOrientationLockPortrait);
 
@@ -68,11 +70,13 @@ void DuktoWindow::setGuiBehindReference(GuiBehind* ref){
 *   qt close event
 * Return :
 */
-void DuktoWindow::closeEvent(QCloseEvent *){
+void DuktoWindow::closeEvent(QCloseEvent *event){
 //    mGuiBehind->settings()->saveWindowGeometry(saveGeometry());
     mGuiBehind->settings()->saveWindowGeometry(frameGeometry());
     mGuiBehind->close();
 
+    qDebug() << "exit(0)exit(0)exit(0)exit(0)exit(0)";
+    event->accept();
     exit(0);
 }
 
