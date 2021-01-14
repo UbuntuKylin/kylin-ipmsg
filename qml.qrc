@@ -53,5 +53,6 @@
         <file>qml/kylin-ipmsg-128.png</file>
         <file>qml/kylin-ipmsg-c.png</file>
         <file>qml/kylin-ipmsg_zh_CN.qm</file>
+        <file>qml/kylin-ipmsg_bo_CN.qm</file>
     </qresource>
 </RCC>

@@ -89,7 +89,8 @@ GuiBehind::GuiBehind(DuktoWindow* view) :
     QString iconPath = mSettings->iconPath();
     QFileInfo fi(iconPath);
     if (iconPath != "" && fi.exists()) {
-        this->iconDukto = QIcon(iconPath);
+//        this->iconDukto = QIcon(iconPath);
+        this->iconDukto = QIcon::fromTheme("kylin-ipmsg");
     }
     else {
         // SP1的icon图标路径
@@ -97,7 +98,8 @@ GuiBehind::GuiBehind(DuktoWindow* view) :
         fi.setFile(iconPath);
         if (fi.exists()) {
             mSettings->saveIconPath(iconPath);
-            this->iconDukto = QIcon(iconPath);
+//            this->iconDukto = QIcon(iconPath);
+            this->iconDukto = QIcon::fromTheme("kylin-ipmsg");
         }
         else {
             // V10的icon图标路径
@@ -105,13 +107,15 @@ GuiBehind::GuiBehind(DuktoWindow* view) :
             fi.setFile(iconPath);
             if (fi.exists()) {
                 mSettings->saveIconPath(iconPath);
-                this->iconDukto = QIcon(iconPath);
+//                this->iconDukto = QIcon(iconPath);
+                this->iconDukto = QIcon::fromTheme("kylin-ipmsg");
             }
             else {
                 // 保险措施
                 iconPath = "/usr/share/pixmaps/kylin-ipmsg.png";
                 mSettings->saveIconPath(iconPath);
-                this->iconDukto = QIcon(iconPath);
+//                this->iconDukto = QIcon(iconPath);
+                this->iconDukto = QIcon::fromTheme("kylin-ipmsg");
             }
         }
     }
@@ -348,6 +352,7 @@ void GuiBehind::showSendPage(QString ip_mac)
 
         ChatWidget *cw = this->cws.value(mac);
         cw->showme();
+        cw->show();
         cw->raise();
         cw->focusIn();
 
@@ -359,6 +364,7 @@ void GuiBehind::showSendPage(QString ip_mac)
     }else{
         ChatWidget *cw = createCW(mac);
         cw->showme();
+        cw->show();
     }
 
     // 停止头像动画和任务栏动画

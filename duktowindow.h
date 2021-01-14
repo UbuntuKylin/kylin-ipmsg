@@ -26,6 +26,8 @@
 #include <QDropEvent>
 #include <QDebug>
 #include <QQuickWindow>
+#include <QtWidgets/QMainWindow>
+#include <QCloseEvent>
 
 #include "qmlapplicationviewer/qmlapplicationviewer.h"
 #include "daemonipcdbus.h"

@@ -1,12 +1,15 @@
 [Desktop Entry]
 Encoding=UTF-8
-Version=1.1.6
+Version=1.1.12
 Name=Kylin Ipmsg
 Name[zh_CN]=麒麟传书
 Name[zh_HK]=LAN 通訊工具
 Name[zh_TW]=區域網路通訊工具
+Name[bo_CN]=ཆི་ལིན་ཡིག་སྐྱལ།
+GenericName[bo_CN]=ཆི་ལིན་ཡིག་སྐྱལ།
 Comment=Beautiful LAN chat tool
 Comment[zh_CN]=麒麟局域网聊天工具，提供局域网聊天和文件传输功能，界面美观.
+Comment[bo_CN]=ཆི་ལིན་དྲ་ཆུང་དྲ་མོལ་ལག་ཆ། དྲ་ཆུང་དྲ་མོལ་དང་ཡིག་ཆ་བརྒྱུད་བསྒྲགས་ཀྱི་བྱེད་ནུས་འཆར་དངོས་མཛེས་བཟོ་སོགས་ཀྱི་བྱེད་ནུས་མཁོ་འདོན་བྱས་ཡོད།
 Keywords=chat;talk;im;message;ipmsg;
 Exec=/usr/bin/kylin-ipmsg
 Icon=kylin-ipmsg

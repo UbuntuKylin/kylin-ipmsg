@@ -47,7 +47,8 @@ ChatWidget::ChatWidget(QDialog *parent) : QDialog(parent), ui(new Ui::ChatWidget
     if (iconPath == "") {
         iconPath = "/usr/share/pixmaps/kylin-ipmsg.png";
     }
-    setWindowIcon(QIcon(iconPath));
+//    setWindowIcon(QIcon(iconPath));
+    setWindowIcon(QIcon::fromTheme("kylin-ipmsg"));
 
     this->setMaximumSize(QSize(450,480));
     this->setMinimumSize(QSize(450,480));
@@ -85,7 +86,7 @@ ChatWidget::ChatWidget(QDialog *parent) : QDialog(parent), ui(new Ui::ChatWidget
     this->connect(this->alertTimer, SIGNAL(timeout()), this, SLOT(msgAlert()));
 
 //    this->iconDukto = QIcon("/usr/share/pixmaps/kylin-ipmsg.png");
-    this->iconDukto = QIcon(iconPath);
+    this->iconDukto = QIcon::fromTheme("kylin-ipmsg");
     this->iconBlank = QIcon(":/qml/dukto/Blank.png");
 
     this->dbuddy = new DestinationBuddy(this);
@@ -258,7 +259,7 @@ void ChatWidget::showme(){
     this->ui->le_nickname->setStyleSheet("QLineEdit{color: " + this->theme->color4() + "; border: 1px solid " + this->theme->color3() + ";font-size:18px;}");
     this->ui->pb_checkname->setStyleSheet("QPushButton{border: 2px solid " + this->theme->color2() + "; color: "+this->theme->color2()+";font-size:16px;}");
 
-    this->show();
+//    this->show();
 }
 
 // 不处理格式，直接添加传入的内容到聊天记录栏
@@ -850,7 +851,7 @@ void ChatWidget::on_pb_checkname_clicked()
             if(mac.trimmed() == item->data(BuddyListItemModel::Mac).toString().trimmed()){
                 item->setData(nickname, BuddyListItemModel::Username);
                 this->ui->lb_name->setText(nickname);
-                qDebug() << "修改备注名" << nickname;
+//                qDebug() << "修改备注名" << nickname;
             }
         }
     }
