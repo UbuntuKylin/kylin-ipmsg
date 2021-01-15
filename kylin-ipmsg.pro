@@ -30,7 +30,7 @@ lessThan(QT_MAJOR_VERSION, 5) {
 #for nullptr
 greaterThan(QT_MAJOR_VERSION, 4): CONFIG += c++11
 
-VERSION = 1.1.12
+VERSION = 1.1.14
 
 TRANSLATIONS = kylin-ipmsg_zh_CN.ts
 
@@ -42,10 +42,13 @@ icon.path = /usr/share/pixmaps
 icon.files = kylin-ipmsg.png
 desktop.path = /usr/share/applications/
 desktop.files = kylin-ipmsg.desktop
+guide.path = /usr/share/kylin-user-guide/data/guide/
+guide.files = data/guide/kylin-ipmsg/
 
 INSTALLS += target \
     icon \
-    desktop
+    desktop \
+    guide
 
 SOURCES += main.cpp \
     guibehind.cpp \
