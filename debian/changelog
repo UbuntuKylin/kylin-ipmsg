@@ -1,3 +1,9 @@
+kylin-ipmsg (1.1.14kord) v101; urgency=medium
+
+  * 添加用户手册
+
+ -- jiangdingyuan <jiangdingyuan@kylinos.cn>  Thu, 14 Jan 2021 18:52:09 +0800
+
 kylin-ipmsg (1.1.13kord) v101; urgency=medium
 
   * 解决禅道bug#28763 : 设置对麒麟传书的网络为禁止时，使用麒麟传书发送信息闪退.
