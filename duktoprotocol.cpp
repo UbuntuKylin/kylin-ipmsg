@@ -206,6 +206,14 @@ void DuktoProtocol::handleMessage(QByteArray &data, QHostAddress &sender)
             if(dataStr != this->pSystemSignature && dataStr.startsWith("kylin-ipmsg ") == true){
                 mPeers[dataStr] = Peer(sender, dataStr, NETWORK_PORT);
 
+                /*print Qhash*/
+                QHash<QString , Peer>::iterator it_begin = mPeers.begin();
+                QHash<QString , Peer>::iterator it_end = mPeers.end();
+                while (it_begin != it_end) {
+                       qDebug() << "QHash<QString , Peer>" << it_begin.key() << it_begin.value().address;
+                       it_begin++;
+                }
+
                 if(msgtype == UDP_BROADCAST){
                     sayHello(sender);
                 }
@@ -230,7 +238,8 @@ void DuktoProtocol::handleMessage(QByteArray &data, QHostAddress &sender)
 * Return :
 */
 void DuktoProtocol::newOutgoingConnection(QString targetIP, QString remoteID, ChatWidget *cw){
-    qDebug() << "主动连接 newOutgoingConnection";
+    qDebug() << "服务端主动连接函数 : newOutgoingConnection";
+    qDebug() << "服务端主动链接函数参数 : " << targetIP << remoteID;
     QThread *qthread = new QThread();
     KSocket *ks = new KSocket(targetIP, this->pSystemSignature, remoteID);
     ks->moveToThread(qthread);
