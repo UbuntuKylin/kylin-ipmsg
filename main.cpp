@@ -41,7 +41,10 @@ int main(int argc, char *argv[])
 
     // 需要给QtSingleApplication的传入参数id加DISPLAY标识
     QString id = QString("kylin-ipmsg"+ QLatin1String(getenv("DISPLAY")));
+
+    /*lock file*/
     QtSingleApplication app(id, argc, argv);
+
 //    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 //    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 //    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
@@ -58,6 +61,7 @@ int main(int argc, char *argv[])
     }
 
     // 单例判断
+    /*check file whether locked*/
     if (app.isRunning()) {
         app.sendMessage("FOREGROUND");
         return 0;
@@ -66,9 +70,20 @@ int main(int argc, char *argv[])
 //    app.setWindowIcon(QIcon("/usr/share/pixmaps/kylin-ipmsg.png"));
     app.setWindowIcon(QIcon::fromTheme("kylin-ipmsg"));
 
+    /*inherit qmlapplicationviewer and link dbus open kylin guide manual*/
     DuktoWindow viewer;
+
 //    app.setActivationWindow(&viewer, true);
 
+    /*init and udp , tcp listing and online broadcast*/
+    /*udp broadcast is one byte and systemflag*/
+    /*udp read is create item*/
+    /*tcp active link is example ksocket in a thread*/
+    /*tcp passive link is example ksocket in a thread*/
+    /*ksocket class maintain two socket*/
+    /*one ksocket example is a chatwidget*/
+    /*tcp passive link is create second tcp server*/
+    /*real socket in ksocket*/
     GuiBehind gb(&viewer);
 
     viewer.showExpanded();

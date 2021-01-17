@@ -77,6 +77,7 @@ public:
     virtual ~GuiBehind();
 
     // 管理所有的Tcp连接
+    /*<mac , KSocket in a thread>*/
     QMap<QString, KSocket *> sockets;
     // 好友列表界面model
     BuddyListItemModel mBuddiesList;
@@ -183,6 +184,7 @@ private:
     QUdpSocket *mSocket;
     KTcpServer *mTcpServer;
 
+    /*<systemflag , Peer>*/
     QHash<QString, Peer> mPeers;
 };
 

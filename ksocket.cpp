@@ -61,7 +61,6 @@ void KSocket::imReady(){
     this->socket = new QTcpSocket();
     this->socket->setSocketDescriptor(this->socketDescriptor);
     connect(socket, SIGNAL(readyRead()), this, SLOT(handleMsg()));
-    connect(socket , SIGNAL(readyRead()) , this , SLOT(first_receive));
     connect(socket, SIGNAL(disconnected()), this, SLOT(finishThread()));
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)), Qt::DirectConnection);
 
@@ -151,13 +150,15 @@ void KSocket::imStart_(){
     // 添加上层好友
     qDebug() << this->pTargetIP << "   " << this->pRemoteID;
 
+#if 0
     /*发送建立链接成功后的第一次消息*/
     char p_first_send[11];
     memset(p_first_send , 0x00 , sizeof(p_first_send));
     sprintf(p_first_send , "first_send");
     socket->write(p_first_send , strlen(p_first_send));
+#endif
 
-    //emit addUpBuddy(this->pTargetIP, this->pRemoteID);
+    emit addUpBuddy(this->pTargetIP, this->pRemoteID);
 
     qDebug()<<"socket主动连接成功, thread: "<<QThread::currentThreadId()<<" socket: "<<socket;
 }
@@ -370,15 +371,6 @@ void KSocket::handleMsg(){
             }
         }
     }
-}
-
-void first_receive(void)
-{
-   while (socket->bytesAvailable() > 0){
-       QByteArray msgType = socket->read(4);
-       socket->flush();
-       QString mt = QString::fromUtf8(msgType);
-   }
 }
 
 // 附属 socket 消息处理

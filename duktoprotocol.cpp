@@ -382,6 +382,8 @@ void DuktoProtocol::updateSockets(QString pRemoteID){
 * Return :
 */
 void DuktoProtocol::connectSocketAndChatWidget(ChatWidget *cw){
+    qDebug() << "active link tcp , create chatwidget and socket contact";
+
     QString ip = cw->dbuddy->ip().split(" ")[0];
     QString remoteID = cw->dbuddy->ip().split(" ")[1];
 
