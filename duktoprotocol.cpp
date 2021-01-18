@@ -206,6 +206,14 @@ void DuktoProtocol::handleMessage(QByteArray &data, QHostAddress &sender)
             if(dataStr != this->pSystemSignature && dataStr.startsWith("kylin-ipmsg ") == true){
                 mPeers[dataStr] = Peer(sender, dataStr, NETWORK_PORT);
 
+                /*print Qhash*/
+                QHash<QString , Peer>::iterator it_begin = mPeers.begin();
+                QHash<QString , Peer>::iterator it_end = mPeers.end();
+                while (it_begin != it_end) {
+                       qDebug() << "QHash<QString , Peer>" << it_begin.key() << it_begin.value().address;
+                       it_begin++;
+                }
+
                 if(msgtype == UDP_BROADCAST){
                     sayHello(sender);
                 }
@@ -230,7 +238,8 @@ void DuktoProtocol::handleMessage(QByteArray &data, QHostAddress &sender)
 * Return :
 */
 void DuktoProtocol::newOutgoingConnection(QString targetIP, QString remoteID, ChatWidget *cw){
-    qDebug() << "主动连接 newOutgoingConnection";
+    qDebug() << "服务端主动连接函数 : newOutgoingConnection";
+    qDebug() << "服务端主动链接函数参数 : " << targetIP << remoteID;
     QThread *qthread = new QThread();
     KSocket *ks = new KSocket(targetIP, this->pSystemSignature, remoteID);
     ks->moveToThread(qthread);
@@ -275,7 +284,7 @@ void DuktoProtocol::newIncomingConnection(qintptr socketDescriptor)
 {
     qDebug() << "被动连接newIncomingConnection";
     QThread *qthread = new QThread();
-    KSocket *ks = new KSocket(socketDescriptor);
+    KSocket *ks = new KSocket(socketDescriptor , this->pSystemSignature);
     ks->moveToThread(qthread);
 
     connect(ks, SIGNAL(updateRemoteID(QString, KSocket*)), this, SLOT(updateRemoteID(QString, KSocket*)));
@@ -373,6 +382,8 @@ void DuktoProtocol::updateSockets(QString pRemoteID){
 * Return :
 */
 void DuktoProtocol::connectSocketAndChatWidget(ChatWidget *cw){
+    qDebug() << "active link tcp , create chatwidget and socket contact";
+
     QString ip = cw->dbuddy->ip().split(" ")[0];
     QString remoteID = cw->dbuddy->ip().split(" ")[1];
 
@@ -398,7 +409,7 @@ void DuktoProtocol::connectSocketAndChatWidget(ChatWidget *cw){
 *   mac: friend mac address
 * Return :
 */
-void DuktoProtocol::addUpBuddy(QString ip, QString mac){
+void DuktoProtocol::addUpBuddy(QString ip, QString user_name , QString system , QString mac , QString Platform){
     // 如果已有该好友，addBuddy()中不会重复添加
-    this->gbehind->mBuddiesList.addBuddy(ip, NETWORK_PORT, "? ? ?", "? ? ? ?", mac, "unknown", QUrl(""));
+    this->gbehind->mBuddiesList.addBuddy(ip, NETWORK_PORT, user_name , system , mac, Platform , QUrl(""));
 }

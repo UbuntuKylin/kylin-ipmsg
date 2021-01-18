@@ -72,6 +72,7 @@ GuiBehind::GuiBehind(DuktoWindow* view) :
     connect(mDuktoProtocol, SIGNAL(peerListRemoved(Peer)), this, SLOT(peerListRemoved(Peer)));
 
     // 上线发广播
+    /*init udp server and tcp server*/
     mDuktoProtocol->initialize();
     mDuktoProtocol->sayHello(QHostAddress::Broadcast);
 
