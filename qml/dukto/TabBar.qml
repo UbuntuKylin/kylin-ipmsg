@@ -107,18 +107,18 @@ Item {
 
             PropertyChanges {
                 target: buddyText
-                x: -15
+                x: 10
             }
 
             PropertyChanges {
                 target: recentText
-                x: 117
+                x: 120
                 color: theme.color2 // "#000000"
             }
 
             PropertyChanges {
                 target: aboutText
-                x: 255
+                x: 230
             }
         },
         State {
@@ -126,12 +126,12 @@ Item {
 
             PropertyChanges {
                 target: buddyText
-                x: -20
+                x: 10
             }
 
             PropertyChanges {
                 target: recentText
-                x: 82
+                x: 100
             }
 
             PropertyChanges {

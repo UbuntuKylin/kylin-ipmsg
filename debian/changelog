@@ -1,3 +1,9 @@
+kylin-ipmsg (1.1.15kord) v101; urgency=medium
+
+  * 解决禅道bug#23832 : 【麒麟传书】切换好友、最近、关于时界面显示不正确.
+
+ -- caoliang <caoliang@kylinos.cn>  Sat, 16 Jan 2021 16:51:32 +0800
+
 kylin-ipmsg (1.1.14kord) v101; urgency=medium
 
   * 添加用户手册
