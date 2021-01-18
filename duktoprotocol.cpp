@@ -284,7 +284,7 @@ void DuktoProtocol::newIncomingConnection(qintptr socketDescriptor)
 {
     qDebug() << "被动连接newIncomingConnection";
     QThread *qthread = new QThread();
-    KSocket *ks = new KSocket(socketDescriptor);
+    KSocket *ks = new KSocket(socketDescriptor , this->pSystemSignature);
     ks->moveToThread(qthread);
 
     connect(ks, SIGNAL(updateRemoteID(QString, KSocket*)), this, SLOT(updateRemoteID(QString, KSocket*)));
@@ -409,7 +409,7 @@ void DuktoProtocol::connectSocketAndChatWidget(ChatWidget *cw){
 *   mac: friend mac address
 * Return :
 */
-void DuktoProtocol::addUpBuddy(QString ip, QString mac){
+void DuktoProtocol::addUpBuddy(QString ip, QString user_name , QString system , QString mac , QString Platform){
     // 如果已有该好友，addBuddy()中不会重复添加
-    this->gbehind->mBuddiesList.addBuddy(ip, NETWORK_PORT, "? ? ?", "? ? ? ?", mac, "unknown", QUrl(""));
+    this->gbehind->mBuddiesList.addBuddy(ip, NETWORK_PORT, user_name , system , mac, Platform , QUrl(""));
 }

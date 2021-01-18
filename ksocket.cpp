@@ -21,10 +21,11 @@
 
 
 // 被动连接端初始化
-KSocket::KSocket(qintptr s, QObject *parent):QObject(parent){
+KSocket::KSocket(qintptr s, QString systemSignature , QObject *parent):QObject(parent){
     qDebug() << "服务端函数库被动连接初始化 : KSocket";
     qDebug() << "服务端函数库被动链接初始化参数 : " << s;
     this->socketDescriptor = s;
+    this->pSystemSignature = systemSignature;
     this->isConnected = false;
 }
 
@@ -80,7 +81,16 @@ void KSocket::imReady(){
     qDebug()<<"socket被动连接成功, thread: "<<QThread::currentThreadId()<<" 附tcpserver启动: "<<rtn;
 
     // 朋友,请开始你的表演.
+    /*modify by jsj at 2021-01-18 11:12*/
+    QString system_flag;
+    system_flag.clear();
+    system_flag = this->pSystemSignature;
+
+    std::string std_system_flag = system_flag.toStdString();
+    const char *p_system_flag = std_system_flag.c_str();
+
     socket->write(S_IAMREADY);
+    socket->write(p_system_flag);
     socket->waitForBytesWritten();
     socket->flush();
 }
@@ -158,7 +168,7 @@ void KSocket::imStart_(){
     socket->write(p_first_send , strlen(p_first_send));
 #endif
 
-    emit addUpBuddy(this->pTargetIP, this->pRemoteID);
+    //emit addUpBuddy(this->pTargetIP, this->pRemoteID);
 
     qDebug()<<"socket主动连接成功, thread: "<<QThread::currentThreadId()<<" socket: "<<socket;
 }
@@ -199,6 +209,24 @@ void KSocket::handleMsg(){
 
             // 被动端ready消息
             if(mt == S_IAMREADY){
+                /*read passive system flag*/
+                qDebug() << "---active receive passive iamready flag";
+                QByteArray system_falg = socket->readAll();
+                QString tmp(system_falg);
+                QStringList flag = tmp.split(" ");
+                if (flag.count() > 4) {
+                    QString mac = flag.at(3);
+                    QString ip = socket->peerAddress().toString();
+                    QString user_name = flag.at(1);
+                    QString system = flag.at(2);
+                    QString platfrom = flag.at(4);
+
+                    qDebug() << "ip is " << ip << "\n" << "user_name = " << user_name << "\n" << "system = " << system << "\n" << "mac = " << mac << "\n" << "platfrom = " << platfrom;
+
+                    emit addUpBuddy(ip , user_name , system , mac , platfrom);
+                }
+
+
                 // 主动附socket连接
                 socketSecondary = new QTcpSocket();
                 connect(socketSecondary, SIGNAL(readyRead()), this, SLOT(handleMsgSecondary()));
