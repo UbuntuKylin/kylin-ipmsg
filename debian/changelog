@@ -1,3 +1,10 @@
+kylin-ipmsg (1.1.17kord) v101; urgency=medium
+
+  * 【麒麟传书】先关闭主界面，再关闭对话框后，关闭程序不完全导致无法再次启动
+  * 【麒麟传书】第一次打开麒麟传书，关闭之后再次点击麒麟传书没有反应
+
+ -- jishengjie <jishengjie@kylinos.cn>  Mon, 18 Jan 2021 20:33:32 +0800
+
 kylin-ipmsg (1.1.16kord) v101; urgency=medium
 
   * 【麒麟传书】修复在好友不在线时发送信息给好友ip，10s内在好友Ip上打开麒麟传书，好友名称显示异常问题
