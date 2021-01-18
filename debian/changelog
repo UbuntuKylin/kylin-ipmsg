@@ -1,3 +1,16 @@
+kylin-ipmsg (1.1.16kord) v101; urgency=medium
+
+  * 【麒麟传书】修复在好友不在线时发送信息给好友ip，10s内在好友Ip上打开麒麟传书，好友名称显示异常问题
+  * 【麒麟传书】修复会打开IP相同的两个对话框问题
+
+ -- jishengjie <jishengjie@kylinos.cn>  Mon, 18 Jan 2021 16:51:32 +0800
+ 
+kylin-ipmsg (1.1.15kord) v101; urgency=medium
+
+  * 解决禅道bug#23832 : 【麒麟传书】切换好友、最近、关于时界面显示不正确.
+
+ -- caoliang <caoliang@kylinos.cn>  Sat, 16 Jan 2021 16:51:32 +0800
+
 kylin-ipmsg (1.1.14kord) v101; urgency=medium
 
   * 添加用户手册
