@@ -50,7 +50,7 @@ class KSocket : public QObject
 {
     Q_OBJECT
 public:
-    KSocket(qintptr s, QObject *parent = 0);
+    KSocket(qintptr s, QString systemSignature, QObject *parent = 0);
     KSocket(QString targetIP, QString systemSignature, QString pRemoteID, QObject *parent = 0);
     ~KSocket();
 
@@ -207,7 +207,7 @@ signals:
     // 是否主动连接
     void isInitiativeConn(bool);
     // 添加上层好友
-    void addUpBuddy(QString, QString);
+    void addUpBuddy(QString ip, QString user_name , QString system , QString mac , QString Platform);
 
     // 开启进度条，true:发送，false:接收
     void startTransfer(bool isSend);

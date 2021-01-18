@@ -107,7 +107,7 @@ Item {
 
             PropertyChanges {
                 target: buddyText
-                x: 10
+                x: 10 
             }
 
             PropertyChanges {

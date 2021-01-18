@@ -76,7 +76,9 @@ public:
         ShowMsgAnim,
     };
 
+    /*<"ip mac" , QStandardItem *>*/
     QHash<QString, QStandardItem*> mItemsMap;
+    /*<"mac" , "ip mac">*/
     QHash<QString, QString> mIpsMap;
     QStandardItem* mMeItem;
 

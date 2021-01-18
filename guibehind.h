@@ -77,6 +77,7 @@ public:
     virtual ~GuiBehind();
 
     // 管理所有的Tcp连接
+    /*<mac , KSocket in a thread>*/
     QMap<QString, KSocket *> sockets;
     // 好友列表界面model
     BuddyListItemModel mBuddiesList;
@@ -165,7 +166,7 @@ public slots:
     void newOutgoingConnection(QString targetIP, QString remoteID, ChatWidget *cw);
     void updateRemoteID(QString, KSocket*);
     void updateSockets(QString pRemoteID);
-    void addUpBuddy(QString, QString);
+    void addUpBuddy(QString ip, QString user_name , QString system , QString mac , QString Platform);
 
     // 绑定聊天窗口和socket
     void connectSocketAndChatWidget(ChatWidget *);
@@ -183,6 +184,7 @@ private:
     QUdpSocket *mSocket;
     KTcpServer *mTcpServer;
 
+    /*<systemflag , Peer>*/
     QHash<QString, Peer> mPeers;
 };
 
