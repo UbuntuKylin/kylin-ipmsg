@@ -32,6 +32,8 @@ greaterThan(QT_MAJOR_VERSION, 4): CONFIG += c++11
 
 VERSION = 1.1.16
 
+QMAKE_CXXFLAGS += -g
+
 TRANSLATIONS = kylin-ipmsg_zh_CN.ts
 
 TARGET = kylin-ipmsg
