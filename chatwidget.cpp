@@ -305,7 +305,7 @@ void ChatWidget::onSendCompleted(){
             this->ui->le_ip->setEnabled(false);
             this->ui->le_ip->hide();
 //            this->ui->lb_name->setText("对方的 IP Mac");
-            this->ui->lb_name->setText(tr("The Remote IP Addr"));
+            this->ui->lb_name->setText(tr("Show Remote IP Addr"));
             this->ui->lb_machine->setText(this->ip);
             this->ui->lb_machine->show();
             this->setWindowTitle(tr("Kylin Ipmsg") + this->ip);

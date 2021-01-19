@@ -49,6 +49,16 @@ int main(int argc, char *argv[])
 //    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 //    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 
+#ifndef QT_NO_TRANSLATION
+    QString translatorFileName = QLatin1String("qt_");
+    translatorFileName += QLocale::system().name();
+    QTranslator *translator = new QTranslator();
+    if (translator->load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+        app.installTranslator(translator);
+    else
+        qDebug() << "Failed to load Chinese translation file.";
+#endif
+
     // 国际化
     QString locale = QLocale::system().name();
     QTranslator trans_global, trans_menu;
@@ -59,6 +69,8 @@ int main(int argc, char *argv[])
         app.installTranslator(&trans_global);
         app.installTranslator(&trans_menu);
     }
+
+
 
     // 单例判断
     /*check file whether locked*/
