@@ -28,6 +28,13 @@
 #include "guibehind.h"
 #include "duktowindow.h"
 
+/*
+#include <fcntl.h>
+#include <errno.h>
+#include <unistd.h>
+#include <sys/stat.h>
+#include <string.h>
+*/
 
 int main(int argc, char *argv[])
 {
@@ -49,16 +56,6 @@ int main(int argc, char *argv[])
 //    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 //    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 
-#ifndef QT_NO_TRANSLATION
-    QString translatorFileName = QLatin1String("qt_");
-    translatorFileName += QLocale::system().name();
-    QTranslator *translator = new QTranslator();
-    if (translator->load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-        app.installTranslator(translator);
-    else
-        qDebug() << "Failed to load Chinese translation file.";
-#endif
-
     // 国际化
     QString locale = QLocale::system().name();
     QTranslator trans_global, trans_menu;
@@ -70,7 +67,67 @@ int main(int argc, char *argv[])
         app.installTranslator(&trans_menu);
     }
 
+#ifndef QT_NO_TRANSLATION
+    QString translatorFileName = QLatin1String("qt_");
+    translatorFileName += QLocale::system().name();
+    QTranslator *translator = new QTranslator();
+    if (translator->load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+        app.installTranslator(translator);
+    else
+        qDebug() << "Failed to load Chinese translation file.";
+#endif
 
+#if 0
+{
+    /*add file lock*/
+    struct flock s_lock;
+    s_lock.l_type = F_WRLCK;
+    s_lock.l_whence = SEEK_SET;
+    s_lock.l_start = 0;
+    s_lock.l_len = 0;
+    s_lock.l_pid = getpid();
+
+    char p_lock_file_dir[512];
+    char p_lock_file_path[1024];
+    char *p_home = NULL;
+    int i_ret = -1;
+    int fd = -1;
+
+    memset(p_lock_file_dir , 0x00 , sizeof(p_lock_file_dir));
+    memset(p_lock_file_path , 0x00 , sizeof(p_lock_file_path));
+
+    p_home = getenv("HOME");
+    if(p_home == NULL) {
+        printf("get env var HOME fail\n");
+        return -1;
+    }
+
+    sprintf(p_lock_file_dir , "%s/.kylin-ipmsg" , p_home);
+    sprintf(p_lock_file_path , "%s/kylin-ipmsg.lock" , p_lock_file_dir);
+
+    i_ret = access(p_lock_file_dir , F_OK);
+    if (i_ret == -1) {
+        printf("lock file path is not exits\n");
+        i_ret = mkdir(p_lock_file_dir , 0777);
+        if(i_ret == -1) {
+            printf("create dir fail\n");
+            return -1;
+        }
+        printf("create dir success\n");
+    }
+
+    fd = open(p_lock_file_path , O_CREAT |  O_RDWR | O_TRUNC , 0777);
+    if(fd == -1) {
+        printf("get file fd fail\n");
+        return -1;
+    }
+    i_ret = fcntl(fd , F_SETLK , &s_lock);
+    if (i_ret == -1) {
+        printf("lock file fail . errno is %s\n" , strerror(errno));
+        return -1;
+    }
+}
+#endif
 
     // 单例判断
     /*check file whether locked*/
@@ -78,7 +135,6 @@ int main(int argc, char *argv[])
         app.sendMessage("FOREGROUND");
         return 0;
     }
-
 //    app.setWindowIcon(QIcon("/usr/share/pixmaps/kylin-ipmsg.png"));
     app.setWindowIcon(QIcon::fromTheme("kylin-ipmsg"));
 

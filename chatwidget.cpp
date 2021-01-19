@@ -736,7 +736,7 @@ void ChatWidget::on_pb_titleicon_clicked(){
     this->ui->le_ip->clear();
     this->ui->w_alert->hide();
 
-    this->hide();
+    this->close();
 }
 
 /*
