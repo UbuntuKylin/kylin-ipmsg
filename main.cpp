@@ -67,6 +67,16 @@ int main(int argc, char *argv[])
         app.installTranslator(&trans_menu);
     }
 
+#ifndef QT_NO_TRANSLATION
+    QString translatorFileName = QLatin1String("qt_");
+    translatorFileName += QLocale::system().name();
+    QTranslator *translator = new QTranslator();
+    if (translator->load(translatorFileName, QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+        app.installTranslator(translator);
+    else
+        qDebug() << "Failed to load Chinese translation file.";
+#endif
+
 #if 0
 {
     /*add file lock*/
