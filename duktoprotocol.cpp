@@ -309,9 +309,10 @@ void DuktoProtocol::newIncomingConnection(qintptr socketDescriptor)
 *   ks: kylin socket object
 * Return :
 */
-void DuktoProtocol::updateRemoteID(QString pRemoteID, KSocket *ks){
+//void DuktoProtocol::updateRemoteID(QString pRemoteID, KSocket *ks){
+void DuktoProtocol::updateRemoteID(QString ip, QString user_name , QString system , QString pRemoteID , QString Platform , KSocket* ks){
     // 添加下级网络好友，如果已有该好友，addBuddy()中不会重复添加
-    this->gbehind->mBuddiesList.addBuddy(ks->pTargetIP, NETWORK_PORT, "? ? ?", "? ? ? ?", pRemoteID, "unknown", QUrl(""));
+    this->gbehind->mBuddiesList.addBuddy(ip, NETWORK_PORT, user_name , system , pRemoteID, Platform , QUrl(""));
 
     // 保存到map中供界面使用
     if(this->gbehind->sockets.contains(pRemoteID) == false){

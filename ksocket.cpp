@@ -221,7 +221,7 @@ void KSocket::handleMsg(){
                     QString system = flag.at(2);
                     QString platfrom = flag.at(4);
 
-                    qDebug() << "ip is " << ip << "\n" << "user_name = " << user_name << "\n" << "system = " << system << "\n" << "mac = " << mac << "\n" << "platfrom = " << platfrom;
+                    qDebug() << "s_iamready : " << "\n" << "ip is " << ip << "\n" << "user_name = " << user_name << "\n" << "system = " << system << "\n" << "mac = " << mac << "\n" << "platfrom = " << platfrom;
 
                     emit addUpBuddy(ip , user_name , system , mac , platfrom);
                 }
@@ -232,7 +232,25 @@ void KSocket::handleMsg(){
                 connect(socketSecondary, SIGNAL(readyRead()), this, SLOT(handleMsgSecondary()));
                 connect(socketSecondary, SIGNAL(disconnected()), this, SLOT(finishThread()));
                 socketSecondary->connectToHost(this->pTargetIP, NETWORK_PORT - 1);
+#if 0
+                QString msg = C_WHOAMI;
+                QString pRemoteID = this->pSystemSignature.split(" ")[3];
+                msg.append(this->comLen(pRemoteID));
+                msg.append(pRemoteID);
+#endif
+                /*modify by jsj at 2021-01-18 11:12*/
+                QString system_flag;
+                system_flag.clear();
+                system_flag = this->pSystemSignature;
 
+                std::string std_system_flag = system_flag.toStdString();
+                const char *p_system_flag = std_system_flag.c_str();
+
+                socket->write(C_WHOAMI);
+                socket->write(p_system_flag);
+                socket->waitForBytesWritten();
+                socket->flush();
+ /*
                 QString msg = C_WHOAMI;
                 QString pRemoteID = this->pSystemSignature.split(" ")[3];
                 msg.append(this->comLen(pRemoteID));
@@ -240,16 +258,34 @@ void KSocket::handleMsg(){
 
                 socket->write(msg.toUtf8().data());
                 socket->flush();
-
+*/
                 emit transferMsgSignal(CONN_SUCCESS);
             }
 
             // 主动端自报姓名消息
             else if(mt == C_WHOAMI){
+                qDebug() << "---passive receive active c_whoami flag";
+                QByteArray system_falg = socket->readAll();
+                QString tmp(system_falg);
+                QStringList flag = tmp.split(" ");
+                if (flag.count() > 4) {
+                    QString mac = flag.at(3);
+                    QString ip = socket->peerAddress().toString();
+                    QString user_name = flag.at(1);
+                    QString system = flag.at(2);
+                    QString platfrom = flag.at(4);
+
+                    qDebug() << "c_whoami" << "\n" << "ip is " << ip << "\n" << "user_name = " << user_name << "\n" << "system = " << system << "\n" << "mac = " << mac << "\n" << "platfrom = " << platfrom;
+
+                   // emit addUpBuddy(ip , user_name , system , mac , platfrom);
+                    emit updateRemoteID(ip , user_name , system , mac , platfrom , this);
+                }
+
+#if 0
                 int whoamiLen = socket->read(9).toInt(NULL, 16);
                 this->pRemoteID = QString::fromUtf8(socket->read(whoamiLen));
                 emit updateRemoteID(this->pRemoteID, this);
-
+#endif
                 emit transferMsgSignal(CONN_SUCCESS);
             }
 

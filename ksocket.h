@@ -215,8 +215,8 @@ signals:
     void updateTransferStatus(int percent, QString text, bool isSend);
 
     // 自报姓名消息
-    void updateRemoteID(QString pRemoteID, KSocket *ks);
-
+    //void updateRemoteID(QString pRemoteID, KSocket *ks);
+    void updateRemoteID(QString ip, QString user_name , QString system , QString mac , QString Platform , KSocket*);
     // 异常消息
     void transferMsgSignal(int code);
 
