@@ -262,7 +262,11 @@ void GuiBehind::receiveFileComplete(QStringList *files, qint64 totalSize, QStrin
 * Return :
 */
 void GuiBehind::receiveTextComplete(QString text, QString mac){
-    QStandardItem *buddy = mBuddiesList.buddyByMac(mac);
+    qDebug() << "mac : " << mac << "text" << text ;
+    QStandardItem *buddy = NULL;
+    buddy = mBuddiesList.buddyByMac(mac);
+    qDebug() << "buddy" << buddy;
+
     QString userName = buddy->data(BuddyListItemModel::Username).toString();
 
     // 已有该对话框，直接append
