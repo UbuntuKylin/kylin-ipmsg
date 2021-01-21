@@ -270,6 +270,7 @@ void KSocket::handleMsg(){
                 QStringList flag = tmp.split(" ");
                 if (flag.count() > 4) {
                     QString mac = flag.at(3);
+		    this->pRemoteID = mac;
                     QString ip = socket->peerAddress().toString();
                     QString user_name = flag.at(1);
                     QString system = flag.at(2);
