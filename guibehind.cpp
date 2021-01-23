@@ -155,6 +155,32 @@ void GuiBehind::peerListRemoved(Peer peer){
     mBuddiesList.removeBuddy(peer.mac);
 }
 
+/*send text finish add receive list*/
+void GuiBehind::sendTextComplete_add_recentlist(QString text , QString mac)
+{
+    QStandardItem *buddy = NULL;
+    buddy = mBuddiesList.buddyByMac(mac);
+
+    qDebug() << "sendTextComplete_add_recentlist fun call args ->" << "mac : " << mac << "text : " << text << "buddy list point : " << buddy;
+
+    QString userName;
+    QString ip_mac;
+    userName.clear();
+    ip_mac.clear();
+    if (buddy != NULL) {
+        userName = buddy->data(BuddyListItemModel::Username).toString();
+        ip_mac = buddy->data(BuddyListItemModel::Ip).toString();
+
+        qDebug() << "username :" << userName << "ip_mac :" << ip_mac;
+
+        /*delete recent item and again add*/
+       this->removeRecentItem(mac);
+       mRecentList.addRecent("Text snippet", text, "text", userName , 0 , ip_mac);
+    }
+
+    return;
+}
+
 // 一次文件接收完成
 /*
 * Parameters:
@@ -262,8 +288,20 @@ void GuiBehind::receiveFileComplete(QStringList *files, qint64 totalSize, QStrin
 * Return :
 */
 void GuiBehind::receiveTextComplete(QString text, QString mac){
-    QStandardItem *buddy = mBuddiesList.buddyByMac(mac);
-    QString userName = buddy->data(BuddyListItemModel::Username).toString();
+    qDebug() << "mac : " << mac << "text" << text ;
+    QStandardItem *buddy = NULL;
+    buddy = mBuddiesList.buddyByMac(mac);
+    qDebug() << "buddy" << buddy;
+
+    QString userName;
+    QString ip_mac;
+    if(buddy != NULL)
+    {
+       userName = buddy->data(BuddyListItemModel::Username).toString();
+       ip_mac = buddy->data(BuddyListItemModel::Ip).toString();
+       qDebug() << "username :" << userName << "ip_mac :" << ip_mac;
+    }
+
 
     // 已有该对话框，直接append
     if(this->cws.contains(mac)){
@@ -296,7 +334,6 @@ void GuiBehind::receiveTextComplete(QString text, QString mac){
     this->removeRecentItem(mac);
 
     // 添加到最近聊天列表
-    QString ip_mac = buddy->data(BuddyListItemModel::Ip).toString();
     mRecentList.addRecent("Text snippet", text, "text", userName, 0, ip_mac);
 
     // 界面新消息提醒

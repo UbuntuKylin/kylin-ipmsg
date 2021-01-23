@@ -111,6 +111,7 @@ public slots:
     void showSendPage(QString ip_mac);
     void changeThemeColor(QString color);
 
+    void sendTextComplete_add_recentlist(QString text , QString mac);
     void receiveTextComplete(QString text, QString mac);
     void receiveFileComplete(QStringList *files, qint64 totalSize, QString dir, QString mac);
     void reSaveCw(QString ip);
@@ -164,7 +165,7 @@ public slots:
     void newUdpData();
     void newIncomingConnection(qintptr socketDescriptor);
     void newOutgoingConnection(QString targetIP, QString remoteID, ChatWidget *cw);
-    void updateRemoteID(QString, KSocket*);
+    void updateRemoteID(QString ip, QString user_name , QString system , QString mac , QString Platform , KSocket*);
     void updateSockets(QString pRemoteID);
     void addUpBuddy(QString ip, QString user_name , QString system , QString mac , QString Platform);
 

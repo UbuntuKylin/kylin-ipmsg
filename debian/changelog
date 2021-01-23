@@ -1,3 +1,11 @@
+kylin-ipmsg (1.1.19kord1~rc1) v101; urgency=medium
+
+  * 【麒麟传书】#Bug34939 X86架构机器麒麟传书消息界面无发消息，传文件，传文件夹，修改备注按钮；龙芯架构机器麒麟传书消息界面无修改备注按钮
+  * 【麒麟传书】#Bug23853 最近中没有单方面发送信息的记录
+  * 【麒麟传书】#Bug23836 龙芯机器打开麒麟传书出现段错误
+
+ -- jishengjie <jishengjie@kylinos.cn>  Sat, 23 Jan 2021 20:33:32 +0800
+
 kylin-ipmsg (1.1.19kord) v101; urgency=medium
 
   * 修复版本号显示

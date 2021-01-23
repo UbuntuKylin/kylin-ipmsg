@@ -22,8 +22,8 @@
 
 // 被动连接端初始化
 KSocket::KSocket(qintptr s, QString systemSignature , QObject *parent):QObject(parent){
-    qDebug() << "服务端函数库被动连接初始化 : KSocket";
-    qDebug() << "服务端函数库被动链接初始化参数 : " << s;
+    qDebug() << "服务端被动连接初始化 : KSocket";
+    qDebug() << "服务端被动链接初始化参数 : " << s;
     this->socketDescriptor = s;
     this->pSystemSignature = systemSignature;
     this->isConnected = false;
@@ -39,8 +39,8 @@ KSocket::KSocket(qintptr s, QString systemSignature , QObject *parent):QObject(p
 * Return :
 */
 KSocket::KSocket(QString targetIP, QString systemSignature, QString pRemoteID, QObject *parent):QObject(parent){
-    qDebug() << "服务端函数库主动连接初始化 : KSocket";
-    qDebug() << "服务端函数库主动链接初始化参数" <<targetIP << systemSignature << pRemoteID;
+    qDebug() << "客户端主动连接初始化 : KSocket";
+    qDebug() << "客户端主动链接初始化参数" <<targetIP << systemSignature << pRemoteID;
     this->pTargetIP = targetIP;
     this->pSystemSignature = systemSignature;
     this->pRemoteID = pRemoteID;
@@ -78,10 +78,9 @@ void KSocket::imReady(){
     this->isConnected = true;
     this->isInitiative = false;
 
-    qDebug()<<"socket被动连接成功, thread: "<<QThread::currentThreadId()<<" 附tcpserver启动: "<<rtn;
+    qDebug()<<"服务端socket被动连接成功, thread: "<<QThread::currentThreadId()<<" 附tcpserver启动: "<<rtn;
 
     // 朋友,请开始你的表演.
-    /*modify by jsj at 2021-01-18 11:12*/
     QString system_flag;
     system_flag.clear();
     system_flag = this->pSystemSignature;
@@ -109,7 +108,7 @@ void KSocket::newSecondaryConn(){
 
 // 主动端开始工作
 void KSocket::imStart(){
-    qDebug() << "服务端函数库主动链接实例socket";
+    qDebug() << "客户端socket主动链接";
     //qDebug() << "KSocket::imStart()";
     socket = new QTcpSocket();
     connect(socket, SIGNAL(connected()), this, SLOT(imStart_()));
@@ -145,7 +144,7 @@ void KSocket::timoutOnce(){
 
 // 主动连接成功，取消超时计时器
 void KSocket::imStart_(){
-    qDebug() << "服务端函数库主动链接成功";
+    qDebug() << "客户端socket动链接成功";
     qDebug() << "KSocket::imStart_()";
     disconnect(timer, SIGNAL(timeout()), this, SLOT(timoutOnce()));
     timer->stop();
@@ -156,19 +155,6 @@ void KSocket::imStart_(){
     this->pTotalReceivedLen = 0;
     this->pReadType = MSGTYPE;
     this->pReceivedFiles = new QStringList();
-
-    // 添加上层好友
-    qDebug() << this->pTargetIP << "   " << this->pRemoteID;
-
-#if 0
-    /*发送建立链接成功后的第一次消息*/
-    char p_first_send[11];
-    memset(p_first_send , 0x00 , sizeof(p_first_send));
-    sprintf(p_first_send , "first_send");
-    socket->write(p_first_send , strlen(p_first_send));
-#endif
-
-    //emit addUpBuddy(this->pTargetIP, this->pRemoteID);
 
     qDebug()<<"socket主动连接成功, thread: "<<QThread::currentThreadId()<<" socket: "<<socket;
 }
@@ -210,7 +196,7 @@ void KSocket::handleMsg(){
             // 被动端ready消息
             if(mt == S_IAMREADY){
                 /*read passive system flag*/
-                qDebug() << "---active receive passive iamready flag";
+                qDebug() << "---clien receive server iamready flag";
                 QByteArray system_falg = socket->readAll();
                 QString tmp(system_falg);
                 QStringList flag = tmp.split(" ");
@@ -221,11 +207,13 @@ void KSocket::handleMsg(){
                     QString system = flag.at(2);
                     QString platfrom = flag.at(4);
 
-                    qDebug() << "ip is " << ip << "\n" << "user_name = " << user_name << "\n" << "system = " << system << "\n" << "mac = " << mac << "\n" << "platfrom = " << platfrom;
+                    /*Reassignment this->pRemotID*/
+                    this->pRemoteID = mac;
+
+                    qDebug() << "s_iamready : " << "\n" << "ip is " << ip << "\n" << "user_name = " << user_name << "\n" << "system = " << system << "\n" << "mac = " << mac << "\n" << "platfrom = " << platfrom;
 
                     emit addUpBuddy(ip , user_name , system , mac , platfrom);
                 }
-
 
                 // 主动附socket连接
                 socketSecondary = new QTcpSocket();
@@ -233,12 +221,16 @@ void KSocket::handleMsg(){
                 connect(socketSecondary, SIGNAL(disconnected()), this, SLOT(finishThread()));
                 socketSecondary->connectToHost(this->pTargetIP, NETWORK_PORT - 1);
 
-                QString msg = C_WHOAMI;
-                QString pRemoteID = this->pSystemSignature.split(" ")[3];
-                msg.append(this->comLen(pRemoteID));
-                msg.append(pRemoteID);
+                QString system_flag;
+                system_flag.clear();
+                system_flag = this->pSystemSignature;
 
-                socket->write(msg.toUtf8().data());
+                std::string std_system_flag = system_flag.toStdString();
+                const char *p_system_flag = std_system_flag.c_str();
+
+                socket->write(C_WHOAMI);
+                socket->write(p_system_flag);
+                socket->waitForBytesWritten();
                 socket->flush();
 
                 emit transferMsgSignal(CONN_SUCCESS);
@@ -246,9 +238,25 @@ void KSocket::handleMsg(){
 
             // 主动端自报姓名消息
             else if(mt == C_WHOAMI){
-                int whoamiLen = socket->read(9).toInt(NULL, 16);
-                this->pRemoteID = QString::fromUtf8(socket->read(whoamiLen));
-                emit updateRemoteID(this->pRemoteID, this);
+                qDebug() << "---server receive clien c_whoami flag";
+                QByteArray system_falg = socket->readAll();
+                QString tmp(system_falg);
+                QStringList flag = tmp.split(" ");
+                if (flag.count() > 4) {
+                    QString mac = flag.at(3);
+
+                    QString ip = socket->peerAddress().toString();
+                    QString user_name = flag.at(1);
+                    QString system = flag.at(2);
+                    QString platfrom = flag.at(4);
+
+                    qDebug() << "c_whoami" << "\n" << "ip is " << ip << "\n" << "user_name = " << user_name << "\n" << "system = " << system << "\n" << "mac = " << mac << "\n" << "platfrom = " << platfrom;
+
+                    /*Reassignment this->pRemotID*/
+                    this->pRemoteID = mac;
+
+                    emit updateRemoteID(ip , user_name , system , mac , platfrom , this);
+                }
 
                 emit transferMsgSignal(CONN_SUCCESS);
             }
@@ -506,6 +514,7 @@ void KSocket::sendText(QString text){
 
         qDebug() << "发送成功";
         emit sendTextComplete();
+        emit sendTextComplete_add_recentlist(text , this->pRemoteID);
     }
     else{
         emit transferMsgSignal(DISCONN);

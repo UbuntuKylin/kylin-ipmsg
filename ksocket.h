@@ -193,6 +193,7 @@ public slots:
 signals:
     // 文字发送完成信号
     void sendTextComplete();
+    void sendTextComplete_add_recentlist(QString , QString);
     // 文件发送完成信号
     void sendFileComplete();
     // 文件发送取消信号
@@ -215,8 +216,8 @@ signals:
     void updateTransferStatus(int percent, QString text, bool isSend);
 
     // 自报姓名消息
-    void updateRemoteID(QString pRemoteID, KSocket *ks);
-
+    //void updateRemoteID(QString pRemoteID, KSocket *ks);
+    void updateRemoteID(QString ip, QString user_name , QString system , QString mac , QString Platform , KSocket*);
     // 异常消息
     void transferMsgSignal(int code);
 

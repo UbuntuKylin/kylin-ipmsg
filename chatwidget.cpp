@@ -343,6 +343,8 @@ void ChatWidget::onSendCompleted(){
         this->ui->w_alert->hide();
 
         this->sendType = ChatWidget::Idle;
+
+
     }
 }
 
@@ -736,7 +738,8 @@ void ChatWidget::on_pb_titleicon_clicked(){
     this->ui->le_ip->clear();
     this->ui->w_alert->hide();
 
-    this->close();
+    //this->close();
+    this->hide();
 }
 
 /*
