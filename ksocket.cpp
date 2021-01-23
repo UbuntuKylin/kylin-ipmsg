@@ -221,6 +221,9 @@ void KSocket::handleMsg(){
                     QString system = flag.at(2);
                     QString platfrom = flag.at(4);
 
+                    /*Reassignment this->pRemotID*/
+                    this->pRemoteID = mac;
+
                     qDebug() << "s_iamready : " << "\n" << "ip is " << ip << "\n" << "user_name = " << user_name << "\n" << "system = " << system << "\n" << "mac = " << mac << "\n" << "platfrom = " << platfrom;
 
                     emit addUpBuddy(ip , user_name , system , mac , platfrom);
@@ -270,7 +273,7 @@ void KSocket::handleMsg(){
                 QStringList flag = tmp.split(" ");
                 if (flag.count() > 4) {
                     QString mac = flag.at(3);
-		    this->pRemoteID = mac;
+
                     QString ip = socket->peerAddress().toString();
                     QString user_name = flag.at(1);
                     QString system = flag.at(2);
@@ -278,7 +281,9 @@ void KSocket::handleMsg(){
 
                     qDebug() << "c_whoami" << "\n" << "ip is " << ip << "\n" << "user_name = " << user_name << "\n" << "system = " << system << "\n" << "mac = " << mac << "\n" << "platfrom = " << platfrom;
 
-                   // emit addUpBuddy(ip , user_name , system , mac , platfrom);
+                    /*Reassignment this->pRemotID*/
+                    this->pRemoteID = mac;
+
                     emit updateRemoteID(ip , user_name , system , mac , platfrom , this);
                 }
 

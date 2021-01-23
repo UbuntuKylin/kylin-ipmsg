@@ -257,8 +257,8 @@ void DuktoProtocol::newOutgoingConnection(QString targetIP, QString remoteID, Ch
     connect(ks, SIGNAL(receiveFileComplete(QStringList*, qint64, QString, QString)), this->gbehind, SLOT(receiveFileComplete(QStringList*, qint64, QString, QString)));
     connect(ks, SIGNAL(receiveFileCancelled()), cw, SLOT(recvCancel()));
     connect(ks, SIGNAL(isInitiativeConn(bool)), cw, SLOT(getIsInitiativeConn(bool)));
-
-    connect(ks, SIGNAL(addUpBuddy(QString,QString)), this, SLOT(addUpBuddy(QString,QString)));
+    //connect(ks, SIGNAL(addUpBuddy(QString,QString)), this, SLOT(addUpBuddy(QString,QString)));
+    connect(ks, SIGNAL(addUpBuddy(QString , QString , QString , QString , QString)), this, SLOT(addUpBuddy(QString , QString , QString , QString , QString)));
 
     connect(ks, SIGNAL(transferMsgSignal(int)), cw, SLOT(slotTransferMsg(int)));
 
@@ -287,7 +287,7 @@ void DuktoProtocol::newIncomingConnection(qintptr socketDescriptor)
     KSocket *ks = new KSocket(socketDescriptor , this->pSystemSignature);
     ks->moveToThread(qthread);
 
-    connect(ks, SIGNAL(updateRemoteID(QString, KSocket*)), this, SLOT(updateRemoteID(QString, KSocket*)));
+    connect(ks, SIGNAL(updateRemoteID(QString, QString , QString , QString , QString ,KSocket*)), this, SLOT(updateRemoteID(QString, QString , QString , QString , QString , KSocket*)));
 
     connect(ks, SIGNAL(receiveTextComplete(QString, QString)), this->gbehind, SLOT(receiveTextComplete(QString, QString)));
 

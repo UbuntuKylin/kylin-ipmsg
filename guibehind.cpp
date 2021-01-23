@@ -267,7 +267,14 @@ void GuiBehind::receiveTextComplete(QString text, QString mac){
     buddy = mBuddiesList.buddyByMac(mac);
     qDebug() << "buddy" << buddy;
 
-    QString userName = buddy->data(BuddyListItemModel::Username).toString();
+    QString userName;
+    QString ip_mac;
+    if(buddy != NULL)
+    {
+       userName = buddy->data(BuddyListItemModel::Username).toString();
+       ip_mac = buddy->data(BuddyListItemModel::Ip).toString();
+    }
+
 
     // 已有该对话框，直接append
     if(this->cws.contains(mac)){
@@ -300,7 +307,6 @@ void GuiBehind::receiveTextComplete(QString text, QString mac){
     this->removeRecentItem(mac);
 
     // 添加到最近聊天列表
-    QString ip_mac = buddy->data(BuddyListItemModel::Ip).toString();
     mRecentList.addRecent("Text snippet", text, "text", userName, 0, ip_mac);
 
     // 界面新消息提醒
