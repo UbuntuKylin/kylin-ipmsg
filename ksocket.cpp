@@ -157,19 +157,6 @@ void KSocket::imStart_(){
     this->pReadType = MSGTYPE;
     this->pReceivedFiles = new QStringList();
 
-    // 添加上层好友
-    //qDebug() << this->pTargetIP << "   " << this->pRemoteID;
-
-#if 0
-    /*发送建立链接成功后的第一次消息*/
-    char p_first_send[11];
-    memset(p_first_send , 0x00 , sizeof(p_first_send));
-    sprintf(p_first_send , "first_send");
-    socket->write(p_first_send , strlen(p_first_send));
-#endif
-
-    //emit addUpBuddy(this->pTargetIP, this->pRemoteID);
-
     qDebug()<<"socket主动连接成功, thread: "<<QThread::currentThreadId()<<" socket: "<<socket;
 }
 
@@ -229,19 +216,12 @@ void KSocket::handleMsg(){
                     emit addUpBuddy(ip , user_name , system , mac , platfrom);
                 }
 
-
                 // 主动附socket连接
                 socketSecondary = new QTcpSocket();
                 connect(socketSecondary, SIGNAL(readyRead()), this, SLOT(handleMsgSecondary()));
                 connect(socketSecondary, SIGNAL(disconnected()), this, SLOT(finishThread()));
                 socketSecondary->connectToHost(this->pTargetIP, NETWORK_PORT - 1);
-#if 0
-                QString msg = C_WHOAMI;
-                QString pRemoteID = this->pSystemSignature.split(" ")[3];
-                msg.append(this->comLen(pRemoteID));
-                msg.append(pRemoteID);
-#endif
-                /*modify by jsj at 2021-01-18 11:12*/
+
                 QString system_flag;
                 system_flag.clear();
                 system_flag = this->pSystemSignature;
@@ -253,15 +233,7 @@ void KSocket::handleMsg(){
                 socket->write(p_system_flag);
                 socket->waitForBytesWritten();
                 socket->flush();
- /*
-                QString msg = C_WHOAMI;
-                QString pRemoteID = this->pSystemSignature.split(" ")[3];
-                msg.append(this->comLen(pRemoteID));
-                msg.append(pRemoteID);
 
-                socket->write(msg.toUtf8().data());
-                socket->flush();
-*/
                 emit transferMsgSignal(CONN_SUCCESS);
             }
 
@@ -287,11 +259,6 @@ void KSocket::handleMsg(){
                     emit updateRemoteID(ip , user_name , system , mac , platfrom , this);
                 }
 
-#if 0
-                int whoamiLen = socket->read(9).toInt(NULL, 16);
-                this->pRemoteID = QString::fromUtf8(socket->read(whoamiLen));
-                emit updateRemoteID(this->pRemoteID, this);
-#endif
                 emit transferMsgSignal(CONN_SUCCESS);
             }
 
@@ -548,6 +515,7 @@ void KSocket::sendText(QString text){
 
         qDebug() << "发送成功";
         emit sendTextComplete();
+        emit sendTextComplete_add_recentlist(text , this->pRemoteID);
     }
     else{
         emit transferMsgSignal(DISCONN);

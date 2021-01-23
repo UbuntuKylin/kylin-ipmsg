@@ -343,6 +343,8 @@ void ChatWidget::onSendCompleted(){
         this->ui->w_alert->hide();
 
         this->sendType = ChatWidget::Idle;
+
+
     }
 }
 

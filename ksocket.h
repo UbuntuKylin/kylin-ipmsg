@@ -193,6 +193,7 @@ public slots:
 signals:
     // 文字发送完成信号
     void sendTextComplete();
+    void sendTextComplete_add_recentlist(QString , QString);
     // 文件发送完成信号
     void sendFileComplete();
     // 文件发送取消信号
