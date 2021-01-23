@@ -165,7 +165,6 @@ public slots:
     void newUdpData();
     void newIncomingConnection(qintptr socketDescriptor);
     void newOutgoingConnection(QString targetIP, QString remoteID, ChatWidget *cw);
-    //void updateRemoteID(QString, KSocket*);
     void updateRemoteID(QString ip, QString user_name , QString system , QString mac , QString Platform , KSocket*);
     void updateSockets(QString pRemoteID);
     void addUpBuddy(QString ip, QString user_name , QString system , QString mac , QString Platform);

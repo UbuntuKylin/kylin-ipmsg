@@ -158,22 +158,26 @@ void GuiBehind::peerListRemoved(Peer peer){
 /*send text finish add receive list*/
 void GuiBehind::sendTextComplete_add_recentlist(QString text , QString mac)
 {
-    qDebug() << "mac : " << mac << "text" << text ;
     QStandardItem *buddy = NULL;
     buddy = mBuddiesList.buddyByMac(mac);
-    qDebug() << "buddy" << buddy;
+
+    qDebug() << "sendTextComplete_add_recentlist fun call args ->" << "mac : " << mac << "text : " << text << "buddy list point : " << buddy;
 
     QString userName;
     QString ip_mac;
-    if(buddy != NULL)
-    {
-       userName = buddy->data(BuddyListItemModel::Username).toString();
-       ip_mac = buddy->data(BuddyListItemModel::Ip).toString();
-       qDebug() << "username :" << userName << "ip_mac :" << ip_mac;
+    userName.clear();
+    ip_mac.clear();
+    if (buddy != NULL) {
+        userName = buddy->data(BuddyListItemModel::Username).toString();
+        ip_mac = buddy->data(BuddyListItemModel::Ip).toString();
 
+        qDebug() << "username :" << userName << "ip_mac :" << ip_mac;
+
+        /*delete recent item and again add*/
        this->removeRecentItem(mac);
        mRecentList.addRecent("Text snippet", text, "text", userName , 0 , ip_mac);
     }
+
     return;
 }
 

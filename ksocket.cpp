@@ -81,7 +81,6 @@ void KSocket::imReady(){
     qDebug()<<"服务端socket被动连接成功, thread: "<<QThread::currentThreadId()<<" 附tcpserver启动: "<<rtn;
 
     // 朋友,请开始你的表演.
-    /*modify by jsj at 2021-01-18 11:12*/
     QString system_flag;
     system_flag.clear();
     system_flag = this->pSystemSignature;
