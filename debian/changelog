@@ -1,3 +1,18 @@
+kylin-ipmsg (1.1.18kord) v101; urgency=medium
+
+  * 修复禅道bug#26336：【麒麟传书】发送文件夹窗口取消按钮未汉化.
+  * 修复禅道bug#26475：【麒麟传书】打开应用时主界面位置不固定.
+  * 修复禅道bug#26479：【麒麟传书】使用IP的消息提示待优化.
+
+ -- caoliang <caoliang@kylinos.cn>  Mon, 21 Jan 2021 18:35:46 +0800
+
+kylin-ipmsg (1.1.17kord) v101; urgency=medium
+
+  * 【麒麟传书】先关闭主界面，再关闭对话框后，关闭程序不完全导致无法再次启动
+  * 【麒麟传书】第一次打开麒麟传书，关闭之后再次点击麒麟传书没有反应
+
+ -- jishengjie <jishengjie@kylinos.cn>  Mon, 18 Jan 2021 20:33:32 +0800
+
 kylin-ipmsg (1.1.16kord) v101; urgency=medium
 
   * 【麒麟传书】修复在好友不在线时发送信息给好友ip，10s内在好友Ip上打开麒麟传书，好友名称显示异常问题
