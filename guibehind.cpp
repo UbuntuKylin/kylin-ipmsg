@@ -85,41 +85,25 @@ GuiBehind::GuiBehind(DuktoWindow* view) :
     this->alertTimer = new QTimer(this);
     this->alertTimer->setInterval(300);
     this->connect(this->alertTimer, SIGNAL(timeout()), this, SLOT(msgAlert()));
-//    this->iconDukto = QIcon("/usr/share/pixmaps/kylin-ipmsg.png");
-//    mSettings->saveIconPath("");
+
+    this->iconDukto = QIcon::fromTheme("kylin-ipmsg");
+    QString themeName = this->iconDukto.themeName();
+
     QString iconPath = mSettings->iconPath();
     QFileInfo fi(iconPath);
-    if (iconPath != "" && fi.exists()) {
-//        this->iconDukto = QIcon(iconPath);
-        this->iconDukto = QIcon::fromTheme("kylin-ipmsg");
+
+    // icon图标路径
+    iconPath = "/usr/share/icons/"+ themeName + "/64x64/apps/kylin-ipmsg.png";
+    fi.setFile(iconPath);
+    if (fi.exists()) {
+        mSettings->saveIconPath(iconPath);
     }
     else {
-        // SP1的icon图标路径
-        iconPath = "/usr/share/icons/ukui-icon-theme-default/64x64/apps/kylin-ipmsg.png";
-        fi.setFile(iconPath);
-        if (fi.exists()) {
-            mSettings->saveIconPath(iconPath);
-//            this->iconDukto = QIcon(iconPath);
-            this->iconDukto = QIcon::fromTheme("kylin-ipmsg");
-        }
-        else {
-            // V10的icon图标路径
-            iconPath = "/usr/share/icons/kylin-icon-theme/64x64/apps/kylin-ipmsg.png";
-            fi.setFile(iconPath);
-            if (fi.exists()) {
-                mSettings->saveIconPath(iconPath);
-//                this->iconDukto = QIcon(iconPath);
-                this->iconDukto = QIcon::fromTheme("kylin-ipmsg");
-            }
-            else {
-                // 保险措施
-                iconPath = "/usr/share/pixmaps/kylin-ipmsg.png";
-                mSettings->saveIconPath(iconPath);
-//                this->iconDukto = QIcon(iconPath);
-                this->iconDukto = QIcon::fromTheme("kylin-ipmsg");
-            }
-        }
+        // 保险措施
+        iconPath = "/usr/share/pixmaps/kylin-ipmsg.png";
+        mSettings->saveIconPath(iconPath);
     }
+
     // qml访问本地图片需使用绝对路径
     this->setIconPath(iconPath);
 
@@ -551,6 +535,12 @@ void GuiBehind::setIconPath(QString path)
     if (path == mSettings->iconPath())
         return;
     mSettings->saveIconPath(path);
+}
+
+// 获取应用版本号
+QString GuiBehind::appVersion()
+{
+    return qApp->applicationVersion();
 }
 
 /*
