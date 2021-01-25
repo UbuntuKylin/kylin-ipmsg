@@ -51,6 +51,7 @@ int main(int argc, char *argv[])
 
     /*lock file*/
     QtSingleApplication app(id, argc, argv);
+    app.setApplicationVersion("1.1.19");
 
 //    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 //    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));

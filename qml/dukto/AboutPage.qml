@@ -41,7 +41,7 @@ Item {
         x: 22
         y: 85
         font.pixelSize: 72
-        text: qsTr("Kylin Ipmsg") + " 1.1.19"
+        text: qsTr("Kylin Ipmsg") + " " + guiBehind.appVersion
         color: theme.color4
     }
 

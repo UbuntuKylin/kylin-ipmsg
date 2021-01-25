@@ -1,3 +1,10 @@
+kylin-ipmsg (1.1.20kord) v101; urgency=medium
+
+  * 【麒麟传书】#Bug25000 更改图标主题为经典，关于界面麒麟传书图标未变化.
+  * 修复版本号更新机制，只需要在main.cpp中修改版本号.
+
+ -- caoliang <caoliang@kylinos.cn>  Mon, 25 Jan 2021 11:47:22 +0800
+
 kylin-ipmsg (1.1.19kord1~rc1) v101; urgency=medium
 
   * 【麒麟传书】#Bug34939 X86架构机器麒麟传书消息界面无发消息，传文件，传文件夹，修改备注按钮；龙芯架构机器麒麟传书消息界面无修改备注按钮

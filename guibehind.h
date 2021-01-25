@@ -71,6 +71,7 @@ class GuiBehind : public QObject
     Q_OBJECT
     Q_PROPERTY(QString currentPath READ currentPath NOTIFY currentPathChanged)
     Q_PROPERTY(QString iconPath READ iconPath WRITE setIconPath NOTIFY iconPathChanged)
+    Q_PROPERTY(QString appVersion READ appVersion NOTIFY appVersionChanged)
 
 public:
     explicit GuiBehind(DuktoWindow* view);
@@ -91,14 +92,22 @@ public:
     QString sizeHuman(qint64 size);
     void close();
 
+    // app icon in about qml
+    // 关于界面的图标路径
     QString iconPath();
     void setIconPath(QString path);
+
+    // app version in about qml
+    // 关于界面的版本号
+    QString appVersion();
+    void setAppVersion(QString path);
 
     ChatWidget * createCW(QString mac);
 
 signals:
     void currentPathChanged();
     void iconPathChanged();
+    void appVersionChanged();
 
 public slots:
     void periodicHello();
