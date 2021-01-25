@@ -11,18 +11,11 @@
     <message>
         <location filename="qml/dukto/AboutPage.qml" line="66"/>
         <source>Provide text chat and file transfer function with no server. </source>
-        <oldsource>Provide text chat and file transfer function with no server. 
-Mult person concurrency. 
-
-The UI resources comes from Dukto</oldsource>
         <translation>本软件提供局域网内的文字聊天以及文件传输功能，不需要搭建服务器</translation>
     </message>
     <message>
         <location filename="qml/dukto/AboutPage.qml" line="67"/>
         <source>Mult person concurrency. </source>
-        <oldsource>Mult person concurrency. 
-
-The UI resources comes from Dukto</oldsource>
         <translation>支持多人同时交互，收发并行</translation>
     </message>
     <message>
@@ -34,9 +27,13 @@ The UI resources comes from Dukto</oldsource>
 <context>
     <name>ChatWidget</name>
     <message>
+        <location filename="chatwidget.ui" line="14"/>
+        <source>Kylin Ipmsg</source>
+        <translation>麒麟传书</translation>
+    </message>
+    <message>
         <location filename="chatwidget.ui" line="36"/>
         <source>Send Text (Enter)</source>
-        <oldsource>发消息(Enter)</oldsource>
         <translation>发消息(Enter)</translation>
     </message>
     <message>
@@ -82,122 +79,121 @@ The UI resources comes from Dukto</oldsource>
     <message>
         <source>The Remote IP Addr</source>
         <oldsource>Please input the remote IP address</oldsource>
-        <translation type="vanished">请输入对方的 IP 地址</translation>
+        <translation>请输入对方的 IP 地址</translation>
     </message>
     <message>
-        <location filename="chatwidget.ui" line="14"/>
-        <source>Kylin Ipmsg</source>
-        <translation>麒麟传书</translation>
+        <source>Show Remote IP Addr</source>
+        <translation>对方的 IP 地址</translation>
     </message>
     <message>
         <source>Me</source>
-        <translation type="vanished">我</translation>
+        <translation>我</translation>
     </message>
     <message>
         <source>file sent out</source>
-        <translation type="vanished">发送了文件</translation>
+        <translation>发送了文件</translation>
     </message>
     <message>
         <source>dir sent out</source>
-        <translation type="vanished">发送了文件夹</translation>
+        <translation>发送了文件夹</translation>
     </message>
     <message>
         <source>This is your Ip Addr</source>
-        <translation type="vanished">这是你自己的IP地址</translation>
+        <translation>这是你自己的IP地址</translation>
     </message>
     <message>
         <source>IP already exist in buddies</source>
-        <translation type="vanished">已有该IP好友，请点击好友打开聊天界面</translation>
+        <translation>已有该IP好友，请点击好友打开聊天界面</translation>
     </message>
     <message>
         <source>Illegal IP address</source>
-        <translation type="vanished">输入的IP地址不合法</translation>
+        <translation>输入的IP地址不合法</translation>
     </message>
     <message>
         <source>Remoter has stoped the transfer</source>
-        <translation type="vanished">对方中止了文件传输</translation>
+        <translation>对方中止了文件传输</translation>
     </message>
     <message>
         <source>pls choose files to send</source>
-        <translation type="vanished">请选择要发送的文件</translation>
+        <translation>请选择要发送的文件</translation>
     </message>
     <message>
         <source>pls choose dir to send</source>
-        <translation type="vanished">请选择要发送的文件夹</translation>
+        <translation >请选择要发送的文件夹</translation>
     </message>
     <message>
         <source>pls do not send empty dir</source>
-        <translation type="vanished">请勿发送空文件夹</translation>
+        <translation>请勿发送空文件夹</translation>
     </message>
     <message>
         <source>transmission canceled</source>
-        <translation type="vanished">文件传输已取消</translation>
+        <translation>文件传输已取消</translation>
     </message>
     <message>
         <source>conn failed, try again later</source>
-        <translation type="vanished">连接失败，请确认好友在线，稍后再试</translation>
+        <translation>连接失败，请确认好友在线，稍后再试</translation>
     </message>
     <message>
         <source>transmission error</source>
-        <translation type="vanished">数据传输错误</translation>
+        <translation>数据传输错误</translation>
     </message>
     <message>
         <source>connecting...</source>
-        <translation type="vanished">正在尝试连接</translation>
+        <translation>正在尝试连接</translation>
     </message>
 </context>
 <context>
     <name>DuktoWindow</name>
     <message>
         <source>Kylin Ipmsg</source>
-        <translation type="vanished">麒麟传书</translation>
+        <translation>麒麟传书</translation>
     </message>
 </context>
 <context>
     <name>GuiBehind</name>
     <message>
         <source> (You)</source>
-        <translation type="vanished"> (本机)</translation>
+        <translation> (本机)</translation>
     </message>
     <message>
         <source>Use IP Address</source>
-        <translation type="vanished">使用 IP 地址</translation>
+        <translation>使用 IP 地址</translation>
     </message>
     <message>
         <source>Received file</source>
-        <translation type="vanished">收到文件</translation>
+        <translation>收到文件</translation>
     </message>
     <message>
         <source>files</source>
-        <translation type="vanished">个</translation>
+        <translation>个</translation>
     </message>
     <message>
         <source>size</source>
-        <translation type="vanished">大小</translation>
+        <translation>大小</translation>
     </message>
     <message>
         <source>Open directory</source>
-        <translation type="vanished">打开目录</translation>
+        <translation>打开目录</translation>
     </message>
     <message>
         <source>Received folder</source>
-        <translation type="vanished">收到文件夹</translation>
+        <translation>收到文件夹</translation>
     </message>
     <message>
         <source>Open</source>
-        <translation type="vanished">打开</translation>
+        <translation>打开</translation>
     </message>
     <message>
         <source>Total size</source>
-        <translation type="vanished">共计大小</translation>
+        <translation>共计大小</translation>
     </message>
     <message>
         <source>Contact with parent network</source>
-        <translation type="vanished">向你的上层网络发送消息</translation>
+        <translation>向你的上层网络发送消息</translation>
     </message>
     <message>
         <source>Change folder</source>
-        <translation type="vanished">更改目录</translation>
+        <translation>更改目录</translation>
     </message>
 </context>
 <context>

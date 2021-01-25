@@ -238,14 +238,15 @@ void DuktoProtocol::handleMessage(QByteArray &data, QHostAddress &sender)
 * Return :
 */
 void DuktoProtocol::newOutgoingConnection(QString targetIP, QString remoteID, ChatWidget *cw){
-    qDebug() << "服务端主动连接函数 : newOutgoingConnection";
-    qDebug() << "服务端主动链接函数参数 : " << targetIP << remoteID;
+    qDebug() << "客户端主动连接函数 : newOutgoingConnection";
+    qDebug() << "客户端主动链接函数参数 : " << targetIP << remoteID;
     QThread *qthread = new QThread();
     KSocket *ks = new KSocket(targetIP, this->pSystemSignature, remoteID);
     ks->moveToThread(qthread);
 
     connect(cw, SIGNAL(sendMsg(QString)), ks, SLOT(sendText(QString)));
     connect(ks, SIGNAL(sendTextComplete()), cw, SLOT(onSendCompleted()));
+    connect(ks , SIGNAL(sendTextComplete_add_recentlist(QString , QString)) , this->gbehind , SLOT(sendTextComplete_add_recentlist(QString , QString)));
     connect(ks, SIGNAL(receiveTextComplete(QString, QString)), this->gbehind, SLOT(receiveTextComplete(QString, QString)));
 
     connect(cw, SIGNAL(sendFiles(QStringList)), ks, SLOT(sendFiles(QStringList)));
@@ -257,8 +258,7 @@ void DuktoProtocol::newOutgoingConnection(QString targetIP, QString remoteID, Ch
     connect(ks, SIGNAL(receiveFileComplete(QStringList*, qint64, QString, QString)), this->gbehind, SLOT(receiveFileComplete(QStringList*, qint64, QString, QString)));
     connect(ks, SIGNAL(receiveFileCancelled()), cw, SLOT(recvCancel()));
     connect(ks, SIGNAL(isInitiativeConn(bool)), cw, SLOT(getIsInitiativeConn(bool)));
-
-    connect(ks, SIGNAL(addUpBuddy(QString,QString)), this, SLOT(addUpBuddy(QString,QString)));
+    connect(ks, SIGNAL(addUpBuddy(QString , QString , QString , QString , QString)), this, SLOT(addUpBuddy(QString , QString , QString , QString , QString)));
 
     connect(ks, SIGNAL(transferMsgSignal(int)), cw, SLOT(slotTransferMsg(int)));
 
@@ -282,19 +282,18 @@ void DuktoProtocol::newOutgoingConnection(QString targetIP, QString remoteID, Ch
 */
 void DuktoProtocol::newIncomingConnection(qintptr socketDescriptor)
 {
-    qDebug() << "被动连接newIncomingConnection";
+    qDebug() << "服务端被动连接newIncomingConnection";
     QThread *qthread = new QThread();
     KSocket *ks = new KSocket(socketDescriptor , this->pSystemSignature);
     ks->moveToThread(qthread);
 
-    connect(ks, SIGNAL(updateRemoteID(QString, KSocket*)), this, SLOT(updateRemoteID(QString, KSocket*)));
+    connect(ks, SIGNAL(updateRemoteID(QString, QString , QString , QString , QString ,KSocket*)), this, SLOT(updateRemoteID(QString, QString , QString , QString , QString , KSocket*)));
 
     connect(ks, SIGNAL(receiveTextComplete(QString, QString)), this->gbehind, SLOT(receiveTextComplete(QString, QString)));
 
     connect(ks, SIGNAL(receiveFileComplete(QStringList*, qint64, QString, QString)), this->gbehind, SLOT(receiveFileComplete(QStringList*, qint64, QString, QString)));
 
     connect(qthread, SIGNAL(started()), ks, SLOT(imReady()));
-//    connect(ks, SIGNAL(finished()), qthread, SLOT(quit()));
     connect(qthread, SIGNAL(finished()), qthread, SLOT(deleteLater()));
     connect(ks, SIGNAL(finished()), ks, SLOT(deleteLater()));
     connect(ks, SIGNAL(finished(QString)), this, SLOT(updateSockets(QString)));
@@ -309,9 +308,11 @@ void DuktoProtocol::newIncomingConnection(qintptr socketDescriptor)
 *   ks: kylin socket object
 * Return :
 */
-void DuktoProtocol::updateRemoteID(QString pRemoteID, KSocket *ks){
+void DuktoProtocol::updateRemoteID(QString ip, QString user_name , QString system , QString pRemoteID , QString Platform , KSocket* ks){
     // 添加下级网络好友，如果已有该好友，addBuddy()中不会重复添加
-    this->gbehind->mBuddiesList.addBuddy(ks->pTargetIP, NETWORK_PORT, "? ? ?", "? ? ? ?", pRemoteID, "unknown", QUrl(""));
+    qDebug() << "服务端更新信息：" << "ip :" << ip << "\n" << "user_name :" << user_name << "\n" << "system :" << system << "\n" << "mac :" << pRemoteID << "\n" << "Platform :" << Platform << "\n";
+
+    this->gbehind->mBuddiesList.addBuddy(ip, NETWORK_PORT, user_name , system , pRemoteID, Platform , QUrl(""));
 
     // 保存到map中供界面使用
     if(this->gbehind->sockets.contains(pRemoteID) == false){
