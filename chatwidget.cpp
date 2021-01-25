@@ -762,22 +762,23 @@ void ChatWidget::msgAlert(){
     this->timeFlag ++;
 }
 
+// 注释后使用主题拖动
 // 窗口拖拽移动
-void ChatWidget::mousePressEvent(QMouseEvent *event){
-    mMoveing = true;
-    mMovePosition = event->globalPos() - pos();
-}
-void ChatWidget::mouseMoveEvent(QMouseEvent *event){
-    if (mMoveing && (event->buttons() && Qt::LeftButton)
-        && (event->globalPos()-mMovePosition).manhattanLength() > QApplication::startDragDistance())
-    {
-        move(event->globalPos()-mMovePosition);
-        mMovePosition = event->globalPos() - pos();
-    }
-}
-void ChatWidget::mouseReleaseEvent(QMouseEvent *){
-    mMoveing = false;
-}
+// void ChatWidget::mousePressEvent(QMouseEvent *event){
+//     mMoveing = true;
+//     mMovePosition = event->globalPos() - pos();
+// }
+// void ChatWidget::mouseMoveEvent(QMouseEvent *event){
+//     if (mMoveing && (event->buttons() && Qt::LeftButton)
+//         && (event->globalPos()-mMovePosition).manhattanLength() > QApplication::startDragDistance())
+//     {
+//         move(event->globalPos()-mMovePosition);
+//         mMovePosition = event->globalPos() - pos();
+//     }
+// }
+// void ChatWidget::mouseReleaseEvent(QMouseEvent *){
+//     mMoveing = false;
+// }
 
 // 设置是否在线
 void ChatWidget::setOnLine(bool isOnLine){
