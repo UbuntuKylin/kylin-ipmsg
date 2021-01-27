@@ -1,3 +1,10 @@
+kylin-ipmsg (1.1.20kord1~rc1) v101; urgency=medium
+
+  * 【麒麟传书】#Bug36051 : 英文系统下，顶端英文显示重叠.
+  * 【麒麟传书】#Bug36066 : 麒麟传书窗口大小变化异常，使用主题的放缩.
+
+ -- caoliang <caoliang@kylinos.cn>  Wed, 27 Jan 2021 11:17:37 +0800
+
 kylin-ipmsg (1.1.20kord) v101; urgency=medium
 
   * 【麒麟传书】#Bug25000 更改图标主题为经典，关于界面麒麟传书图标未变化.
