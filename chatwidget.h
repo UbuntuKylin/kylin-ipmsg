@@ -96,9 +96,10 @@ public slots:
     void keyPressEvent(QKeyEvent *event);
 
 protected:
-    void mousePressEvent(QMouseEvent *event);
-    void mouseMoveEvent(QMouseEvent *event);
-    void mouseReleaseEvent(QMouseEvent *event);
+    // 注释后使用主题拖动
+    // void mousePressEvent(QMouseEvent *event);
+    // void mouseMoveEvent(QMouseEvent *event);
+    // void mouseReleaseEvent(QMouseEvent *event);
     bool eventFilter(QObject *, QEvent *);
 
 signals:

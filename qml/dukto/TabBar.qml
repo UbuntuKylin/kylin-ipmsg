@@ -33,7 +33,7 @@ Item {
 
         SmoothText {
             id: buddyText
-            x: 23
+            x: 20
             y: 10
             font.pixelSize: 72
             text: qsTr("Buddy")
@@ -54,7 +54,7 @@ Item {
 
         SmoothText {
             id: recentText
-            x: 123
+            x: 125
             y: 10
             font.pixelSize: 72
             text: qsTr("Recent")
@@ -75,7 +75,7 @@ Item {
 
         SmoothText {
             id: aboutText
-            x: 223
+            x: 230
             y: 10
             font.pixelSize: 72
             color: aboutTextMouseArea.containsMouse ? theme.color3 : theme.color7
@@ -131,12 +131,12 @@ Item {
 
             PropertyChanges {
                 target: recentText
-                x: 100
+                x: 115
             }
 
             PropertyChanges {
                 target: aboutText
-                x: 190
+                x: 220
                 color: theme.color2 // "#000000"
             }
         }
