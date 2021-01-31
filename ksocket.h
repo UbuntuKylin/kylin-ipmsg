@@ -137,6 +137,7 @@ private:
     QString formatLen(qint64 len);
 
 public slots:
+    void client_second_socket_establish();
     // 被动端开始工作
     void imReady();
     // 被动附socket连接

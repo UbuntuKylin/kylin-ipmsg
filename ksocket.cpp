@@ -22,8 +22,7 @@
 
 // 被动连接端初始化
 KSocket::KSocket(qintptr s, QString systemSignature , QObject *parent):QObject(parent){
-    qDebug() << "服务端被动连接初始化 : KSocket";
-    qDebug() << "服务端被动链接初始化参数 : " << s;
+    qDebug() << "server var create success";
     this->socketDescriptor = s;
     this->pSystemSignature = systemSignature;
     this->isConnected = false;
@@ -39,8 +38,9 @@ KSocket::KSocket(qintptr s, QString systemSignature , QObject *parent):QObject(p
 * Return :
 */
 KSocket::KSocket(QString targetIP, QString systemSignature, QString pRemoteID, QObject *parent):QObject(parent){
-    qDebug() << "客户端主动连接初始化 : KSocket";
-    qDebug() << "客户端主动链接初始化参数" <<targetIP << systemSignature << pRemoteID;
+    qDebug() << "client var create success";
+    qDebug() << "client var structure args : server_ip : " << targetIP  << "server_mac : " << pRemoteID << "this mach flag : " << systemSignature;
+
     this->pTargetIP = targetIP;
     this->pSystemSignature = systemSignature;
     this->pRemoteID = pRemoteID;
@@ -59,17 +59,18 @@ KSocket::~KSocket(){
 
 // 被动端开始工作
 void KSocket::imReady(){
+    /*get socket*/
     this->socket = new QTcpSocket();
     this->socket->setSocketDescriptor(this->socketDescriptor);
+
+    /*establish interrupt*/
     connect(socket, SIGNAL(readyRead()), this, SLOT(handleMsg()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(finishThread()));
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)), Qt::DirectConnection);
 
-    // 监听附socket连接
-    this->pTcpServer = new QTcpServer();
-    bool rtn = this->pTcpServer->listen(QHostAddress::AnyIPv4, NETWORK_PORT - 1);
-    connect(pTcpServer, SIGNAL(newConnection()), this, SLOT(newSecondaryConn()));
+    qDebug()<<"server get socket . socket fd is : " << this->socketDescriptor << " thread is : " << QThread::currentThreadId();
 
+    /*init var*/
     this->pTargetIP = socket->peerAddress().toString();
     this->pTotalLenToReceive = 0;
     this->pTotalReceivedLen = 0;
@@ -78,9 +79,19 @@ void KSocket::imReady(){
     this->isConnected = true;
     this->isInitiative = false;
 
-    qDebug()<<"服务端socket被动连接成功, thread: "<<QThread::currentThreadId()<<" 附tcpserver启动: "<<rtn;
 
-    // 朋友,请开始你的表演.
+    /*create second socket*/
+    this->pTcpServer = new QTcpServer();
+    bool rtn = this->pTcpServer->listen(QHostAddress::AnyIPv4, NETWORK_PORT - 1);
+    if (rtn == false) {
+        qDebug() << "error : server listen socket create fail"; 
+    }
+    connect(pTcpServer, SIGNAL(newConnection()), this, SLOT(newSecondaryConn()));
+
+    qDebug() << "server listen socket create success . prot is listening";
+
+
+    /*send system flag to client*/
     QString system_flag;
     system_flag.clear();
     system_flag = this->pSystemSignature;
@@ -92,18 +103,23 @@ void KSocket::imReady(){
     socket->write(p_system_flag);
     socket->waitForBytesWritten();
     socket->flush();
+
+    qDebug() << "server system flag send to clien is success";
+
+    return;
 }
 
 // 被动附socket连接
 void KSocket::newSecondaryConn(){
-    if (!pTcpServer->hasPendingConnections()) return;
+    if (!pTcpServer->hasPendingConnections())
+        return;
 
     this->socketSecondary = pTcpServer->nextPendingConnection();
 
     connect(socketSecondary, SIGNAL(readyRead()), this, SLOT(handleMsgSecondary()));
     connect(socketSecondary, SIGNAL(disconnected()), this, SLOT(finishThread()));
 
-    qDebug()<<"被动附socket已经启动.";
+    qDebug() << "server get second socket , socket is located thread : " << QThread::currentThreadId();
 }
 
 // 主动端开始工作
@@ -159,6 +175,13 @@ void KSocket::imStart_(){
     qDebug()<<"socket主动连接成功, thread: "<<QThread::currentThreadId()<<" socket: "<<socket;
 }
 
+void KSocket::client_second_socket_establish()
+{
+    qDebug() << "client second socket establish success"; 
+    qDebug() << "client get second socket";
+    emit transferMsgSignal(CONN_SUCCESS);
+}
+
 /*
  * 消息处理函数
  * 消息头为16进制，一次信息由两类消息构成：头，数据
@@ -179,12 +202,13 @@ void KSocket::imStart_(){
  */
 void KSocket::handleMsg(){
     qDebug() << "KSocket::handleMsg()";
+
     while (socket->bytesAvailable() > 0){
 
         if(this->pReadType == MSGTYPE){
 
-            if(socket->bytesAvailable() < MSG_SIZE_MIN){
-                qDebug()<<"\n本条消息长度错误 wrong msg size: "<<socket->bytesAvailable();
+            if(socket->bytesAvailable() <  MSG_SIZE_MIN){
+                qDebug() << "\n本条消息长度错误 wrong msg size: " << socket->bytesAvailable();
                 return;
             }
 
@@ -193,9 +217,9 @@ void KSocket::handleMsg(){
             socket->flush();
             QString mt = QString::fromUtf8(msgType);
 
-            // 被动端ready消息
-            if(mt == S_IAMREADY){
-                /*read passive system flag*/
+            /*client receicve server ready msg*/
+            if (mt == S_IAMREADY) {
+                /*read server system flag*/
                 qDebug() << "---clien receive server iamready flag";
                 QByteArray system_falg = socket->readAll();
                 QString tmp(system_falg);
@@ -215,12 +239,7 @@ void KSocket::handleMsg(){
                     emit addUpBuddy(ip , user_name , system , mac , platfrom);
                 }
 
-                // 主动附socket连接
-                socketSecondary = new QTcpSocket();
-                connect(socketSecondary, SIGNAL(readyRead()), this, SLOT(handleMsgSecondary()));
-                connect(socketSecondary, SIGNAL(disconnected()), this, SLOT(finishThread()));
-                socketSecondary->connectToHost(this->pTargetIP, NETWORK_PORT - 1);
-
+		/*client send system flag to server*/
                 QString system_flag;
                 system_flag.clear();
                 system_flag = this->pSystemSignature;
@@ -232,19 +251,27 @@ void KSocket::handleMsg(){
                 socket->write(p_system_flag);
                 socket->waitForBytesWritten();
                 socket->flush();
+		
+		qDebug() << "client send system flag to server is success";
 
-                emit transferMsgSignal(CONN_SUCCESS);
+                /*client get second socket*/
+                socketSecondary = new QTcpSocket();
+
+                connect(socketSecondary, SIGNAL(readyRead()), this, SLOT(handleMsgSecondary()));
+                connect(socketSecondary, SIGNAL(disconnected()), this, SLOT(finishThread()));
+                connect(socketSecondary, SIGNAL(connected()), this, SLOT(client_second_socket_establish()));
+
+                socketSecondary->connectToHost(this->pTargetIP, NETWORK_PORT - 1);
             }
-
-            // 主动端自报姓名消息
+            /*server recevie client c_whoami msg*/
             else if(mt == C_WHOAMI){
                 qDebug() << "---server receive clien c_whoami flag";
+
                 QByteArray system_falg = socket->readAll();
                 QString tmp(system_falg);
                 QStringList flag = tmp.split(" ");
                 if (flag.count() > 4) {
                     QString mac = flag.at(3);
-
                     QString ip = socket->peerAddress().toString();
                     QString user_name = flag.at(1);
                     QString system = flag.at(2);
@@ -260,7 +287,6 @@ void KSocket::handleMsg(){
 
                 emit transferMsgSignal(CONN_SUCCESS);
             }
-
             // 文字消息头
             else if(mt == C_TEXT){
                 this->pCurrentMsgType = C_TEXT;
@@ -269,7 +295,6 @@ void KSocket::handleMsg(){
                 this->pTotalLenToReceive = socket->read(9).toInt(NULL, 16);
                 this->pReceiveText = "";
             }
-
             // 文件消息头
             else if(mt == C_FILE){
                 this->pCurrentMsgType = C_FILE;
@@ -313,15 +338,16 @@ void KSocket::handleMsg(){
 
                     // 使用附socket告知对方，单个文件接收完成，可以发送下一个文件
                     QString endOne = C_END_ONEFILE;
-                    socketSecondary->write(endOne.toUtf8().data());
-                    socketSecondary->flush();
+                    //socketSecondary->write(endOne.toUtf8().data());
+                    //socketSecondary->flush();
+                    socket->write(endOne.toUtf8().data());
+                    socket->flush();
 
                     this->pReadType = MSGTYPE;
                 }
 
                 emit startTransfer(false);
             }
-
             // 文件夹消息头
             else if(mt == C_DIR){
                 this->pCurrentMsgType = C_DIR;
@@ -357,12 +383,13 @@ void KSocket::handleMsg(){
 
                 // 使用附socket告知对方，单个文件夹接收完成，可以发送下一个
                 QString endOne = C_END_ONEDIR;
-                socketSecondary->write(endOne.toUtf8().data());
-                socketSecondary->flush();
+                //socketSecondary->write(endOne.toUtf8().data());
+                //socketSecondary->flush();
+                socket->write(endOne.toUtf8().data());
+                socket->flush();
             }
-
             // 本次信息结束符
-            else if(mt == C_END){
+            else if (mt == C_END){
                 if(this->pCurrentMsgType == C_TEXT){
                     qDebug()<<"一次文本信息接收完毕: "<<QString::fromUtf8(this->pReceiveText);
 
@@ -387,9 +414,23 @@ void KSocket::handleMsg(){
                     emit transferMsgSignal(7);
                 }
             }
-
+	    else if (mt == C_END_ONEFILE) {
+	        this->sendOneFile(); 
+	    }
+            else if (mt == C_END_ONEDIR){
+                this->sendDirs();
+            }
+            else if (mt == C_CANCEL){
+                // 告知聊天界面是否主动连接
+                emit isInitiativeConn(this->isInitiative);
+                emit receiveFileCancelled();
+                // 断开连接，解绑废弃ksocket
+                qDebug() << "handleMsgSecondary";
+                this->finishThread();
+                break;
+            }
             else{
-//                qDebug()<<"\n2本条消息头类型错误 wrong head msg type: "<<mt;
+//              qDebug()<<"\n2本条消息头类型错误 wrong head msg type: "<<mt;
                 emit transferMsgSignal(8);
                 break;
             }
@@ -491,10 +532,30 @@ void KSocket::receiveFile(){
         pReceiveFile = NULL;
 
         // 使用附socket告知对方，单个文件接收完成，可以发送下一个文件
-        QString endOne = C_END_ONEFILE;
-        socketSecondary->write(endOne.toUtf8().data());
-        socketSecondary->flush();
+        //QString endOne = C_END_ONEFILE;
+	//
+	char p_buff[1024];
+	memset(p_buff , 0x00 , sizeof(p_buff));
 
+	strcpy(p_buff , C_END_ONEFILE);
+
+	//qDebug() << "=======================================" << endOne;
+	//qDebug() << "=======================================" << endOne.toUtf8().data();
+	printf("=============================+%s\n" , p_buff);
+
+        //std::string std_endOne = endOne.toStdString();
+        //const char *p_endOne = std_endOne.c_str();
+
+        //socketSecondary->write(p_endOne);
+        //socketSecondary->write(p_buff);
+	socket->write(p_buff);
+	printf("000000000000000000000000000000000000000\n");
+
+        socket->waitForBytesWritten();
+	socket->flush();
+        //socketSecondary->flush();
+
+	printf("------------------------------------\n");
         this->pReadType = MSGTYPE;
     }
 }
@@ -726,8 +787,10 @@ void KSocket::sendData(){
 void KSocket::sendCancel(){
     if(this->isConnected == true){
         QString head = C_CANCEL;
-        socketSecondary->write(head.toUtf8().data());
-        socketSecondary->flush();
+        //socketSecondary->write(head.toUtf8().data());
+        //socketSecondary->flush();
+        socket->write(head.toUtf8().data());
+        socket->flush();
 
         // 告知聊天界面是否主动连接
         emit isInitiativeConn(this->isInitiative);
