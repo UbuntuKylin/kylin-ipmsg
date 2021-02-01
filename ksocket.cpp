@@ -19,57 +19,78 @@
 
 #include "ksocket.h"
 
+/*server var constructors*/
+KSocket::KSocket(qintptr s, QString systemSignature , QObject *parent):QObject(parent)
+{
+    qDebug() << "server var create success";
+    qDebug() << "server var structure args : socket fd : " << s << "this mach flag" << systemSignature;
 
-// 被动连接端初始化
-KSocket::KSocket(qintptr s, QString systemSignature , QObject *parent):QObject(parent){
-    qDebug() << "服务端被动连接初始化 : KSocket";
-    qDebug() << "服务端被动链接初始化参数 : " << s;
+    this->socket = NULL;
+    this->socketSecondary = NULL;
+    this->pTcpServer = NULL;
+    this->timer = NULL;
+
     this->socketDescriptor = s;
     this->pSystemSignature = systemSignature;
     this->isConnected = false;
+
+    return;
 }
 
-// 主动连接端初始化
 /*
-* Parameters:
-*   targetip: target ip
-*   systemsignature: system sig
-*   premoteid: remote id
-*   parent: parent object
-* Return :
-*/
-KSocket::KSocket(QString targetIP, QString systemSignature, QString pRemoteID, QObject *parent):QObject(parent){
-    qDebug() << "客户端主动连接初始化 : KSocket";
-    qDebug() << "客户端主动链接初始化参数" <<targetIP << systemSignature << pRemoteID;
+ * client var constructors
+ * Parameters:
+ *   targetip : server ip
+ *   systemsignature : localte system falg
+ *   premoteid : server mac
+ *   parent : parent object
+ */
+KSocket::KSocket(QString targetIP, QString systemSignature, QString pRemoteID, QObject *parent):QObject(parent)
+{
+    qDebug() << "client var create success";
+    qDebug() << "client var structure args : server_ip : " << targetIP  << "server_mac : " << pRemoteID << "this mach flag : " << systemSignature;
+
     this->pTargetIP = targetIP;
     this->pSystemSignature = systemSignature;
     this->pRemoteID = pRemoteID;
 
+    this->socket = NULL;
+    this->socketSecondary = NULL;
+    this->pTcpServer = NULL;
+    this->timer = NULL;
+
     this->timeoutCount = 0;
     this->isConnected = false;
+
+    return;
 }
 
-KSocket::~KSocket(){
+KSocket::~KSocket()
+{
     qDebug() << "~KSocket";
-    if(pReceivedFiles){
+    if (pReceivedFiles) {
         delete pReceivedFiles;
         pReceivedFiles = NULL;
     }
+
+    return;
 }
 
 // 被动端开始工作
-void KSocket::imReady(){
+void KSocket::imReady()
+{
+    /*get socket*/
     this->socket = new QTcpSocket();
     this->socket->setSocketDescriptor(this->socketDescriptor);
+
+    /*establish interrupt*/
     connect(socket, SIGNAL(readyRead()), this, SLOT(handleMsg()));
     connect(socket, SIGNAL(disconnected()), this, SLOT(finishThread()));
     connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)), Qt::DirectConnection);
 
-    // 监听附socket连接
-    this->pTcpServer = new QTcpServer();
-    bool rtn = this->pTcpServer->listen(QHostAddress::AnyIPv4, NETWORK_PORT - 1);
-    connect(pTcpServer, SIGNAL(newConnection()), this, SLOT(newSecondaryConn()));
+    qDebug()<<"server get socket . socket fd is : " << this->socketDescriptor << " thread is : " << QThread::currentThreadId();
 
+    /*init var*/
     this->pTargetIP = socket->peerAddress().toString();
     this->pTotalLenToReceive = 0;
     this->pTotalReceivedLen = 0;
@@ -78,9 +99,20 @@ void KSocket::imReady(){
     this->isConnected = true;
     this->isInitiative = false;
 
-    qDebug()<<"服务端socket被动连接成功, thread: "<<QThread::currentThreadId()<<" 附tcpserver启动: "<<rtn;
+#if 0
+    /*create second socket*/
+    this->pTcpServer = new QTcpServer();
+    bool rtn = this->pTcpServer->listen(QHostAddress::AnyIPv4, NETWORK_PORT - 1);
+    if (rtn == false) {
+        qDebug() << "error : server listen socket create fail"; 
+    }
+    connect(pTcpServer, SIGNAL(newConnection()), this, SLOT(newSecondaryConn()));
 
-    // 朋友,请开始你的表演.
+    qDebug() << "server listen socket create success . prot is listening";
+
+#endif
+
+    /*send system flag to client*/
     QString system_flag;
     system_flag.clear();
     system_flag = this->pSystemSignature;
@@ -92,62 +124,93 @@ void KSocket::imReady(){
     socket->write(p_system_flag);
     socket->waitForBytesWritten();
     socket->flush();
+
+    qDebug() << "server system flag send to clien is success";
+
+    return;
 }
 
+#if 0
 // 被动附socket连接
-void KSocket::newSecondaryConn(){
-    if (!pTcpServer->hasPendingConnections()) return;
+void KSocket::newSecondaryConn()
+{
+    if (!pTcpServer->hasPendingConnections())
+        return;
 
     this->socketSecondary = pTcpServer->nextPendingConnection();
 
     connect(socketSecondary, SIGNAL(readyRead()), this, SLOT(handleMsgSecondary()));
     connect(socketSecondary, SIGNAL(disconnected()), this, SLOT(finishThread()));
 
-    qDebug()<<"被动附socket已经启动.";
+    qDebug() << "server get second socket , socket is located thread : " << QThread::currentThreadId();
 }
+#endif
 
 // 主动端开始工作
-void KSocket::imStart(){
-    qDebug() << "客户端socket主动链接";
-    //qDebug() << "KSocket::imStart()";
+void KSocket::imStart()
+{
+    /*client get socket*/
     socket = new QTcpSocket();
-    connect(socket, SIGNAL(connected()), this, SLOT(imStart_()));
-    connect(socket, SIGNAL(readyRead()), this, SLOT(handleMsg()));
-    connect(socket, SIGNAL(disconnected()), this, SLOT(finishThread()));
-    connect(socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(socketError(QAbstractSocket::SocketError)), Qt::DirectConnection);
+
+    /*establish interrupt*/
+    connect(socket , SIGNAL(connected()) , this , SLOT(imStart_()));
+    connect(socket , SIGNAL(readyRead()) , this , SLOT(handleMsg()));
+    connect(socket , SIGNAL(disconnected()) , this , SLOT(finishThread()));
+    connect(socket , SIGNAL(error(QAbstractSocket::SocketError)) , this , SLOT(socketError(QAbstractSocket::SocketError)) , Qt::DirectConnection);
+
     socket->connectToHost(this->pTargetIP, NETWORK_PORT);
+
+    qDebug() << "client linking server......";
 
     // 超时计时器
     timer = new QTimer(this);
-    connect(timer, SIGNAL(timeout()), this, SLOT(timoutOnce()));
+    connect(timer , SIGNAL(timeout()) , this , SLOT(timoutOnce()));
     timer->start(3000);
+
+    return;
 }
 
 // 主动连接单次超时处理
-void KSocket::timoutOnce(){
-    timeoutCount ++;
-    qDebug()<<"发起Tcp连接超时 "<<timeoutCount<<" 次";
+void KSocket::timoutOnce()
+{
+    timeoutCount++;
+
+    qDebug() << "发起Tcp连接超时 " << timeoutCount<< " 次";
 
     // 超时次数到，向主界面发送超时信号
-    if(timeoutCount > 3){
-        disconnect(timer, SIGNAL(timeout()), this, SLOT(timoutOnce()));
+    if (timeoutCount > 3) {
+        disconnect(timer , SIGNAL(timeout()) , this , SLOT(timoutOnce()));
+        if (this->timer != NULL) {
+            delete this->timer;
+            this->timer = NULL;
+        }
         isConnected = false;
-        emit transferMsgSignal(CONN_TIMEOUT);
-        qDebug()<<"超时次数过多，连接失败...";
 
-    }else{
-        socket->abort();
-        qDebug() << "this->pTargetIP" << this->pTargetIP;
+        emit transferMsgSignal(CONN_TIMEOUT);
+
+        qDebug() << "超时次数过多，连接失败...";
+
+    } else {
+        socket->abort(); 
         socket->connectToHost(this->pTargetIP, NETWORK_PORT);
+
+        qDebug() << "this->pTargetIP" << this->pTargetIP;
+        qDebug() << "client linking server ......";
     }
+
+    return;
 }
 
 // 主动连接成功，取消超时计时器
-void KSocket::imStart_(){
-    qDebug() << "客户端socket动链接成功";
-    qDebug() << "KSocket::imStart_()";
+void KSocket::imStart_()
+{
     disconnect(timer, SIGNAL(timeout()), this, SLOT(timoutOnce()));
     timer->stop();
+    if (this->timer != NULL) {
+        delete this->timer;
+        this->timer = NULL;
+    }
+
     isConnected = true;
     isInitiative = true;
 
@@ -156,8 +219,21 @@ void KSocket::imStart_(){
     this->pReadType = MSGTYPE;
     this->pReceivedFiles = new QStringList();
 
-    qDebug()<<"socket主动连接成功, thread: "<<QThread::currentThreadId()<<" socket: "<<socket;
+    emit transferMsgSignal(CONN_SUCCESS);
+
+    qDebug() << "client get socket . thread: " << QThread::currentThreadId() << " socket: " << socket;
+
+    return;
 }
+
+#if 0
+void KSocket::client_second_socket_establish()
+{
+    qDebug() << "client second socket establish success"; 
+    qDebug() << "client get second socket";
+    emit transferMsgSignal(CONN_SUCCESS);
+}
+#endif
 
 /*
  * 消息处理函数
@@ -177,14 +253,15 @@ void KSocket::imStart_(){
  * WHOAMI：A0B1 + 变长数据
  *
  */
-void KSocket::handleMsg(){
+void KSocket::handleMsg()
+{
     qDebug() << "KSocket::handleMsg()";
-    while (socket->bytesAvailable() > 0){
 
-        if(this->pReadType == MSGTYPE){
+    while (socket->bytesAvailable() > 0) {
 
-            if(socket->bytesAvailable() < MSG_SIZE_MIN){
-                qDebug()<<"\n本条消息长度错误 wrong msg size: "<<socket->bytesAvailable();
+        if (this->pReadType == MSGTYPE) {
+            if (socket->bytesAvailable() <  MSG_SIZE_MIN) {
+                qDebug() << "\n本条消息长度错误 wrong msg size: " << socket->bytesAvailable();
                 return;
             }
 
@@ -193,9 +270,9 @@ void KSocket::handleMsg(){
             socket->flush();
             QString mt = QString::fromUtf8(msgType);
 
-            // 被动端ready消息
-            if(mt == S_IAMREADY){
-                /*read passive system flag*/
+            /*client receicve server ready msg*/
+            if (mt == S_IAMREADY) {
+                /*read server system flag*/
                 qDebug() << "---clien receive server iamready flag";
                 QByteArray system_falg = socket->readAll();
                 QString tmp(system_falg);
@@ -215,12 +292,7 @@ void KSocket::handleMsg(){
                     emit addUpBuddy(ip , user_name , system , mac , platfrom);
                 }
 
-                // 主动附socket连接
-                socketSecondary = new QTcpSocket();
-                connect(socketSecondary, SIGNAL(readyRead()), this, SLOT(handleMsgSecondary()));
-                connect(socketSecondary, SIGNAL(disconnected()), this, SLOT(finishThread()));
-                socketSecondary->connectToHost(this->pTargetIP, NETWORK_PORT - 1);
-
+                /*client send system flag to server*/
                 QString system_flag;
                 system_flag.clear();
                 system_flag = this->pSystemSignature;
@@ -232,19 +304,29 @@ void KSocket::handleMsg(){
                 socket->write(p_system_flag);
                 socket->waitForBytesWritten();
                 socket->flush();
+		
+                qDebug() << "client send system flag to server is success";
 
-                emit transferMsgSignal(CONN_SUCCESS);
+#if 0
+                /*client get second socket*/
+                socketSecondary = new QTcpSocket();
+
+                connect(socketSecondary, SIGNAL(readyRead()), this, SLOT(handleMsgSecondary()));
+                connect(socketSecondary, SIGNAL(disconnected()), this, SLOT(finishThread()));
+                connect(socketSecondary, SIGNAL(connected()), this, SLOT(client_second_socket_establish()));
+
+                socketSecondary->connectToHost(this->pTargetIP, NETWORK_PORT - 1);
+#endif
             }
-
-            // 主动端自报姓名消息
-            else if(mt == C_WHOAMI){
+            /*server recevie client c_whoami msg*/
+            else if (mt == C_WHOAMI) {
                 qDebug() << "---server receive clien c_whoami flag";
+
                 QByteArray system_falg = socket->readAll();
                 QString tmp(system_falg);
                 QStringList flag = tmp.split(" ");
                 if (flag.count() > 4) {
                     QString mac = flag.at(3);
-
                     QString ip = socket->peerAddress().toString();
                     QString user_name = flag.at(1);
                     QString system = flag.at(2);
@@ -260,18 +342,16 @@ void KSocket::handleMsg(){
 
                 emit transferMsgSignal(CONN_SUCCESS);
             }
-
             // 文字消息头
-            else if(mt == C_TEXT){
+            else if (mt == C_TEXT) {
                 this->pCurrentMsgType = C_TEXT;
                 this->pReadType = DATA;
 
                 this->pTotalLenToReceive = socket->read(9).toInt(NULL, 16);
                 this->pReceiveText = "";
             }
-
             // 文件消息头
-            else if(mt == C_FILE){
+            else if (mt == C_FILE) {
                 this->pCurrentMsgType = C_FILE;
                 this->pReadType = DATA;
 
@@ -307,23 +387,27 @@ void KSocket::handleMsg(){
                 if(pCurrentMsgLen == 0){
                     this->pReceivedFiles->append(pReceiveFile->fileName());
                     pReceiveFile->close();
-//                    delete pReceiveFile;
+                    //delete pReceiveFile;
                     pReceiveFile->deleteLater();
                     pReceiveFile = NULL;
 
                     // 使用附socket告知对方，单个文件接收完成，可以发送下一个文件
                     QString endOne = C_END_ONEFILE;
-                    socketSecondary->write(endOne.toUtf8().data());
-                    socketSecondary->flush();
+
+                    /*remove second tcp link , change to use one tcp link*/
+                    //socketSecondary->write(endOne.toUtf8().data());
+                    //socketSecondary->flush();
+
+                    socket->write(endOne.toUtf8().data());
+                    socket->flush();
 
                     this->pReadType = MSGTYPE;
                 }
 
                 emit startTransfer(false);
             }
-
             // 文件夹消息头
-            else if(mt == C_DIR){
+            else if (mt == C_DIR) {
                 this->pCurrentMsgType = C_DIR;
 
                 int dirNameLen = socket->read(9).toInt(NULL, 16);
@@ -357,21 +441,25 @@ void KSocket::handleMsg(){
 
                 // 使用附socket告知对方，单个文件夹接收完成，可以发送下一个
                 QString endOne = C_END_ONEDIR;
-                socketSecondary->write(endOne.toUtf8().data());
-                socketSecondary->flush();
-            }
 
+                /*remove second tcp link , change to use one tcp link*/
+                //socketSecondary->write(endOne.toUtf8().data());
+                //socketSecondary->flush();
+
+                socket->write(endOne.toUtf8().data());
+                socket->flush();
+            }
             // 本次信息结束符
-            else if(mt == C_END){
-                if(this->pCurrentMsgType == C_TEXT){
-                    qDebug()<<"一次文本信息接收完毕: "<<QString::fromUtf8(this->pReceiveText);
+            else if (mt == C_END) {
+                if (this->pCurrentMsgType == C_TEXT) {
+                    qDebug() << "一次文本信息接收完毕: " << QString::fromUtf8(this->pReceiveText);
 
                     emit receiveTextComplete(QString::fromUtf8(this->pReceiveText), this->pRemoteID);
 
                     this->pTotalReceivedLen = 0;
 
-                }else if(this->pCurrentMsgType == C_FILE || this->pCurrentMsgType == C_DIR){
-                    qDebug()<<"一次文件传输接收完毕: "<<this->pTotalLenToReceive<<" "<<this->pTotalReceivedLen;
+                }else if (this->pCurrentMsgType == C_FILE || this->pCurrentMsgType == C_DIR) {
+                    qDebug() << "一次文件传输接收完毕: " << this->pTotalLenToReceive << " " << this->pTotalReceivedLen;
 
                     QStringList *listToShow = new QStringList();
                     listToShow->append(*pReceivedFiles);
@@ -382,26 +470,39 @@ void KSocket::handleMsg(){
                     this->pTotalReceivedLen = 0;
                     this->pReceivedFiles->clear();
 
-                }else{
+                } else {
                     qDebug()<<"\n1本条数据结束符消息类型错误 wrong end msg type: "<<this->pCurrentMsgType;
                     emit transferMsgSignal(7);
                 }
             }
-
-            else{
-//                qDebug()<<"\n2本条消息头类型错误 wrong head msg type: "<<mt;
+            else if (mt == C_END_ONEFILE) {
+                this->sendOneFile();
+            }
+            else if (mt == C_END_ONEDIR) {
+                this->sendDirs();
+            }
+            else if (mt == C_CANCEL) {
+                // 告知聊天界面是否主动连接
+                emit isInitiativeConn(this->isInitiative);
+                emit receiveFileCancelled();
+                // 断开连接，解绑废弃ksocket
+                qDebug() << "handleMsgSecondary";
+                this->finishThread();
+                break;
+            }
+            else {
+//              qDebug()<<"\n2本条消息头类型错误 wrong head msg type: "<<mt;
                 emit transferMsgSignal(8);
                 break;
             }
         }
-
         // 实际数据传输
-        else{
-            if(this->pCurrentMsgType == C_TEXT){
+        else {
+            if(this->pCurrentMsgType == C_TEXT) {
                 this->receiveText();
-            }else if(this->pCurrentMsgType == C_FILE){
+            } else if (this->pCurrentMsgType == C_FILE) {
                 this->receiveFile();
-            }else{
+            } else {
                 qDebug()<<"\n3本条数据消息类型错误 wrong data msg type: "<<this->pCurrentMsgType;
                 emit transferMsgSignal(9);
             }
@@ -409,6 +510,7 @@ void KSocket::handleMsg(){
     }
 }
 
+#if 0
 // 附属 socket 消息处理
 void KSocket::handleMsgSecondary(){
     while (socketSecondary->bytesAvailable() > 0){
@@ -449,9 +551,11 @@ void KSocket::handleMsgSecondary(){
         }
     }
 }
+#endif
 
 // 接收文字
-void KSocket::receiveText(){
+void KSocket::receiveText()
+{
     // 计算本次接收长度
     qint64 leftLen = pTotalLenToReceive - pTotalReceivedLen;
     qint64 readLen = (socket->bytesAvailable() > leftLen) ? leftLen : socket->bytesAvailable();
@@ -461,13 +565,14 @@ void KSocket::receiveText(){
     pReceiveText.append(data);
 
     // 约定长度已经全部读取完成，将接收模式置为MSGTYPE，等待END消息
-    if(pTotalReceivedLen == pTotalLenToReceive){
+    if (pTotalReceivedLen == pTotalLenToReceive) {
         this->pReadType = MSGTYPE;
     }
 }
 
 // 接收单个文件
-void KSocket::receiveFile(){
+void KSocket::receiveFile()
+{
     // 计算本次接收长度
     qint64 leftLen = pCurrentMsgLen - pCurrentMsgReceivedLen;
     qint64 readLen = (socket->bytesAvailable() > leftLen) ? leftLen : socket->bytesAvailable();
@@ -483,25 +588,30 @@ void KSocket::receiveFile(){
     emit updateTransferStatus(percent, text, false);
 
     // 单个文件已经全部读取完成
-    if(pCurrentMsgReceivedLen == pCurrentMsgLen){
+    if (pCurrentMsgReceivedLen == pCurrentMsgLen) {
         this->pReceivedFiles->append(pReceiveFile->fileName());
         pReceiveFile->close();
-//        delete pReceiveFile;
+        //delete pReceiveFile;
         pReceiveFile->deleteLater();
         pReceiveFile = NULL;
 
         // 使用附socket告知对方，单个文件接收完成，可以发送下一个文件
-        QString endOne = C_END_ONEFILE;
-        socketSecondary->write(endOne.toUtf8().data());
-        socketSecondary->flush();
+        /*remove second tcp link , change to use one tcp link*/
+        char p_buff[1024];
+        memset(p_buff , 0x00 , sizeof(p_buff));
+        strcpy(p_buff , C_END_ONEFILE);
 
+        socket->write(p_buff);
+        socket->waitForBytesWritten();
+        socket->flush();
         this->pReadType = MSGTYPE;
     }
 }
 
 // 发送文字消息
-void KSocket::sendText(QString text){
-    if(this->isConnected == true){
+void KSocket::sendText(QString text)
+{
+    if (this->isConnected == true) {
         QString head = C_TEXT;
         head.append(this->comLen(text));
         socket->write(head.toUtf8().data());
@@ -516,13 +626,14 @@ void KSocket::sendText(QString text){
         emit sendTextComplete();
         emit sendTextComplete_add_recentlist(text , this->pRemoteID);
     }
-    else{
+    else {
         emit transferMsgSignal(DISCONN);
     }
 }
 
 // 发送文件夹预处理
-void KSocket::sendDir(QString dir){
+void KSocket::sendDir(QString dir)
+{
     if(this->isConnected == true){
         this->tmpFiles.clear();
         this->pDirsToSend.clear();
@@ -532,33 +643,35 @@ void KSocket::sendDir(QString dir){
 
         this->sendDirs();
     }
-    else{
+    else {
         emit transferMsgSignal(DISCONN);
     }
 }
 
 // 递归获取所有文件夹和文件路径
-void KSocket::listAllFiles(QString fileName){
+void KSocket::listAllFiles(QString fileName)
+{
     QFileInfo fi(fileName);
 
-    if(fi.isFile()){
+    if (fi.isFile()) {
         this->tmpFiles.append(fileName);
     }
 
-    if(fi.isDir()){
+    if (fi.isDir()) {
         this->pDirsToSend.append(fileName);
 
         QStringList entries = QDir(fileName).entryList(QDir::AllEntries | QDir::Hidden | QDir::System | QDir::NoDotAndDotDot);
-        for (int i = 0; i < entries.count(); i++){
+        for (int i = 0; i < entries.count(); i++) {
             this->listAllFiles(fileName + "/" + entries.at(i));
         }
     }
 }
 
 // 发送文件夹消息
-void KSocket::sendDirs(){
-    if(this->isConnected == true){
-        if(this->pDirsToSend.size() != 0){
+void KSocket::sendDirs()
+{
+    if (this->isConnected == true) {
+        if (this->pDirsToSend.size() != 0) {
             QString head = C_DIR;
             QString dir = this->pDirsToSend.at(0);
             QString dirRalative = dir.mid(this->pRootPath.length());
@@ -568,19 +681,20 @@ void KSocket::sendDirs(){
 
             socket->write(head.toUtf8().data());
         }
-        else{
+        else {
             // 全部文件夹发送完成，开始发送文件
             this->sendFiles(this->tmpFiles);
         }
     }
-    else{
+    else {
         emit transferMsgSignal(TRANSFERERR);
     }
 }
 
 // 发送文件预处理
-void KSocket::sendFiles(QStringList files){
-    if(this->isConnected == true){
+void KSocket::sendFiles(QStringList files)
+{
+    if (this->isConnected == true) {
         bool isSkipFile = false;
         this->pFilesToSend.clear();
         this->pTotalLenToSend = 0;
@@ -590,21 +704,21 @@ void KSocket::sendFiles(QStringList files){
             QFile *file = new QFile(files.at(i));
             QFileInfo finfo(*file);
 
-            if(finfo.isReadable() == true){
-                if(finfo.isSymLink() == false){
+            if(finfo.isReadable() == true) {
+                if(finfo.isSymLink() == false) {
                     this->pTotalLenToSend += file->size();
                     this->pFilesToSend.append(file);
-                }else{
+                } else {
                     qDebug()<<"该文件是符号链接，跳过: "<<file->fileName();
                     isSkipFile = true;
                 }
-            }else{
+            } else {
                 qDebug()<<"你没有该文件的读权限，跳过: "<<file->fileName();
                 isSkipFile = true;
             }
         }
 
-        if(this->pFilesToSend.size() != 0){
+        if (this->pFilesToSend.size() != 0) {
             emit startTransfer(true);
             this->sendOneFile();
 
@@ -614,22 +728,23 @@ void KSocket::sendFiles(QStringList files){
             }
         }
     }
-    else{
+    else {
         emit transferMsgSignal(DISCONN);
     }
 }
 
 // 发送单个文件
-void KSocket::sendOneFile(){
-    if(this->isConnected == true){
-        if(this->pFilesToSend.size() != 0){
+void KSocket::sendOneFile()
+{
+    if (this->isConnected == true) {
+        if (this->pFilesToSend.size() != 0) {
             this->pSendFile = this->pFilesToSend.at(0);
             this->pCurrentFileLenToSend = this->pSendFile->size();
             this->pCurrentFileSendLen = 0;
             this->pFilesToSend.removeFirst();
             this->sendFileHead();
         }
-        else{
+        else {
             // 全部文件发送完成，发送结束消息
             QString end = C_END;
             socket->write(end.toUtf8().data());
@@ -640,14 +755,15 @@ void KSocket::sendOneFile(){
             emit sendFileComplete();
         }
     }
-    else{
+    else {
         emit transferMsgSignal(TRANSFERERR);
     }
 }
 
 // 发送文件消息头
-void KSocket::sendFileHead(){
-    if(this->isConnected == true){
+void KSocket::sendFileHead()
+{
+    if (this->isConnected == true) {
         this->pSendFile->open(QIODevice::ReadOnly);
         // 知识点: 调用waitForBytesWritten()不会触发bytesWritten()信号
         connect(socket, SIGNAL(bytesWritten(qint64)), this, SLOT(sendData()));
@@ -658,38 +774,35 @@ void KSocket::sendFileHead(){
 
         // 无文件根目录，本次是发送文件ccc.txt
         // /home/kylin/bbb/ccc.txt >> ccc.txt
-        if(this->pRootPath == ""){
+        if (this->pRootPath == "") {
             head.append(this->comLen(this->pSendFile->fileName().section("/", -1, -1)));
             head.append(this->pSendFile->fileName().section("/", -1, -1));
         }
         // 有文件根目录，本次是发送文件夹bbb
         // /home/kylin/bbb/ccc.txt >> bbb/ccc.txt
-        else{
+        else {
             head.append(this->comLen(this->pSendFile->fileName().mid(this->pRootPath.length())));
             head.append(this->pSendFile->fileName().mid(this->pRootPath.length()));
         }
-
-        //
         qDebug()<<"!!!  "<<head;
-        //
-
         // 通过connect(socket, SIGNAL(bytesWritten(qint64)), ... 触发sendData()
         socket->write(head.toUtf8().data());
     }
-    else{
+    else {
         emit transferMsgSignal(TRANSFERERR);
     }
 }
 
 // 发送单个文件数据
-void KSocket::sendData(){
-    if(this->isConnected == true){
+void KSocket::sendData()
+{
+    if (this->isConnected == true) {
 
-        if((this->pCurrentFileLenToSend - this->pCurrentFileSendLen) > 0){
+        if ((this->pCurrentFileLenToSend - this->pCurrentFileSendLen) > 0) {
             int sendLen = 0;
-            if((this->pCurrentFileLenToSend - this->pCurrentFileSendLen) >= 10240){
+            if ((this->pCurrentFileLenToSend - this->pCurrentFileSendLen) >= 10240) {
                 sendLen = 10240;
-            }else{
+            } else {
                 sendLen = this->pCurrentFileLenToSend - this->pCurrentFileSendLen;
             }
 
@@ -705,9 +818,8 @@ void KSocket::sendData(){
             QString text = this->sizeHuman(this->pTotalSendLen) + " / " + this->sizeHuman(this->pTotalLenToSend);
             emit updateTransferStatus(percent, text, true);
         }
-
         // 单个文件发送完成
-        else{
+        else {
             disconnect(socket, SIGNAL(bytesWritten(qint64)), this, SLOT(sendData()));
 
             this->pSendFile->close();
@@ -716,18 +828,23 @@ void KSocket::sendData(){
             this->pSendFile = NULL;
         }
     }
-
-    else{
+    else {
         emit transferMsgSignal(TRANSFERERR);
     }
 }
 
 // 发送取消文件传输消息
-void KSocket::sendCancel(){
-    if(this->isConnected == true){
+void KSocket::sendCancel()
+{
+    if (this->isConnected == true) {
         QString head = C_CANCEL;
-        socketSecondary->write(head.toUtf8().data());
-        socketSecondary->flush();
+
+        //socketSecondary->write(head.toUtf8().data());
+        //socketSecondary->flush();
+        /*remove second tcp link , change to use one tcp link*/
+
+        socket->write(head.toUtf8().data());
+        socket->flush();
 
         // 告知聊天界面是否主动连接
         emit isInitiativeConn(this->isInitiative);
@@ -735,43 +852,47 @@ void KSocket::sendCancel(){
         qDebug() << "sendCancel";
         this->finishThread();
     }
-    else{
+    else {
         emit transferMsgSignal(DISCONN);
     }
 }
 
 // 断开连接时的结束操作
-void KSocket::finishThread(){
+void KSocket::finishThread()
+{
     qDebug() << "KSocket::finishThread()";
 
     if (socket) {
         disconnect(socket, SIGNAL(disconnected()), this, SLOT(finishThread()));
     }
+
+#if 0
     if (socketSecondary) {
         disconnect(socketSecondary, SIGNAL(disconnected()), this, SLOT(finishThread()));
     }
-
-//    disconnect(socket, SIGNAL(disconnected()), this, SLOT(finishThread()));
-//    disconnect(socketSecondary, SIGNAL(disconnected()), this, SLOT(finishThread()));
+#endif
 
     qDebug() << "this->isConnected" << this->isConnected;
+
     if(this->isConnected == true){
         this->isConnected = false;
 
-        if(socket){
+        if (socket) {
             socket->close();
             socket->deleteLater();
             socket = NULL;
         }
 
+#if 0
         if(socketSecondary){
             socketSecondary->close();
             socketSecondary->deleteLater();
             socketSecondary = NULL;
         }
+#endif
 
         qDebug() << this->isInitiative;
-        if(this->isInitiative == false && pTcpServer){
+        if (this->isInitiative == false && pTcpServer) {
             pTcpServer->close();
             qDebug() << "pTcpServer close";
 //            delete pTcpServer;
@@ -792,13 +913,15 @@ void KSocket::finishThread(){
 }
 
 // socket标准错误处理
-void KSocket::socketError(QAbstractSocket::SocketError se){
+void KSocket::socketError(QAbstractSocket::SocketError se)
+{
     qDebug() << "KSocket::socketError()";
     qDebug()<<"socket错误："<<se;
 }
 
 // 将byte转换成KB或MB
-QString KSocket::sizeHuman(qint64 size){
+QString KSocket::sizeHuman(qint64 size)
+{
     QString sizeFormatted;
     if (size < 1000)
         sizeFormatted = QString::number(size) + " B";
@@ -811,13 +934,15 @@ QString KSocket::sizeHuman(qint64 size){
 }
 
 // 计算消息长度，并转换成9位长的16进制数的字符串
-QString KSocket::comLen(QString msg){
+QString KSocket::comLen(QString msg)
+{
     QByteArray msgByte = msg.toUtf8().data();
     return this->formatLen(msgByte.length());
 }
 
 // 将10进制数字转换成9位长的16进制数的字符串
-QString KSocket::formatLen(qint64 len){
+QString KSocket::formatLen(qint64 len)
+{
     QString lens = QString::number(len, 16);
     for(int i = lens.length(); i < 9 ; i ++){
         lens = "0" + lens;
