@@ -219,6 +219,8 @@ void KSocket::imStart_()
     this->pReadType = MSGTYPE;
     this->pReceivedFiles = new QStringList();
 
+    emit transferMsgSignal(CONN_SUCCESS);
+
     qDebug() << "client get socket . thread: " << QThread::currentThreadId() << " socket: " << socket;
 
     return;

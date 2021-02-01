@@ -331,13 +331,16 @@ void GuiBehind::receiveTextComplete(QString text, QString mac){
 * Return :
 */
 void GuiBehind::removeRecentItem(QString mac){
-    for(int i = 0; i < mRecentList.rowCount(); i ++){
+    for (int i = 0; i < mRecentList.rowCount(); i ++) {
         QStandardItem *oneItem = mRecentList.item(0);
         QVariant sender = oneItem->data(RecentListItemModel::Mac);
-        QString mac_ = sender.toString().split(" ")[1];
-        if(mac == mac_){
-            mRecentList.removeRow(i);
-            break;
+        QStringList mac_list = sender.toString().split(" ");
+        if (mac_list.count() >= 2) {
+            QString mac_ = mac_list.at(1);
+            if(mac == mac_){
+                mRecentList.removeRow(i);
+                break;
+            }
         }
     }
 }
