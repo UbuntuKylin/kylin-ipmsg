@@ -28,6 +28,8 @@
 #include <QQuickWindow>
 #include <QtWidgets/QMainWindow>
 #include <QCloseEvent>
+#include <QRect>
+#include <QScreen>
 
 #include "qmlapplicationviewer/qmlapplicationviewer.h"
 #include "daemonipcdbus.h"

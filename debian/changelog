@@ -1,3 +1,10 @@
+kylin-ipmsg (1.1.20kord1~rc2) v101; urgency=medium
+
+  * 【麒麟传书】#Bug36066 : 固定麒麟传书窗口大小，不响应全屏放大操作.
+  * 将麒麟传书初始窗口放在屏幕中央位置.
+
+ -- caoliang <caoliang@kylinos.cn>  Mon, 01 Feb 2021 14:31:40 +0800
+
 kylin-ipmsg (1.1.20kord1~rc1) v101; urgency=medium
 
   * 【麒麟传书】#Bug36051 : 英文系统下，顶端英文显示重叠.

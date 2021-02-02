@@ -50,8 +50,19 @@ DuktoWindow::DuktoWindow(QWindow *parent) :
 
     setOrientation(QmlApplicationViewer::ScreenOrientationLockPortrait);
 
-    // setMaximumWidth(420);
-    setMinimumWidth(330);
+    // 固定窗口大小
+    int fixedWidth  = 330;
+    int fixedHeight = 600;
+    setMaximumWidth(fixedWidth);
+    setMinimumWidth(fixedWidth);
+    setMaximumHeight(fixedHeight);
+    setMinimumHeight(fixedHeight);
+
+    // 固定初始窗口位置到屏幕中央
+    QRect availableGeometry = qApp->primaryScreen()->availableGeometry();
+    this->setGeometry((availableGeometry.width() - fixedWidth)/2, 
+                      (availableGeometry.height() - fixedHeight)/2,
+                      fixedWidth, fixedHeight);
 }
 
 /*
