@@ -137,10 +137,11 @@ private:
     QString formatLen(qint64 len);
 
 public slots:
+    //void client_second_socket_establish();
     // 被动端开始工作
     void imReady();
     // 被动附socket连接
-    void newSecondaryConn();
+    //void newSecondaryConn();
     // 主动端开始工作
     void imStart();
     // 单次超时处理
@@ -188,7 +189,7 @@ public slots:
      *
      */
     void handleMsg();
-    void handleMsgSecondary();
+    //void handleMsgSecondary();
 
 signals:
     // 文字发送完成信号

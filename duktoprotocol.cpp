@@ -283,6 +283,7 @@ void DuktoProtocol::newOutgoingConnection(QString targetIP, QString remoteID, Ch
 void DuktoProtocol::newIncomingConnection(qintptr socketDescriptor)
 {
     qDebug() << "服务端被动连接newIncomingConnection";
+    qDebug() << "socketDescriptor = " << socketDescriptor;
     QThread *qthread = new QThread();
     KSocket *ks = new KSocket(socketDescriptor , this->pSystemSignature);
     ks->moveToThread(qthread);
