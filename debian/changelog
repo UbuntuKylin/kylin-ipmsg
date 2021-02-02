@@ -1,3 +1,10 @@
+kylin-ipmsg (1.1.20kord1~rc3) v101; urgency=medium
+
+  * 【麒麟传书】#Bug36066 : 固定麒麟传书窗口大小，不响应全屏放大操作.
+  * 将麒麟传书初始窗口放在屏幕中央位置.
+
+ -- caoliang <caoliang@kylinos.cn>  Tue, 02 Feb 2021 10:31:40 +0800
+
 kylin-ipmsg (1.1.20kord1~rc2) v101; urgency=medium
 
   * 【麒麟传书】#Bug36046 : 测试机B给测试机A发送文件和文件夹，测试机A麒麟传书闪退，终端段错误 (核心已转储)
