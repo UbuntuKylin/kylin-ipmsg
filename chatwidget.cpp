@@ -584,7 +584,7 @@ void ChatWidget::on_pb_sendfile_clicked(){
     if(this->isIpExists() == false){
         this->sendType = ChatWidget::Files;
 
-        fileToSend = QFileDialog::getOpenFileNames(this, tr("pls choose files to send"));
+        fileToSend = QFileDialog::getOpenFileNames(nullptr, tr("pls choose files to send"));
 //        fileToSend = QFileDialog::getOpenFileNames(this, "请选择要发送的文件");
 
         if (fileToSend.count() != 0) {
@@ -610,7 +610,7 @@ void ChatWidget::on_pb_senddir_clicked(){
     if(this->isIpExists() == false){
         this->sendType = ChatWidget::Dir;
 
-        dirToSend = QFileDialog::getExistingDirectory(this, tr("pls choose dir to send"), ".", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+        dirToSend = QFileDialog::getExistingDirectory(nullptr, tr("pls choose dir to send"), ".", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 //        dirToSend = QFileDialog::getExistingDirectory(this, "请选择要发送的文件夹", ".", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
         if (dirToSend != "") {

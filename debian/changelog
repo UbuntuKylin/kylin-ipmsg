@@ -1,3 +1,9 @@
+kylin-ipmsg (1.1.20kord1~rc5) v101; urgency=medium
+
+  * 【麒麟传书】#Bug39210 : 选择传输文件的模态窗口出现应用内主题颜色的边框.
+
+ -- caoliang <caoliang@kylinos.cn>  Wed, 24 Feb 2021 11:58:01 +0800
+
 kylin-ipmsg (1.1.20kord1~rc4) v101; urgency=medium
 
   * 【麒麟传书】#Bug37940 : 使用IP时，显示两个IP地址且第二个显示不全.
