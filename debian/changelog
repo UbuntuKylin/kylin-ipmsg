@@ -1,3 +1,9 @@
+kylin-ipmsg (1.1.21kord1) v101; urgency=medium
+
+  * 在pro文件中对用户手册进行处理，兼容V10
+
+ -- caoliang <caoliang@kylinos.cn>  Thu, 04 Mar 2021 17:07:17 +0800
+
 kylin-ipmsg (1.1.20kord1~rc5) v101; urgency=medium
 
   * 【麒麟传书】#Bug39210 : 选择传输文件的模态窗口出现应用内主题颜色的边框.

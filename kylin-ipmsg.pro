@@ -42,8 +42,13 @@ icon.path = /usr/share/pixmaps
 icon.files = kylin-ipmsg.png
 desktop.path = /usr/share/applications/
 desktop.files = kylin-ipmsg.desktop
-guide.path = /usr/share/kylin-user-guide/data/guide/
-guide.files = data/guide/kylin-ipmsg/
+
+# V10Pro使用自定义用户手册
+greaterThan(QT_MAJOR_VERSION, 5) | greaterThan(QT_MINOR_VERSION, 9) {
+    # message("QT_VERSION ("$$QT_VERSION")")
+    guide.path = /usr/share/kylin-user-guide/data/guide/
+    guide.files = data/guide/kylin-ipmsg/
+}
 
 INSTALLS += target \
     icon \
