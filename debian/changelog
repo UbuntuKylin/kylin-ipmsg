@@ -1,3 +1,10 @@
+kylin-ipmsg (1.1.21kord2) v101; urgency=medium
+
+  * 修复禅道bug#40482 : 【麒麟传书】打开后主界面会黑一下.
+  * 修复禅道bug#41910 : 【用户手册】【麒麟传书】只有麒麟传书图标，没有应用名，点进去显示undefined.
+
+ -- caoliang <caoliang@kylinos.cn>  Tue, 09 Mar 2021 14:01:08 +0800
+
 kylin-ipmsg (1.1.21kord1) v101; urgency=medium
 
   * 在pro文件中对用户手册进行处理，兼容V10
