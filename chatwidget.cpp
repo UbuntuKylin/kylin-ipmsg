@@ -228,9 +228,9 @@ void ChatWidget::firstStyle(){
 void ChatWidget::showme(){
     this->setStyleSheet("QDialog{border:2px solid " + this->theme->color3() + "; background-color: white;}");
     this->ui->lb_title->setStyleSheet("QLabel{color: " + this->theme->color2() + ";font-size:24px;}");
-    this->ui->le_ip->setStyleSheet("QLineEdit{color: " + this->theme->color4() + "; border: 1px solid " + this->theme->color3() + ";font-size:18px;}");
-    this->ui->te_chatlog->setStyleSheet("QTextBrowser{border: " + this->theme->color3() + ";font-size:18px;}");
-    this->ui->te_chat->setStyleSheet("QTextEdit{border: 1px solid " + this->theme->color3() + ";font-size:18px;}");
+    this->ui->le_ip->setStyleSheet("QLineEdit{color: " + this->theme->color4() + "; border: 1px solid " + this->theme->color3() + ";font-size:18px;background-color: white;}");
+    this->ui->te_chatlog->setStyleSheet("QTextBrowser{border: " + this->theme->color3() + ";color: " + this->theme->color4() + ";font-size:18px;background-color: white;}");
+    this->ui->te_chat->setStyleSheet("QTextEdit{border: 1px solid " + this->theme->color3() + ";color: " + this->theme->color4() + ";font-size:18px;background-color: white;}");
     this->ui->pb_sendmsg->setStyleSheet( "QPushButton{border: 2px solid " + this->theme->color2() + "; color: "+this->theme->color2()+";font-size:16px;}");
     this->ui->pb_sendfile->setStyleSheet("QPushButton{border: 2px solid " + this->theme->color2() + "; color: "+this->theme->color2()+";font-size:16px;}");
     this->ui->pb_senddir->setStyleSheet( "QPushButton{border: 2px solid " + this->theme->color2() + "; color: "+this->theme->color2()+";font-size:16px;}");
@@ -256,7 +256,7 @@ void ChatWidget::showme(){
 
     // coaliang
     this->ui->pb_addname->setStyleSheet("QPushButton{border: 2px solid " + this->theme->color2() + "; color: "+this->theme->color2()+";font-size:16px;}");
-    this->ui->le_nickname->setStyleSheet("QLineEdit{color: " + this->theme->color4() + "; border: 1px solid " + this->theme->color3() + ";font-size:18px;}");
+    this->ui->le_nickname->setStyleSheet("QLineEdit{color: " + this->theme->color4() + "; border: 1px solid " + this->theme->color3() + ";font-size:18px;background-color: white;}");
     this->ui->pb_checkname->setStyleSheet("QPushButton{border: 2px solid " + this->theme->color2() + "; color: "+this->theme->color2()+";font-size:16px;}");
 
 //    this->show();

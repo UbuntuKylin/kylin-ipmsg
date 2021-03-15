@@ -1,3 +1,10 @@
+kylin-ipmsg (1.1.21kord3) v101; urgency=medium
+
+  * 修复禅道bug#42491 : 【麒麟传书】夜间模式下麒麟传书的窗口显示异常.
+  * 适配分数缩放.
+
+ -- caoliang <caoliang@kylinos.cn>  Mon, 15 Mar 2021 09:46:15 +0800
+
 kylin-ipmsg (1.1.21kord2) v101; urgency=medium
 
   * 修复禅道bug#40482 : 【麒麟传书】打开后主界面会黑一下.

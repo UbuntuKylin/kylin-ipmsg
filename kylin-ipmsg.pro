@@ -42,22 +42,29 @@ icon.path = /usr/share/pixmaps
 icon.files = kylin-ipmsg.png
 desktop.path = /usr/share/applications/
 desktop.files = kylin-ipmsg.desktop
-guide.path = /usr/share/kylin-user-guide/data/guide/
-guide.files = data/guide/kylin-ipmsg/
 
 INSTALLS += target \
     icon \
-    desktop \
-    guide
+    desktop 
 
 # v10禁用窗管和自定义用户手册
-lessThan(QT_MAJOR_VERSION, 5) | lessThan(QT_MINOR_VERSION, 9) {
+#lessThan(QT_MAJOR_VERSION, 5) | lessThan(QT_MINOR_VERSION, 9) {
     # message("QT_VERSION ("$$QT_VERSION")")
-    DEFINES   += __V10__
-    INSTALLS  -= guide
+#    DEFINES   += __V10__
+#    INSTALLS  -= guide
     # QT      -= x11extras
     # LIBS    -= -lpthread
     # LIBS    -= -lX11
+#}
+
+# V10Pro使用自定义用户手册
+greaterThan(QT_MAJOR_VERSION, 5) | greaterThan(QT_MINOR_VERSION, 9) {
+    # message("QT_VERSION ("$$QT_VERSION")")
+    DEFINES   += __V10Pro__
+    guide.path = /usr/share/kylin-user-guide/data/guide/
+    guide.files = data/guide/kylin-ipmsg/
+
+    INSTALLS += guide
 }
 
 SOURCES += main.cpp \
