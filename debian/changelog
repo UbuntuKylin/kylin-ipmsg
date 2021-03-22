@@ -1,3 +1,35 @@
+kylin-ipmsg (1.1.21kord3) v101; urgency=medium
+
+  * 修复禅道bug#42491 : 【麒麟传书】夜间模式下麒麟传书的窗口显示异常.
+  * 适配分数缩放.
+
+ -- caoliang <caoliang@kylinos.cn>  Mon, 15 Mar 2021 09:46:15 +0800
+
+kylin-ipmsg (1.1.21kord2) v101; urgency=medium
+
+  * 修复禅道bug#40482 : 【麒麟传书】打开后主界面会黑一下.
+  * 修复禅道bug#41910 : 【用户手册】【麒麟传书】只有麒麟传书图标，没有应用名，点进去显示undefined.
+
+ -- caoliang <caoliang@kylinos.cn>  Tue, 09 Mar 2021 14:01:08 +0800
+
+kylin-ipmsg (1.1.21kord1) v101; urgency=medium
+
+  * 在pro文件中对用户手册进行处理，兼容V10
+
+ -- caoliang <caoliang@kylinos.cn>  Thu, 04 Mar 2021 17:07:17 +0800
+
+kylin-ipmsg (1.1.20kord1~rc5) v101; urgency=medium
+
+  * 【麒麟传书】#Bug39210 : 选择传输文件的模态窗口出现应用内主题颜色的边框.
+
+ -- caoliang <caoliang@kylinos.cn>  Wed, 24 Feb 2021 11:58:01 +0800
+
+kylin-ipmsg (1.1.20kord1~rc4) v101; urgency=medium
+
+  * 【麒麟传书】#Bug37940 : 使用IP时，显示两个IP地址且第二个显示不全.
+
+ -- caoliang <caoliang@kylinos.cn>  Wed, 03 Feb 2021 17:32:42 +0800
+
 kylin-ipmsg (1.1.20kord1~rc3) v101; urgency=medium
 
   * 【麒麟传书】#Bug36066 : 固定麒麟传书窗口大小，不响应全屏放大操作.

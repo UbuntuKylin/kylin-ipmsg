@@ -51,8 +51,8 @@ DuktoWindow::DuktoWindow(QWindow *parent) :
     setOrientation(QmlApplicationViewer::ScreenOrientationLockPortrait);
 
     // 固定窗口大小
-    int fixedWidth  = 330;
-    int fixedHeight = 600;
+    int fixedWidth  = 335;
+    int fixedHeight = 605;
     setMaximumWidth(fixedWidth);
     setMinimumWidth(fixedWidth);
     setMaximumHeight(fixedHeight);

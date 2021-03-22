@@ -228,9 +228,9 @@ void ChatWidget::firstStyle(){
 void ChatWidget::showme(){
     this->setStyleSheet("QDialog{border:2px solid " + this->theme->color3() + "; background-color: white;}");
     this->ui->lb_title->setStyleSheet("QLabel{color: " + this->theme->color2() + ";font-size:24px;}");
-    this->ui->le_ip->setStyleSheet("QLineEdit{color: " + this->theme->color4() + "; border: 1px solid " + this->theme->color3() + ";font-size:18px;}");
-    this->ui->te_chatlog->setStyleSheet("QTextBrowser{border: " + this->theme->color3() + ";font-size:18px;}");
-    this->ui->te_chat->setStyleSheet("QTextEdit{border: 1px solid " + this->theme->color3() + ";font-size:18px;}");
+    this->ui->le_ip->setStyleSheet("QLineEdit{color: " + this->theme->color4() + "; border: 1px solid " + this->theme->color3() + ";font-size:18px;background-color: white;}");
+    this->ui->te_chatlog->setStyleSheet("QTextBrowser{border: " + this->theme->color3() + ";color: " + this->theme->color4() + ";font-size:18px;background-color: white;}");
+    this->ui->te_chat->setStyleSheet("QTextEdit{border: 1px solid " + this->theme->color3() + ";color: " + this->theme->color4() + ";font-size:18px;background-color: white;}");
     this->ui->pb_sendmsg->setStyleSheet( "QPushButton{border: 2px solid " + this->theme->color2() + "; color: "+this->theme->color2()+";font-size:16px;}");
     this->ui->pb_sendfile->setStyleSheet("QPushButton{border: 2px solid " + this->theme->color2() + "; color: "+this->theme->color2()+";font-size:16px;}");
     this->ui->pb_senddir->setStyleSheet( "QPushButton{border: 2px solid " + this->theme->color2() + "; color: "+this->theme->color2()+";font-size:16px;}");
@@ -256,7 +256,7 @@ void ChatWidget::showme(){
 
     // coaliang
     this->ui->pb_addname->setStyleSheet("QPushButton{border: 2px solid " + this->theme->color2() + "; color: "+this->theme->color2()+";font-size:16px;}");
-    this->ui->le_nickname->setStyleSheet("QLineEdit{color: " + this->theme->color4() + "; border: 1px solid " + this->theme->color3() + ";font-size:18px;}");
+    this->ui->le_nickname->setStyleSheet("QLineEdit{color: " + this->theme->color4() + "; border: 1px solid " + this->theme->color3() + ";font-size:18px;background-color: white;}");
     this->ui->pb_checkname->setStyleSheet("QPushButton{border: 2px solid " + this->theme->color2() + "; color: "+this->theme->color2()+";font-size:16px;}");
 
 //    this->show();
@@ -306,7 +306,7 @@ void ChatWidget::onSendCompleted(){
             this->ui->le_ip->hide();
 //            this->ui->lb_name->setText("对方的 IP Mac");
             this->ui->lb_name->setText(tr("Show Remote IP Addr"));
-            this->ui->lb_machine->setText(this->ip);
+            this->ui->lb_machine->setText(this->ip.split(" ")[0]);
             this->ui->lb_machine->show();
             this->setWindowTitle(tr("Kylin Ipmsg") + this->ip);
 //            this->setWindowTitle("麒麟传书" + this->ip);
@@ -584,7 +584,7 @@ void ChatWidget::on_pb_sendfile_clicked(){
     if(this->isIpExists() == false){
         this->sendType = ChatWidget::Files;
 
-        fileToSend = QFileDialog::getOpenFileNames(this, tr("pls choose files to send"));
+        fileToSend = QFileDialog::getOpenFileNames(nullptr, tr("pls choose files to send"));
 //        fileToSend = QFileDialog::getOpenFileNames(this, "请选择要发送的文件");
 
         if (fileToSend.count() != 0) {
@@ -610,7 +610,7 @@ void ChatWidget::on_pb_senddir_clicked(){
     if(this->isIpExists() == false){
         this->sendType = ChatWidget::Dir;
 
-        dirToSend = QFileDialog::getExistingDirectory(this, tr("pls choose dir to send"), ".", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
+        dirToSend = QFileDialog::getExistingDirectory(nullptr, tr("pls choose dir to send"), ".", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 //        dirToSend = QFileDialog::getExistingDirectory(this, "请选择要发送的文件夹", ".", QFileDialog::ShowDirsOnly | QFileDialog::DontResolveSymlinks);
 
         if (dirToSend != "") {

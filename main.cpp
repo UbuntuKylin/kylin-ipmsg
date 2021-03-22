@@ -40,10 +40,14 @@ int main(int argc, char *argv[])
 {
 //    QApplication::setGraphicsSystem("raster");
 
-    // 适配4K屏
-    #if (QT_VERSION >= QT_VERSION_CHECK(5, 6, 0))
-        QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-        QCoreApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    // 适配4K屏以及分数缩放
+    #if (QT_VERSION >= QT_VERSION_CHECK(5, 12, 0))
+        QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+        QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
+    #endif
+    
+    #if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
+        QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     #endif
 
     // 需要给QtSingleApplication的传入参数id加DISPLAY标识
@@ -51,7 +55,7 @@ int main(int argc, char *argv[])
 
     /*lock file*/
     QtSingleApplication app(id, argc, argv);
-    app.setApplicationVersion("1.1.20");
+    app.setApplicationVersion("1.1.21");
 
 //    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 //    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
