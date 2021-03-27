@@ -48,7 +48,7 @@ ChatWidget::ChatWidget(QDialog *parent) : QDialog(parent), ui(new Ui::ChatWidget
         iconPath = "/usr/share/pixmaps/kylin-ipmsg.png";
     }
 //    setWindowIcon(QIcon(iconPath));
-    setWindowIcon(QIcon::fromTheme("kylin-ipmsg"));
+    // setWindowIcon(QIcon::fromTheme("kylin-ipmsg"));
 
     this->setMaximumSize(QSize(450,480));
     this->setMinimumSize(QSize(450,480));
@@ -72,7 +72,7 @@ ChatWidget::ChatWidget(QDialog *parent) : QDialog(parent), ui(new Ui::ChatWidget
     this->connect(this->ui->te_chat, SIGNAL(textChanged()), this, SLOT(teTextChanged()));
     this->connect(this->ui->te_chatlog, SIGNAL(anchorClicked(QUrl)), this, SLOT(openUrl(QUrl)));
 
-    // caoliang 给添加备注和确认修改按钮注册事件
+    // 给添加备注和确认修改按钮注册事件
     this->connect(this->ui->pb_addname,SIGNAL(clicked()),this,SLOT(on_pb_addname_clicked()),Qt::UniqueConnection);
     this->connect(this->ui->pb_checkname,SIGNAL(clicked()),this,SLOT(on_pb_checkname_clicked()),Qt::UniqueConnection);
 
@@ -154,7 +154,7 @@ bool ChatWidget::eventFilter(QObject *o, QEvent *e){
 void ChatWidget::focusIn(){
     this->isFocus = true;
     this->alertTimer->stop();
-    this->setWindowIcon(this->iconDukto);
+    // this->setWindowIcon(this->iconDukto);
     this->ui->noFocusDiv->hide();
 }
 
@@ -176,8 +176,8 @@ void ChatWidget::focusOut(){
 */
 void ChatWidget::firstStyle(){
     this->ip = this->dbuddy->ip();
-    this->ui->le_nickname->hide();      //caoliang 初始化隐藏le_nickname输入框
-    this->ui->pb_checkname->hide();     // caoliang 初始化隐藏按钮
+    this->ui->le_nickname->hide();      // 初始化隐藏le_nickname输入框
+    this->ui->pb_checkname->hide();     // 初始化隐藏按钮
     // 输入IP的对话窗口
     if(this->dbuddy->ip() == "IP MAC"){
         this->ui->lb_name->setText(tr("The Remote IP Addr"));
@@ -212,7 +212,7 @@ void ChatWidget::firstStyle(){
         }
     }
 
-    this->setWindowTitle(tr("Kylin Ipmsg") + this->ip);
+    this->setWindowTitle(tr("Kylin Ipmsg") + " " + this->ip.split(" ")[0]);
 //    this->setWindowTitle("麒麟传书" + this->ip);
     this->ui->pb_titleicon->setStyleSheet("QPushButton{border: 0px solid; background-image: url(':/qml/dukto/BackIconDark.png');}");
     this->ui->lb_head->setStyleSheet("QLabel{background-image: url(':/qml/dukto/" + dbuddy->osLogo() + "');}");
@@ -305,13 +305,16 @@ void ChatWidget::onSendCompleted(){
             this->ui->le_ip->setEnabled(false);
             this->ui->le_ip->hide();
 //            this->ui->lb_name->setText("对方的 IP Mac");
-            this->ui->lb_name->setText(tr("Show Remote IP Addr"));
+            // this->ui->lb_name->setText(tr("Show Remote IP Addr"));
             this->ui->lb_machine->setText(this->ip.split(" ")[0]);
             this->ui->lb_machine->show();
-            this->setWindowTitle(tr("Kylin Ipmsg") + this->ip);
+            this->setWindowTitle(tr("Kylin Ipmsg") + " " + this->ip.split(" ")[0]);
 //            this->setWindowTitle("麒麟传书" + this->ip);
 
-            emit reSaveCw(this->ip.split(" ")[1]);
+            qDebug() << "this->ip" << this->ip;
+            qDebug() << "this->dbuddy->ip" << this->dbuddy->ip();
+
+            // emit reSaveCw(this->ip);
         }
 
         QDateTime time = QDateTime::currentDateTime();
@@ -492,6 +495,7 @@ void ChatWidget::enableInput(){
         this->ui->pb_senddir->setEnabled(true);
         this->ui->te_chat->setEnabled(true);
         this->ui->te_chat->setFocus();
+        this->ui->pb_addname->setEnabled(true);
 
         this->sendType = ChatWidget::Idle;
     }
@@ -506,6 +510,7 @@ void ChatWidget::disableInput(){
     this->ui->pb_sendmsg->setEnabled(false);
     this->ui->pb_sendfile->setEnabled(false);
     this->ui->pb_senddir->setEnabled(false);
+    this->ui->pb_addname->setEnabled(false);
 }
 
 // 开始数据传输，true为发送，false为接收
@@ -515,6 +520,7 @@ void ChatWidget::startTransfer(bool isSend){
         this->disableInput();
     }else{
         this->ui->w_progress_recv->show();
+        this->ui->pb_addname->hide();
     }
 }
 
@@ -546,14 +552,17 @@ void ChatWidget::stopTransfer(bool isSend){
         this->ui->pbar_chunk_recv->resize(0, 0);
         this->ui->lb_w_text_recv->setText("");
         this->ui->w_progress_recv->hide();
+        this->ui->pb_addname->show();
     }
 }
 
 // 取消接收数据
-void ChatWidget::recvCancel(){
-    this->stopTransfer(false);
-    this->addTextLog(tr("Remoter has stoped the transfer"));
-//    this->addTextLog("对方中止了文件传输");
+void ChatWidget::recvCancel() {
+    if (this->ui->w_progress_recv->isHidden() == false) { 
+        this->stopTransfer(false);   
+        this->addTextLog(tr("Remoter has stoped the transfer"));
+        // this->addTextLog("对方中止了文件传输");
+    }
 }
 
 // 点击发送文字
@@ -703,6 +712,51 @@ void ChatWidget::getIsInitiativeConn(bool isInitiative){
     }
 }
 
+// 主动连接成功后更新聊天框信息
+void ChatWidget::reSetCw(QString ip, QString user_name , QString system , QString mac , QString Platform) 
+{
+    qDebug() << "reset chat widget";
+
+    // QHash<QString, QStandardItem*>::iterator iter;
+    // for (iter = buddies->begin(); iter != buddies->end(); iter++) {
+    //     qDebug() << "iter.key" << iter.key() << "\n";
+    // }
+
+    QStandardItem *buddyItem = NULL;
+    if (this->buddies->contains(ip + " " + mac)) {
+        buddyItem = this->buddies->value(ip + " " + mac);
+        if (buddyItem != NULL) {
+            this->dbuddy->fillFromItem(buddyItem);
+        }
+        
+        this->ui->lb_head->setStyleSheet("QLabel{background-image: url(':/qml/dukto/" + dbuddy->osLogo() + "');}");
+    }
+
+    this->dbuddy->mIp = ip + " " + mac;
+    this->dbuddy->mUsername = user_name;
+    this->dbuddy->mPlatform = Platform;
+    this->ip = ip + " " + mac;
+
+    this->ui->le_ip->clear();
+    this->ui->le_ip->hide();
+    this->ui->le_ip->setEnabled(false);
+
+    this->ui->lb_name->setText(user_name);
+    this->ui->lb_machine->setText(mac);
+
+    QString nickname = mSettings->nickname(mac);
+    if (nickname != "error" && nickname != "") {
+        this->ui->lb_name->setText(nickname);
+        this->dbuddy->mUsername = nickname;
+    }
+
+    this->ui->pb_addname->show();
+    this->ui->pb_sendmsg->show();
+    this->ui->pb_sendfile->show();
+    this->ui->pb_senddir->show();
+    this->ui->lb_machine->show();
+}
+
 // 键盘F1响应用户手册
 void ChatWidget::keyPressEvent(QKeyEvent *event)
 {
@@ -737,6 +791,10 @@ void ChatWidget::on_pb_titleicon_clicked(){
     this->ui->lb_name->show();
     this->ui->le_ip->clear();
     this->ui->w_alert->hide();
+
+    if (this->ui->le_ip->isEnabled() == true) {
+        this->ui->te_chat->clear();
+    }
 
     this->close();
     //this->hide();
@@ -788,6 +846,7 @@ void ChatWidget::setOnLine(bool isOnLine){
 
 // 后台消息处理
 void ChatWidget::slotTransferMsg(int code){
+    qDebug() << "ChatWidget::slotTransferMsg";
     if(code == CONN_SUCCESS){
         this->isOnLine = true;
         this->ui->lb_alert->setText("");
@@ -855,6 +914,7 @@ void ChatWidget::on_pb_checkname_clicked()
             if(mac.trimmed() == item->data(BuddyListItemModel::Mac).toString().trimmed()){
                 item->setData(nickname, BuddyListItemModel::Username);
                 this->ui->lb_name->setText(nickname);
+                this->dbuddy->mUsername = nickname;
 //                qDebug() << "修改备注名" << nickname;
             }
         }

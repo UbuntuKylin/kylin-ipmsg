@@ -112,6 +112,7 @@ void KSocket::imReady()
 
 #endif
 
+#if 0
     /*send system flag to client*/
     QString system_flag;
     system_flag.clear();
@@ -126,6 +127,7 @@ void KSocket::imReady()
     socket->flush();
 
     qDebug() << "server system flag send to clien is success";
+#endif
 
     return;
 }
@@ -204,6 +206,8 @@ void KSocket::timoutOnce()
 // 主动连接成功，取消超时计时器
 void KSocket::imStart_()
 {
+    qDebug() << "client get socket . thread: " << QThread::currentThreadId() << " socket: " << socket;
+
     disconnect(timer, SIGNAL(timeout()), this, SLOT(timoutOnce()));
     timer->stop();
     if (this->timer != NULL) {
@@ -219,9 +223,23 @@ void KSocket::imStart_()
     this->pReadType = MSGTYPE;
     this->pReceivedFiles = new QStringList();
 
-    emit transferMsgSignal(CONN_SUCCESS);
+    /* send client system flag */
+    QString system_flag;
+    system_flag.clear();
+    system_flag = this->pSystemSignature;
 
-    qDebug() << "client get socket . thread: " << QThread::currentThreadId() << " socket: " << socket;
+    std::string std_system_flag = system_flag.toStdString();
+    const char *p_system_flag = std_system_flag.c_str();
+
+    socket->write(C_WHOAMI);
+    socket->write(p_system_flag);
+    socket->waitForBytesWritten();
+    socket->flush();
+
+    qDebug() << "client send system flag to server is success";
+
+  //  emit transferMsgSignal(CONN_SUCCESS);
+
 
     return;
 }
@@ -255,7 +273,7 @@ void KSocket::client_second_socket_establish()
  */
 void KSocket::handleMsg()
 {
-    qDebug() << "KSocket::handleMsg()";
+    // qDebug() << "KSocket::handleMsg()";
 
     while (socket->bytesAvailable() > 0) {
 
@@ -269,6 +287,9 @@ void KSocket::handleMsg()
             QByteArray msgType = socket->read(4);
             socket->flush();
             QString mt = QString::fromUtf8(msgType);
+            qDebug() << "mt: " << mt;
+
+            lastMsgType = mt;
 
             /*client receicve server ready msg*/
             if (mt == S_IAMREADY) {
@@ -290,8 +311,11 @@ void KSocket::handleMsg()
                     qDebug() << "s_iamready : " << "\n" << "ip is " << ip << "\n" << "user_name = " << user_name << "\n" << "system = " << system << "\n" << "mac = " << mac << "\n" << "platfrom = " << platfrom;
 
                     emit addUpBuddy(ip , user_name , system , mac , platfrom);
+                    emit updateCw(ip , user_name , system , mac , platfrom);
+                    emit transferMsgSignal(CONN_SUCCESS);
                 }
 
+#if 0
                 /*client send system flag to server*/
                 QString system_flag;
                 system_flag.clear();
@@ -306,6 +330,7 @@ void KSocket::handleMsg()
                 socket->flush();
 		
                 qDebug() << "client send system flag to server is success";
+#endif
 
 #if 0
                 /*client get second socket*/
@@ -336,11 +361,30 @@ void KSocket::handleMsg()
 
                     /*Reassignment this->pRemotID*/
                     this->pRemoteID = mac;
+                    emit addUpBuddy(ip , user_name , system , mac , platfrom);
 
                     emit updateRemoteID(ip , user_name , system , mac , platfrom , this);
+
+                    /*send system flag to client*/
+                    QString system_flag;
+                    system_flag.clear();
+                    system_flag = this->pSystemSignature;
+
+                    std::string std_system_flag = system_flag.toStdString();
+                    const char *p_system_flag = std_system_flag.c_str();
+
+                    socket->write(S_IAMREADY);
+                    socket->write(p_system_flag);
+                    socket->waitForBytesWritten();
+                    socket->flush();
+
+                    qDebug() << "server system flag send to clien is success";
+                } else {
+                    qDebug() << "server receive client c_whoami msg format error , this connect break";
+                    this->finishThread();
                 }
 
-                emit transferMsgSignal(CONN_SUCCESS);
+                //emit transferMsgSignal(CONN_SUCCESS);
             }
             // 文字消息头
             else if (mt == C_TEXT) {
@@ -399,6 +443,7 @@ void KSocket::handleMsg()
                     //socketSecondary->flush();
 
                     socket->write(endOne.toUtf8().data());
+                    socket->waitForBytesWritten();
                     socket->flush();
 
                     this->pReadType = MSGTYPE;
@@ -490,6 +535,7 @@ void KSocket::handleMsg()
                 this->finishThread();
                 break;
             }
+            // 错误处理
             else {
 //              qDebug()<<"\n2本条消息头类型错误 wrong head msg type: "<<mt;
                 emit transferMsgSignal(8);
@@ -753,6 +799,10 @@ void KSocket::sendOneFile()
             this->pRootPath = "";
 
             emit sendFileComplete();
+            
+            QStringList *listToShow = new QStringList();
+            listToShow->append(*pReceivedFiles);
+            emit sendFileComplete_add_recentlist(listToShow, this->pTotalReceivedLen, this->pRootDirRename, this->pRemoteID);
         }
     }
     else {
@@ -896,7 +946,7 @@ void KSocket::finishThread()
             pTcpServer->close();
             qDebug() << "pTcpServer close";
 //            delete pTcpServer;
-            // caoliang 防止内存泄露
+            // 防止内存泄露
             pTcpServer->deleteLater();
             qDebug() << "delete pTcpServer";
             pTcpServer = NULL;
@@ -917,6 +967,14 @@ void KSocket::socketError(QAbstractSocket::SocketError se)
 {
     qDebug() << "KSocket::socketError()";
     qDebug()<<"socket错误："<<se;
+
+    // 接收文件或文件夹时，在socket错误时中断接收
+    if (lastMsgType == C_FILE || lastMsgType == C_DIR) {
+        // 告知聊天界面是否主动连接
+        emit isInitiativeConn(this->isInitiative);
+        emit receiveFileCancelled();
+        this->finishThread();
+    }
 }
 
 // 将byte转换成KB或MB

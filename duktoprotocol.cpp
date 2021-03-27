@@ -92,7 +92,7 @@ QString DuktoProtocol::getMac(){
 
 //    return "NOMAC";
 
-    // caoliang 获取正确的本机MAC地址
+    // 获取正确的本机MAC地址
     // 获取所有网络接口列表
     QList<QNetworkInterface> nets = QNetworkInterface::allInterfaces();
     int netCnt = nets.count();
@@ -210,7 +210,7 @@ void DuktoProtocol::handleMessage(QByteArray &data, QHostAddress &sender)
                 QHash<QString , Peer>::iterator it_begin = mPeers.begin();
                 QHash<QString , Peer>::iterator it_end = mPeers.end();
                 while (it_begin != it_end) {
-                       qDebug() << "QHash<QString , Peer>" << it_begin.key() << it_begin.value().address;
+                    //    qDebug() << "QHash<QString , Peer>" << it_begin.key() << it_begin.value().address;
                        it_begin++;
                 }
 
@@ -244,6 +244,8 @@ void DuktoProtocol::newOutgoingConnection(QString targetIP, QString remoteID, Ch
     KSocket *ks = new KSocket(targetIP, this->pSystemSignature, remoteID);
     ks->moveToThread(qthread);
 
+    connect(ks, SIGNAL(updateCw(QString, QString , QString , QString , QString)), cw, SLOT(reSetCw(QString, QString , QString , QString , QString)));
+
     connect(cw, SIGNAL(sendMsg(QString)), ks, SLOT(sendText(QString)));
     connect(ks, SIGNAL(sendTextComplete()), cw, SLOT(onSendCompleted()));
     connect(ks , SIGNAL(sendTextComplete_add_recentlist(QString , QString)) , this->gbehind , SLOT(sendTextComplete_add_recentlist(QString , QString)));
@@ -255,6 +257,7 @@ void DuktoProtocol::newOutgoingConnection(QString targetIP, QString remoteID, Ch
     connect(ks, SIGNAL(startTransfer(bool)), cw, SLOT(startTransfer(bool)));
     connect(ks, SIGNAL(updateTransferStatus(int, QString, bool)), cw, SLOT(updateTransferStatus(int, QString, bool)));
     connect(ks, SIGNAL(sendFileComplete()), cw, SLOT(onSendCompleted()));
+    connect(ks, SIGNAL(sendFileComplete_add_recentlist(QStringList *, qint64, QString, QString)) , this->gbehind , SLOT(sendFileComplete_add_recentlist(QStringList *, qint64, QString, QString)));
     connect(ks, SIGNAL(receiveFileComplete(QStringList*, qint64, QString, QString)), this->gbehind, SLOT(receiveFileComplete(QStringList*, qint64, QString, QString)));
     connect(ks, SIGNAL(receiveFileCancelled()), cw, SLOT(recvCancel()));
     connect(ks, SIGNAL(isInitiativeConn(bool)), cw, SLOT(getIsInitiativeConn(bool)));
@@ -332,10 +335,12 @@ void DuktoProtocol::updateRemoteID(QString ip, QString user_name , QString syste
     foreach (ChatWidget *cw_, this->gbehind->cws) {
         QString oneMac = cw_->dbuddy->ip().split(" ")[1];
         if(oneMac == pRemoteID){
+            qDebug() << "oneMac == pRemoteID " << pRemoteID;
             cw = cw_;
         }
     }
     if(cw == NULL){
+        qDebug() << "createCW(pRemoteID) " << pRemoteID;
         cw = this->gbehind->createCW(pRemoteID);
     }
     cw->setOnLine(true);
@@ -412,6 +417,7 @@ void DuktoProtocol::connectSocketAndChatWidget(ChatWidget *cw){
 * Return :
 */
 void DuktoProtocol::addUpBuddy(QString ip, QString user_name , QString system , QString mac , QString Platform){
-    // 如果已有该好友，addBuddy()中不会重复添加
     this->gbehind->mBuddiesList.addBuddy(ip, NETWORK_PORT, user_name , system , mac, Platform , QUrl(""));
+
+    this->gbehind->reSaveCw(mac);
 }

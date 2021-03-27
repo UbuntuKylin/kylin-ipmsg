@@ -153,7 +153,7 @@ Flipable {
            font.pixelSize: 14
            elide: "ElideRight"
            color: theme.color2
-           // caoliang 隐藏或显示ip
+           // 隐藏或显示ip
            visible: buddyShowIp
        }
 

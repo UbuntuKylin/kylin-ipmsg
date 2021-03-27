@@ -121,9 +121,10 @@ public slots:
     void changeThemeColor(QString color);
 
     void sendTextComplete_add_recentlist(QString text , QString mac);
+    void sendFileComplete_add_recentlist(QStringList *files, qint64 totalSize, QString dir, QString mac);
     void receiveTextComplete(QString text, QString mac);
     void receiveFileComplete(QStringList *files, qint64 totalSize, QString dir, QString mac);
-    void reSaveCw(QString ip);
+    void reSaveCw(QString ip_mac);
     void newMsgAlert(QString mac);
     void removeRecentItem(QString mac);
     void msgAlert();

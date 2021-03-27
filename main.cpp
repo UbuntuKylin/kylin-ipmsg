@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
 
     /*lock file*/
     QtSingleApplication app(id, argc, argv);
-    app.setApplicationVersion("1.1.21");
+    app.setApplicationVersion("1.1.22");
 
 //    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 //    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
@@ -141,7 +141,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 //    app.setWindowIcon(QIcon("/usr/share/pixmaps/kylin-ipmsg.png"));
-    app.setWindowIcon(QIcon::fromTheme("kylin-ipmsg"));
+    // app.setWindowIcon(QIcon::fromTheme("kylin-ipmsg"));
 
     /*inherit qmlapplicationviewer and link dbus open kylin guide manual*/
     DuktoWindow viewer;

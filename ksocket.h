@@ -39,6 +39,7 @@
 #define C_END_ONEDIR "A0A8"
 #define C_END "A0A9"
 #define C_CANCEL "A0FF"
+#define C_CANCEL_READY "A0FG"
 #define S_IAMREADY "B0B1"
 #define S_ERROR "B0FF"
 
@@ -121,6 +122,12 @@ public:
     // 连接超时计时器
     QTimer *timer;
 
+    // 上次消息类型
+    QString lastMsgType;
+
+    // 是否已重连
+    bool isReConnect = false;
+
     // 接收文字
     void receiveText();
     // 接收文件
@@ -197,6 +204,7 @@ signals:
     void sendTextComplete_add_recentlist(QString , QString);
     // 文件发送完成信号
     void sendFileComplete();
+    void sendFileComplete_add_recentlist(QStringList *files, qint64 totalSize, QString dir, QString mac);
     // 文件发送取消信号
     void sendFileCancelled();
 
@@ -219,6 +227,10 @@ signals:
     // 自报姓名消息
     //void updateRemoteID(QString pRemoteID, KSocket *ks);
     void updateRemoteID(QString ip, QString user_name , QString system , QString mac , QString Platform , KSocket*);
+
+    // 主动连接成功更新聊天框信息
+    void updateCw(QString ip, QString user_name , QString system , QString mac , QString Platform);
+
     // 异常消息
     void transferMsgSignal(int code);
 

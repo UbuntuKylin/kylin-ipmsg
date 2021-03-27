@@ -30,9 +30,14 @@
 #include <QCloseEvent>
 #include <QRect>
 #include <QScreen>
+#include <QGSettings>
 
 #include "qmlapplicationviewer/qmlapplicationviewer.h"
 #include "daemonipcdbus.h"
+
+// QT图标主题
+#define THEME_QT_SCHEMA "org.ukui.style"
+#define ICON_QT_KEY     "iconThemeName"
 
 class GuiBehind;
 
@@ -56,6 +61,9 @@ public slots:
 private:
     GuiBehind *mGuiBehind;
     DaemonIpcDbus *mDaemonIpcDbus;
+
+    // 主题适配
+    QGSettings *themeSettings = nullptr;
 };
 
 #endif // DUKTOWINDOW_H

@@ -92,6 +92,8 @@ public slots:
     void recvCancel();
     void getIsInitiativeConn(bool);
 
+    void reSetCw(QString ip, QString user_name , QString system , QString mac , QString Platform);
+
     // 键盘F1响应用户手册
     void keyPressEvent(QKeyEvent *event);
 
@@ -107,7 +109,7 @@ signals:
     void sendFiles(QStringList files);
     void sendDir(QString dirname);
     void sendFileCanceled();
-    void reSaveCw(QString ip);
+    void reSaveCw(QString ip_mac);
     void reBindSocket(ChatWidget *);
 
 private slots:
@@ -123,7 +125,6 @@ private slots:
 
     void on_pb_w_cancel_clicked();
 
-    // caoliang
     void on_pb_addname_clicked();
     void on_pb_checkname_clicked();
 

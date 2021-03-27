@@ -28,11 +28,15 @@ lessThan(QT_MAJOR_VERSION, 5) {
 }
 
 #for nullptr
-greaterThan(QT_MAJOR_VERSION, 4): CONFIG += c++11
+greaterThan(QT_MAJOR_VERSION, 4): CONFIG += c++11 link_pkgconfig
+
+# 配置gsettings
+CONFIG += link_pkgconfig
+PKGCONFIG += gsettings-qt
 
 QMAKE_CXXFLAGS += -g
 
-TRANSLATIONS = kylin-ipmsg_zh_CN.ts
+TRANSLATIONS += kylin-ipmsg_zh_CN.ts
 
 TARGET = kylin-ipmsg
 

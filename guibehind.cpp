@@ -121,6 +121,7 @@ GuiBehind::GuiBehind(DuktoWindow* view) :
 }
 
 GuiBehind::~GuiBehind(){
+    qDebug() << "GuiBehind::~GuiBehind";
     mDuktoProtocol->sayGoodbye();
 
     if (mMiniWebServer) mMiniWebServer->deleteLater();
@@ -160,6 +161,53 @@ void GuiBehind::sendTextComplete_add_recentlist(QString text , QString mac)
         /*delete recent item and again add*/
        this->removeRecentItem(mac);
        mRecentList.addRecent("Text snippet", text, "text", userName , 0 , ip_mac);
+    }
+
+    qDebug() << "text:  " << text;
+
+    // showSendPage(mac);
+    // QString tmpIp = ip_mac.split(" ")[0];
+    // if (this->cws.contains(tmpIp)) {
+    //     // qDebug() << "chat log: " << this->cws.value(tmpIp)->getTextLog();
+    //     this->cws.value(tmpIp)->close();
+    // }
+    
+    // this->cws.value(mac)->addTextLog(text);
+
+    return;
+}
+
+/*send file finish add receive list*/
+void GuiBehind::sendFileComplete_add_recentlist(QStringList *files, qint64 totalSize, QString dir, QString mac)
+{
+    QStandardItem *buddy = NULL;
+    buddy = mBuddiesList.buddyByMac(mac);
+
+    qDebug() << "sendFileComplete_add_recentlist fun call args ->" << "mac : " << mac << "dir : " << dir << "buddy list point : " << buddy;
+
+    QString userName;
+    QString ip_mac;
+    userName.clear();
+    ip_mac.clear();
+    if (buddy != NULL) {
+        userName = buddy->data(BuddyListItemModel::Username).toString();
+        ip_mac = buddy->data(BuddyListItemModel::Ip).toString();
+
+        qDebug() << "username :" << userName << "ip_mac :" << ip_mac;
+
+        /*delete recent item and again add*/
+        this->removeRecentItem(mac);
+       
+        // 添加到最近聊天列表
+        QDir d(".");
+        QString ip_mac = buddy->data(BuddyListItemModel::Ip).toString();
+        if (files->size() == 1)
+            mRecentList.addRecent(files->at(0), d.absoluteFilePath(files->at(0)), "file", userName, totalSize, ip_mac);
+        else
+            mRecentList.addRecent("Files and folders", d.absolutePath(), "misc", userName, totalSize, ip_mac);
+
+        delete files;
+        files = NULL;
     }
 
     return;
@@ -382,8 +430,8 @@ void GuiBehind::showSendPage(QString ip_mac)
         cw->focusIn();
 
         // 使用wmctrl命令切换聊天窗口
-        QString wmcmd = "wmctrl -a " + cw->windowTitle();
-        system(wmcmd.toUtf8().data());
+        // QString wmcmd = "wmctrl -a " + cw->windowTitle();
+        // system(wmcmd.toUtf8().data());
 
     // 创建新实例
     }else{
@@ -443,7 +491,21 @@ ChatWidget * GuiBehind::createCW(QString mac){
 }
 
 // 使用IP发送消息成功，将map中的"IP"键替换为该mac，此后才能继续打开IP输入窗口
-void GuiBehind::reSaveCw(QString mac){
+void GuiBehind::reSaveCw(QString ip_mac){
+
+    // 拆分ip和mac
+    QString ip = "";
+    QString mac = "";
+    QStringList sectionList = ip_mac.split(" ");
+
+    if (sectionList.size() == 1) {
+        mac = sectionList[0];
+    }
+    else {
+        ip = sectionList[0];
+        mac = sectionList[1];
+    }
+    qDebug() << "reSaveCw  mac: " << mac;
     if(this->cws.contains(mac) == false){
         ChatWidget *cw = this->cws.value("MAC");
         this->cws.insert(mac, cw);
@@ -538,6 +600,7 @@ void GuiBehind::setIconPath(QString path)
     if (path == mSettings->iconPath())
         return;
     mSettings->saveIconPath(path);
+    emit iconPathChanged();
 }
 
 // 获取应用版本号

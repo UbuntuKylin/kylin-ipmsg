@@ -27,7 +27,7 @@ DuktoWindow::DuktoWindow(QWindow *parent) :
 
     this->setTitle(tr("Kylin Ipmsg"));
 //    this->setIcon(QIcon("/usr/share/pixmaps/kylin-ipmsg.png"));
-    this->setIcon(QIcon::fromTheme("kylin-ipmsg"));
+    // this->setIcon(QIcon::fromTheme("kylin-ipmsg"));
 
     // 响应用户手册
     mDaemonIpcDbus = new DaemonIpcDbus();
@@ -63,6 +63,31 @@ DuktoWindow::DuktoWindow(QWindow *parent) :
     this->setGeometry((availableGeometry.width() - fixedWidth)/2, 
                       (availableGeometry.height() - fixedHeight)/2,
                       fixedWidth, fixedHeight);
+    
+    if (QGSettings::isSchemaInstalled(THEME_QT_SCHEMA)) {
+
+        themeSettings = new QGSettings(THEME_QT_SCHEMA);
+
+        connect(themeSettings, &QGSettings::changed, this, [=](const QString &key) {
+
+            qDebug() << "key: " << key;
+
+            if (key == ICON_QT_KEY) {
+                //获取当前主题
+                QString currentIconTheme = themeSettings->get(key).toString();
+                qDebug() << "currentIconTheme: " << currentIconTheme;
+
+                this->setIcon(QIcon::fromTheme("kylin-ipmsg"));
+                
+                // icon图标路径
+                QString iconPath = "/usr/share/icons/"+ currentIconTheme + "/64x64/apps/kylin-ipmsg.png";
+                QFileInfo fi(iconPath);
+                if (fi.exists()) {
+                    mGuiBehind->setIconPath(iconPath);
+                }
+            }
+        });
+    }
 }
 
 /*
