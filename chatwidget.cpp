@@ -212,7 +212,7 @@ void ChatWidget::firstStyle(){
         }
     }
 
-    this->setWindowTitle(tr("Kylin Ipmsg") + " " + this->ip.split(" ")[0]);
+    this->setWindowTitle(this->ui->lb_name->text());
 //    this->setWindowTitle("麒麟传书" + this->ip);
     this->ui->pb_titleicon->setStyleSheet("QPushButton{border: 0px solid; background-image: url(':/qml/dukto/BackIconDark.png');}");
     this->ui->lb_head->setStyleSheet("QLabel{background-image: url(':/qml/dukto/" + dbuddy->osLogo() + "');}");
@@ -308,7 +308,7 @@ void ChatWidget::onSendCompleted(){
             // this->ui->lb_name->setText(tr("Show Remote IP Addr"));
             this->ui->lb_machine->setText(this->ip.split(" ")[0]);
             this->ui->lb_machine->show();
-            this->setWindowTitle(tr("Kylin Ipmsg") + " " + this->ip.split(" ")[0]);
+            // this->setWindowTitle(tr("Kylin Ipmsg") + " " + this->ip.split(" ")[0]);
 //            this->setWindowTitle("麒麟传书" + this->ip);
 
             qDebug() << "this->ip" << this->ip;
@@ -750,6 +750,8 @@ void ChatWidget::reSetCw(QString ip, QString user_name , QString system , QStrin
         this->dbuddy->mUsername = nickname;
     }
 
+    this->setWindowTitle(this->ui->lb_name->text());
+
     this->ui->pb_addname->show();
     this->ui->pb_sendmsg->show();
     this->ui->pb_sendfile->show();
@@ -915,6 +917,7 @@ void ChatWidget::on_pb_checkname_clicked()
                 item->setData(nickname, BuddyListItemModel::Username);
                 this->ui->lb_name->setText(nickname);
                 this->dbuddy->mUsername = nickname;
+                this->setWindowTitle(this->ui->lb_name->text());
 //                qDebug() << "修改备注名" << nickname;
             }
         }
