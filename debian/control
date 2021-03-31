@@ -10,7 +10,9 @@ Build-Depends: debhelper,
                qtchooser,
                qtscript5-dev,
                qttools5-dev-tools,
-               qtbase5-dev-tools
+               qtbase5-dev-tools,
+               pkgconf,
+               libgsettings-qt-dev
 Standards-Version: 4.4.0
 Homepage: https://github.com/ubuntukylin/kylin-ipmsg
 Vcs-Browser: https://github.com/ubuntukylin/kylin-ipmsg
