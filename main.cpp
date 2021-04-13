@@ -57,6 +57,9 @@ int main(int argc, char *argv[])
     QtSingleApplication app(id, argc, argv);
     app.setApplicationVersion("1.1.22");
 
+    // 设置不使用gtk3平台文件对话框
+    app.setProperty("useFileDialog", false);
+
 //    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 //    QTextCodec::setCodecForLocale(QTextCodec::codecForName("UTF-8"));
 //    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
