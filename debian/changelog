@@ -1,3 +1,9 @@
+kylin-ipmsg (1.1.22kord3) v101; urgency=medium
+
+  * 修复禅道bug#47620 : 【主题框架】【麒麟传书】接收文件时崩溃.
+
+ -- caoliang <caoliang@kylinos.cn>  Tue, 13 Apr 2021 10:07:22 +0800
+
 kylin-ipmsg (1.1.22kord2) v101; urgency=medium
 
   * 修复禅道bug#43504 : 【开始菜单】控制面板中切换图标主题为经典模式后，麒麟传书的图标不一致.

@@ -39,6 +39,8 @@
 #include <QObject>
 #include <QNetworkInterface>
 #include <QHostAddress>
+#include <QScrollBar>
+
 #include "buddylistitemmodel.h"
 #include "destinationbuddy.h"
 #include "settings.h"

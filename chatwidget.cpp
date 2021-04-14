@@ -222,6 +222,26 @@ void ChatWidget::firstStyle(){
     this->ui->lb_topshadow->setStyleSheet("QLabel{background-image: url(':/qml/dukto/BottomShadow.png');}");
     this->ui->lb_bottomshadow->setStyleSheet("QLabel{background-image: url(':/qml/dukto/TopShadow.png');}");
     this->ui->lb_bottomshadow_recv->setStyleSheet("QLabel{background-image: url(':/qml/dukto/TopShadow.png');}");
+    
+    // 设置聊天框滚动条样式，不跟随主题颜色切换
+    this->ui->te_chatlog->setStyleSheet("QTextBrowser{border: " + this->theme->color3() + ";color: " + this->theme->color4() + ";font-size:18px;background-color: white;}"
+                                        "QScrollBar::vertical{width:8px;background:rgba(0, 0, 0, 0%);border:0px solid grep;margin:0px;padding-top:5px;padding-bottom:5px;}"
+                                        "QScrollBar::handle:vertical{width:8px;background:rgba(0, 0, 0, 25%);border-radius:4px;min-height:30px;}"
+                                        "QScrollBar::handle:vertical:hover{width:8px;background:rgba(0, 0, 0, 50%);border-radius:4px;min-height:30px;}"
+                                        "QScrollBar::add-line:vertical{width:0px;height:0px;}"
+                                        "QScrollBar::sub-line:vertical{width:0px;height:0px;}"
+                                        );
+    this->ui->te_chat->setStyleSheet("QTextEdit{border: 1px solid " + this->theme->color3() + ";color: " + this->theme->color4() + ";font-size:18px;background-color: white;}"
+                                     "QScrollBar::vertical{width:8px;background:rgba(0, 0, 0, 0%);border:0px solid grep;margin:0px;padding-top:5px;padding-bottom:5px;}"
+                                     "QScrollBar::handle:vertical{width:8px;background:rgba(0, 0, 0, 25%);border-radius:4px;min-height:30px;}"
+                                     "QScrollBar::handle:vertical:hover{width:8px;background:rgba(0, 0, 0, 50%);border-radius:4px;min-height:30px;}"
+                                     "QScrollBar::add-line:vertical{width:0px;height:0px;}"
+                                     "QScrollBar::sub-line:vertical{width:0px;height:0px;}"
+                                    );
+    
+    // 设置不绘制滚动条槽的背景色
+    this->ui->te_chatlog->verticalScrollBar()->setProperty("drawScrollBarGroove", false);
+    this->ui->te_chat->verticalScrollBar()->setProperty("drawScrollBarGroove", false);
 }
 
 // 根据主题显示现有窗口
@@ -229,8 +249,22 @@ void ChatWidget::showme(){
     this->setStyleSheet("QDialog{border:2px solid " + this->theme->color3() + "; background-color: white;}");
     this->ui->lb_title->setStyleSheet("QLabel{color: " + this->theme->color2() + ";font-size:24px;}");
     this->ui->le_ip->setStyleSheet("QLineEdit{color: " + this->theme->color4() + "; border: 1px solid " + this->theme->color3() + ";font-size:18px;background-color: white;}");
-    this->ui->te_chatlog->setStyleSheet("QTextBrowser{border: " + this->theme->color3() + ";color: " + this->theme->color4() + ";font-size:18px;background-color: white;}");
-    this->ui->te_chat->setStyleSheet("QTextEdit{border: 1px solid " + this->theme->color3() + ";color: " + this->theme->color4() + ";font-size:18px;background-color: white;}");
+
+    // 设置聊天框滚动条样式，不跟随主题颜色切换
+    this->ui->te_chatlog->setStyleSheet("QTextBrowser{border: " + this->theme->color3() + ";color: " + this->theme->color4() + ";font-size:18px;background-color: white;}"
+                                        "QScrollBar::vertical{width:8px;background:rgba(0, 0, 0, 0%);border:0px solid grep;margin:0px;padding-top:5px;padding-bottom:5px;}"
+                                        "QScrollBar::handle:vertical{width:8px;background:rgba(0, 0, 0, 25%);border-radius:4px;min-height:30px;}"
+                                        "QScrollBar::handle:vertical:hover{width:8px;background:rgba(0, 0, 0, 50%);border-radius:4px;min-height:30px;}"
+                                        "QScrollBar::add-line:vertical{width:0px;height:0px;}"
+                                        "QScrollBar::sub-line:vertical{width:0px;height:0px;}"
+                                        );
+    this->ui->te_chat->setStyleSheet("QTextEdit{border: 1px solid " + this->theme->color3() + ";color: " + this->theme->color4() + ";font-size:18px;background-color: white;}"
+                                     "QScrollBar::vertical{width:8px;background:rgba(0, 0, 0, 0%);border:0px solid grep;margin:0px;padding-top:5px;padding-bottom:5px;}"
+                                     "QScrollBar::handle:vertical{width:8px;background:rgba(0, 0, 0, 25%);border-radius:4px;min-height:30px;}"
+                                     "QScrollBar::handle:vertical:hover{width:8px;background:rgba(0, 0, 0, 50%);border-radius:4px;min-height:30px;}"
+                                     "QScrollBar::add-line:vertical{width:0px;height:0px;}"
+                                     "QScrollBar::sub-line:vertical{width:0px;height:0px;}"
+                                    );
     this->ui->pb_sendmsg->setStyleSheet( "QPushButton{border: 2px solid " + this->theme->color2() + "; color: "+this->theme->color2()+";font-size:16px;}");
     this->ui->pb_sendfile->setStyleSheet("QPushButton{border: 2px solid " + this->theme->color2() + "; color: "+this->theme->color2()+";font-size:16px;}");
     this->ui->pb_senddir->setStyleSheet( "QPushButton{border: 2px solid " + this->theme->color2() + "; color: "+this->theme->color2()+";font-size:16px;}");
