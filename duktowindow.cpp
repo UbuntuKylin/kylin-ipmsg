@@ -25,7 +25,7 @@
 DuktoWindow::DuktoWindow(QWindow *parent) :
     QmlApplicationViewer(parent), mGuiBehind(NULL){
 
-    this->setTitle(tr("Kylin Ipmsg"));
+    this->setTitle(tr("Messages"));
 //    this->setIcon(QIcon("/usr/share/pixmaps/kylin-ipmsg.png"));
     // this->setIcon(QIcon::fromTheme("kylin-ipmsg"));
 

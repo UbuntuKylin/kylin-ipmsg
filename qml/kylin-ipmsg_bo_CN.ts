@@ -5,7 +5,7 @@
     <name>AboutPage</name>
     <message>
         <location filename="qml/dukto/AboutPage.qml" line="44"/>
-        <source>Kylin Ipmsg</source>
+        <source>Messages</source>
         <translation>ཆི་ལིན་འཕྲིན་སྐྱེལ།</translation>
     </message>
     <message>
@@ -28,7 +28,7 @@
     <name>ChatWidget</name>
     <message>
         <location filename="chatwidget.ui" line="14"/>
-        <source>Kylin Ipmsg</source>
+        <source>Messages</source>
         <translation>ཆི་ལིན་འཕྲིན་སྐྱེལ།</translation>
     </message>
     <message>

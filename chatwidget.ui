@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Kylin Ipmsg</string>
+   <string>Messages</string>
   </property>
   <widget class="QTextEdit" name="te_chat">
    <property name="geometry">

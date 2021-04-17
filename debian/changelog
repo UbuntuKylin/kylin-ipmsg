@@ -1,3 +1,11 @@
+kylin-ipmsg (1.1.22kord4) v101; urgency=medium
+
+  * 更新麒麟传书中英文应用名.
+  * 更新麒麟传书用户手册.
+  * 影响域：麒麟传书的中英文名显示，麒麟传书用户手册中的应用名文字显示及截图显示.
+
+ -- caoliang <caoliang@kylinos.cn>  Fri, 16 Apr 2021 16:45:09 +0800
+
 kylin-ipmsg (1.1.22kord3) v101; urgency=medium
 
   * 修复禅道bug#47620 : 【主题框架】【麒麟传书】接收文件时崩溃.
