@@ -22,6 +22,7 @@
 #include <QTranslator>
 #include <QLocale>
 #include <QDebug>
+#include <ukui-log4qt.h>
 
 #include "qtsingleapplication.h"
 #include "qmlapplicationviewer.h"
@@ -38,6 +39,9 @@
 
 int main(int argc, char *argv[])
 {
+    // 统一日志输出
+    initUkuiLog4qt("kylin-ipmsg");
+
 //    QApplication::setGraphicsSystem("raster");
 
     // 适配4K屏以及分数缩放

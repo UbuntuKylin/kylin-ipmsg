@@ -38,6 +38,9 @@ QMAKE_CXXFLAGS += -g
 
 TRANSLATIONS += kylin-ipmsg_zh_CN.ts
 
+# 统一日志输出
+LIBS += -L/usr/lib/libukui-log4qt.so.1.0.0 -lukui-log4qt
+
 TARGET = kylin-ipmsg
 
 target.path = /usr/bin
@@ -47,9 +50,15 @@ icon.files = kylin-ipmsg.png
 desktop.path = /usr/share/applications/
 desktop.files = kylin-ipmsg.desktop
 
+# gsettings
+schemes.files += \
+    $$PWD/data/org.ukui.log4qt.kylin-ipmsg.gschema.xml
+schemes.path = /usr/share/glib-2.0/schemas/
+
 INSTALLS += target \
-    icon \
-    desktop 
+    icon    \
+    desktop \
+    schemes \
 
 # v10禁用窗管和自定义用户手册
 #lessThan(QT_MAJOR_VERSION, 5) | lessThan(QT_MINOR_VERSION, 9) {
