@@ -49,6 +49,7 @@
 #define QTSINGLEAPPLICATION_H
 
 #include <QtWidgets/QApplication>
+#include "../duktowindow.h"
 
 class QtLocalPeer;
 
@@ -86,7 +87,7 @@ public:
     bool isRunning();
     QString id() const;
 
-    void setActivationWindow(QWidget* aw, bool activateOnMessage = true);
+    void setActivationWindow(DuktoWindow* aw, bool activateOnMessage = true);
     QWidget* activationWindow() const;
 
     // Obsolete:
@@ -106,6 +107,7 @@ private:
     void sysInit(const QString &appId = QString());
     QtLocalPeer *peer;
     QWidget *actWin;
+    DuktoWindow *viewer;
 };
 
 #endif // QTSINGLEAPPLICATION_H

@@ -299,9 +299,9 @@ QString QtSingleApplication::id() const
   \sa activateWindow(), messageReceived()
 */
 
-void QtSingleApplication::setActivationWindow(QWidget* aw, bool activateOnMessage)
+void QtSingleApplication::setActivationWindow(DuktoWindow* aw, bool activateOnMessage)
 {
-    actWin = aw;
+    viewer = aw;
     if (activateOnMessage)
         connect(peer, SIGNAL(messageReceived(const QString&)), this, SLOT(activateWindow()));
     else
@@ -337,10 +337,11 @@ QWidget* QtSingleApplication::activationWindow() const
 */
 void QtSingleApplication::activateWindow()
 {
-    if (actWin) {
-        actWin->setWindowState(actWin->windowState() & ~Qt::WindowMinimized);
-        actWin->raise();
-        actWin->activateWindow();
+    if (viewer) {
+        // viewer->showNormal();
+        viewer->show();
+        viewer->raise();
+        viewer->requestActivate();
     }
 }
 

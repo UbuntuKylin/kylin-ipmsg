@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
     /*inherit qmlapplicationviewer and link dbus open kylin guide manual*/
     DuktoWindow viewer;
 
-//    app.setActivationWindow(&viewer, true);
+    app.setActivationWindow(&viewer, true);
 
     /*init and udp , tcp listing and online broadcast*/
     /*udp broadcast is one byte and systemflag*/
