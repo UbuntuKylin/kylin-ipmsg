@@ -338,6 +338,7 @@ QWidget* QtSingleApplication::activationWindow() const
 void QtSingleApplication::activateWindow()
 {
     if (viewer) {
+        qDebug() << "activateWindow";
         // viewer->showNormal();
         viewer->show();
         viewer->raise();

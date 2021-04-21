@@ -145,6 +145,8 @@ int main(int argc, char *argv[])
     /*check file whether locked*/
     if (app.isRunning()) {
         app.sendMessage("FOREGROUND");
+        sleep(1);
+        app.sendMessage("FOREGROUND");
         return 0;
     }
 //    app.setWindowIcon(QIcon("/usr/share/pixmaps/kylin-ipmsg.png"));
