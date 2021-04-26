@@ -337,12 +337,24 @@ QWidget* QtSingleApplication::activationWindow() const
 */
 void QtSingleApplication::activateWindow()
 {
-    if (viewer) {
-        qDebug() << "activateWindow";
+    // qDebug() << "activateWindow";
+    if (viewer->msgBox != nullptr) {
+        qDebug() << "show msgBox";
+
+        // TODO: 实现提示框最小化后置顶
+        // KWindowSystem::forceActiveWindow(viewer->msgBox->winId());
+        // viewer->msgBox->activateWindow();
+        // viewer->msgBox->raise();
+        // viewer->msgBox->show();
+    }
+    else if (viewer) {
+        qDebug() << "show window";
         // viewer->showNormal();
+        // viewer->show();
+        // viewer->raise();
+        // viewer->requestActivate();
+        KWindowSystem::forceActiveWindow(viewer->winId());
         viewer->show();
-        viewer->raise();
-        viewer->requestActivate();
     }
 }
 

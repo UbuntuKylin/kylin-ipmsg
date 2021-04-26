@@ -53,6 +53,7 @@
 #include "daemonipcdbus.h"
 
 #define NETWORK_PORT 9696
+#define UDP_NETWORK_PORT 9695
 #define UDP_BROADCAST 0x01
 #define UDP_UNICAST 0x02
 #define UDP_GOODBYE 0x03

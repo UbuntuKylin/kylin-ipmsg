@@ -1,22 +1,52 @@
+kylin-ipmsg (1.1.23kord1) v101; urgency=medium
+
+  * BUG号：44454, 44484.
+  * 需求号：无.
+  * 其他改动说明：
+    - 修复禅道bug#44454 : 【麒麟传书】麒麟传书，切换用户发送消息后，接收到的消息会显示重复.
+    - 修复禅道bug#44484 : 【麒麟传书】接收方切换用户使用麒麟传书应用，搜索IP发送消息。当前在线的用户接收不到消息.
+    - 多用户启动麒麟传书时，进行相应的提示.
+    - 修改UDP监听端口号，与之前的版本不兼容.
+
+ -- caoliang <caoliang@kylinos.cn>  Fri, 23 Apr 2021 16:12:46 +0800
+
+kylin-ipmsg (1.1.22kord6) v101; urgency=medium
+
+  * BUG号：无.
+  * 需求号：无.
+  * 其他改动说明：
+    - 根据规范修改changelog.
+
+ -- caoliang <caoliang@kylinos.cn>  Fri, 23 Apr 2021 10:41:45 +0800
+
 kylin-ipmsg (1.1.22kord5) v101; urgency=medium
 
-  * 新增统一日志输出功能.
+  * BUG号：无.
+  * 需求号：25404.
+  * 其他改动说明：
+    - 新增统一日志输出功能.
   * 影响域：传书日志输出管理.
 
  -- caoliang <caoliang@kylinos.cn>  Mon, 19 Apr 2021 20:20:16 +0800
 
 kylin-ipmsg (1.1.22kord4) v101; urgency=medium
 
-  * 修复禅道bug#49251 : 传书 - 打开窗体未置顶显示.
-  * 更新麒麟传书中英文应用名.
-  * 更新麒麟传书用户手册.
+  * BUG号：49251.
+  * 需求号：26473.
+  * 其他改动说明：
+    - 修复禅道bug#49251 : 传书 - 打开窗体未置顶显示.
+    - 更新麒麟传书中英文应用名.
+    - 更新麒麟传书用户手册.
   * 影响域：麒麟传书的中英文名显示，麒麟传书用户手册中的应用名文字显示及截图显示，最小化后启动应用拉起界面.
 
  -- caoliang <caoliang@kylinos.cn>  Mon, 19 Apr 2021 10:28:27 +0800
 
 kylin-ipmsg (1.1.22kord3) v101; urgency=medium
 
-  * 修复禅道bug#47620 : 【主题框架】【麒麟传书】接收文件时崩溃.
+  * BUG号：47620.
+  * 需求号：无.
+  * 其他改动说明：
+    - 修复禅道bug#47620 : 【主题框架】【麒麟传书】接收文件时崩溃.
 
  -- caoliang <caoliang@kylinos.cn>  Tue, 13 Apr 2021 10:07:22 +0800
 

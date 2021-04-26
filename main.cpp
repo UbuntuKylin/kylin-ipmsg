@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
 
     /*lock file*/
     QtSingleApplication app(id, argc, argv);
-    app.setApplicationVersion("1.1.22");
+    app.setApplicationVersion("1.1.23");
 
     // 设置不使用gtk3平台文件对话框
     app.setProperty("useFileDialog", false);
@@ -145,17 +145,19 @@ int main(int argc, char *argv[])
     /*check file whether locked*/
     if (app.isRunning()) {
         app.sendMessage("FOREGROUND");
-        sleep(1);
-        app.sendMessage("FOREGROUND");
         return 0;
     }
+    
 //    app.setWindowIcon(QIcon("/usr/share/pixmaps/kylin-ipmsg.png"));
-    // app.setWindowIcon(QIcon::fromTheme("kylin-ipmsg"));
+    app.setWindowIcon(QIcon::fromTheme("kylin-ipmsg"));
 
     /*inherit qmlapplicationviewer and link dbus open kylin guide manual*/
     DuktoWindow viewer;
 
     app.setActivationWindow(&viewer, true);
+
+    // 判断是否有其他用户正在运行传书
+    viewer.judgeSingleUser();
 
     /*init and udp , tcp listing and online broadcast*/
     /*udp broadcast is one byte and systemflag*/
