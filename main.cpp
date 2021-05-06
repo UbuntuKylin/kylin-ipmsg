@@ -22,6 +22,7 @@
 #include <QTranslator>
 #include <QLocale>
 #include <QDebug>
+#include <ukui-log4qt.h>
 
 #include "qtsingleapplication.h"
 #include "qmlapplicationviewer.h"
@@ -38,6 +39,9 @@
 
 int main(int argc, char *argv[])
 {
+    // 统一日志输出
+    initUkuiLog4qt("kylin-ipmsg");
+
 //    QApplication::setGraphicsSystem("raster");
 
     // 适配4K屏以及分数缩放
@@ -141,6 +145,8 @@ int main(int argc, char *argv[])
     /*check file whether locked*/
     if (app.isRunning()) {
         app.sendMessage("FOREGROUND");
+        sleep(1);
+        app.sendMessage("FOREGROUND");
         return 0;
     }
 //    app.setWindowIcon(QIcon("/usr/share/pixmaps/kylin-ipmsg.png"));
@@ -149,7 +155,7 @@ int main(int argc, char *argv[])
     /*inherit qmlapplicationviewer and link dbus open kylin guide manual*/
     DuktoWindow viewer;
 
-//    app.setActivationWindow(&viewer, true);
+    app.setActivationWindow(&viewer, true);
 
     /*init and udp , tcp listing and online broadcast*/
     /*udp broadcast is one byte and systemflag*/

@@ -1,10 +1,10 @@
-# Kylin Ipmsg
+# Messages
 ## Overview
-Kylin Ipmsg is a cross platforms, efficient text/files transfer tool. And in order to avoid overwriting the original files, it will compare with the local file name when users transfer files.
+Messages is a cross platforms, efficient text/files transfer tool. And in order to avoid overwriting the original files, it will compare with the local file name when users transfer files.
 
 All the functions are completed without server. 
 
-![Fig 1 Kylin Ipmsg](image/1.png)
+![Fig 1 Messages](image/1.png)
 <br>
 
 ## View Received Files
@@ -57,6 +57,4 @@ It shows the communication recorders, and click one recorder to open the corresp
 <br>
 
 ## About
-Click "About" in the main interface to see the details of Kylin Ipmsg, as shown in Fig 10.
-
-![Fig 10 About](image/10.png)
+Click "About" in the main interface to see the details of Messages.

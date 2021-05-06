@@ -12,7 +12,8 @@ Build-Depends: debhelper,
                qttools5-dev-tools,
                qtbase5-dev-tools,
                pkgconf,
-               libgsettings-qt-dev
+               libgsettings-qt-dev,
+               libukui-log4qt-dev
 Standards-Version: 4.4.0
 Homepage: https://github.com/ubuntukylin/kylin-ipmsg
 Vcs-Browser: https://github.com/ubuntukylin/kylin-ipmsg
@@ -23,8 +24,8 @@ Architecture: any
 Depends: ${misc:Depends},
                wmctrl (>= 1.07-6)
 Conflicts: kylin-dukto
-Description: Kylin Ipmsg
- Kylin Ipmsg is a LAN chat tool with beautiful Gui.
+Description: Messages
+ Messages is a LAN chat tool with beautiful Gui.
  .
  Features:
   * .
