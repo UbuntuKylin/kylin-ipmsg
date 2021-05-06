@@ -346,8 +346,8 @@ void QtSingleApplication::activateWindow()
         // viewer->msgBox->activateWindow();
         // viewer->msgBox->raise();
         // viewer->msgBox->show();
-    }
-    else if (viewer) {
+        
+    } else if (viewer) {
         qDebug() << "show window";
         // viewer->showNormal();
         // viewer->show();
