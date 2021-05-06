@@ -44,6 +44,7 @@
 #define S_ERROR "B0FF"
 
 #define NETWORK_PORT 9696
+#define UDP_NETWORK_PORT 9695
 #define MSG_SIZE_MIN 4
 
 

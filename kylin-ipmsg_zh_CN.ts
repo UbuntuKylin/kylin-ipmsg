@@ -77,6 +77,7 @@
         <translation>确认修改</translation>
     </message>
     <message>
+        <location filename="chatwidget.cpp" line="183"/>
         <source>The Remote IP Addr</source>
         <oldsource>Please input the remote IP address</oldsource>
         <translation>请输入对方的 IP 地址</translation>
@@ -86,58 +87,74 @@
         <translation>对方的 IP 地址</translation>
     </message>
     <message>
+        <location filename="chatwidget.cpp" line="356"/>
+        <location filename="chatwidget.cpp" line="720"/>
         <source>Me</source>
         <translation>我</translation>
     </message>
     <message>
+        <location filename="chatwidget.cpp" line="368"/>
         <source>file sent out</source>
         <translation>发送了文件</translation>
     </message>
     <message>
+        <location filename="chatwidget.cpp" line="373"/>
         <source>dir sent out</source>
         <translation>发送了文件夹</translation>
     </message>
     <message>
+        <location filename="chatwidget.cpp" line="417"/>
         <source>This is your Ip Addr</source>
         <translation>这是你自己的IP地址</translation>
     </message>
     <message>
+        <location filename="chatwidget.cpp" line="438"/>
+        <location filename="chatwidget.cpp" line="473"/>
         <source>IP already exist in buddies</source>
         <translation>已有该IP好友，请点击好友打开聊天界面</translation>
     </message>
     <message>
+        <location filename="chatwidget.cpp" line="448"/>
         <source>Illegal IP address</source>
         <translation>输入的IP地址不合法</translation>
     </message>
     <message>
+        <location filename="chatwidget.cpp" line="597"/>
         <source>Remoter has stoped the transfer</source>
         <translation>对方中止了文件传输</translation>
     </message>
     <message>
+        <location filename="chatwidget.cpp" line="630"/>
         <source>pls choose files to send</source>
         <translation>请选择要发送的文件</translation>
     </message>
     <message>
+        <location filename="chatwidget.cpp" line="656"/>
         <source>pls choose dir to send</source>
         <translation>请选择要发送的文件夹</translation>
     </message>
     <message>
+        <location filename="chatwidget.cpp" line="672"/>
         <source>pls do not send empty dir</source>
         <translation>请勿发送空文件夹</translation>
     </message>
     <message>
+        <location filename="chatwidget.cpp" line="726"/>
         <source>transmission canceled</source>
         <translation>文件传输已取消</translation>
     </message>
     <message>
+        <location filename="chatwidget.cpp" line="901"/>
         <source>conn failed, try again later</source>
         <translation>连接失败，请确认好友在线，稍后再试</translation>
     </message>
     <message>
+        <location filename="chatwidget.cpp" line="909"/>
         <source>transmission error</source>
         <translation>数据传输错误</translation>
     </message>
     <message>
+        <location filename="chatwidget.cpp" line="914"/>
         <source>connecting...</source>
         <translation>正在尝试连接</translation>
     </message>
@@ -145,53 +162,78 @@
 <context>
     <name>DuktoWindow</name>
     <message>
+        <location filename="duktowindow.cpp" line="28"/>
         <source>Messages</source>
         <translation>传书</translation>
+    </message>
+    <message>
+        <location filename="duktowindow.cpp" line="42"/>
+        <source>Messages has been opened by other user!</source>
+        <translation>系统中已有其他用户启动了传书!</translation>
+    </message>
+    <message>
+        <location filename="duktowindow.cpp" line="43"/>
+        <source>Confirm</source>
+        <translation>确认</translation>
     </message>
 </context>
 <context>
     <name>GuiBehind</name>
     <message>
+        <location filename="guibehind.cpp" line="54"/>
         <source> (You)</source>
         <translation> (本机)</translation>
     </message>
     <message>
+        <location filename="guibehind.cpp" line="56"/>
         <source>Use IP Address</source>
         <translation>使用 IP 地址</translation>
     </message>
     <message>
+        <location filename="guibehind.cpp" line="243"/>
         <source>Received file</source>
         <translation>收到文件</translation>
     </message>
     <message>
+        <location filename="guibehind.cpp" line="258"/>
         <source>files</source>
         <translation>个</translation>
     </message>
     <message>
+        <location filename="guibehind.cpp" line="248"/>
         <source>size</source>
         <translation>大小</translation>
     </message>
     <message>
+        <location filename="guibehind.cpp" line="254"/>
+        <location filename="guibehind.cpp" line="268"/>
+        <location filename="guibehind.cpp" line="277"/>
         <source>Open directory</source>
         <translation>打开目录</translation>
     </message>
     <message>
+        <location filename="guibehind.cpp" line="274"/>
         <source>Received folder</source>
         <translation>收到文件夹</translation>
     </message>
     <message>
+        <location filename="guibehind.cpp" line="252"/>
         <source>Open</source>
         <translation>打开</translation>
     </message>
     <message>
+        <location filename="guibehind.cpp" line="260"/>
+        <location filename="guibehind.cpp" line="274"/>
         <source>Total size</source>
         <translation>共计大小</translation>
     </message>
     <message>
+        <location filename="guibehind.cpp" line="56"/>
         <source>Contact with parent network</source>
         <translation>向你的上层网络发送消息</translation>
     </message>
     <message>
+        <location filename="guibehind.cpp" line="537"/>
         <source>Change folder</source>
         <translation>更改目录</translation>
     </message>

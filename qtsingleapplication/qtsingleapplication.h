@@ -50,6 +50,7 @@
 
 #include <QtWidgets/QApplication>
 #include "../duktowindow.h"
+#include <KWindowSystem>
 
 class QtLocalPeer;
 

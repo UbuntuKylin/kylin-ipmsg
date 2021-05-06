@@ -31,6 +31,9 @@
 #include <QRect>
 #include <QScreen>
 #include <QGSettings>
+#include <QProcess>
+#include <QMessageBox>
+#include <QPushButton>
 
 #include "qmlapplicationviewer/qmlapplicationviewer.h"
 #include "daemonipcdbus.h"
@@ -48,6 +51,12 @@ class DuktoWindow : public QmlApplicationViewer
 public:
     explicit DuktoWindow(QWindow *parent = 0);
     void setGuiBehindReference(GuiBehind* ref);
+
+    // 消息提示框
+    QMessageBox *msgBox = nullptr;
+
+    // 判断是否有其他用户正在运行传书
+    void judgeSingleUser();
 
 protected:
     void closeEvent(QCloseEvent *event);

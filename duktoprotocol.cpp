@@ -60,7 +60,7 @@ DuktoProtocol::~DuktoProtocol()
 void DuktoProtocol::initialize()
 {
     mSocket = new QUdpSocket(this);
-    mSocket->bind(QHostAddress::AnyIPv4, NETWORK_PORT, QUdpSocket::ReuseAddressHint);
+    mSocket->bind(QHostAddress::AnyIPv4, UDP_NETWORK_PORT, QUdpSocket::ReuseAddressHint);
     connect(mSocket, SIGNAL(readyRead()), this, SLOT(newUdpData()));
 
     mTcpServer = new KTcpServer();
@@ -125,7 +125,7 @@ void DuktoProtocol::sayHello(QHostAddress dest)
     }else{
         packet->append(UDP_UNICAST);
         packet->append(this->pSystemSignature);
-        this->mSocket->writeDatagram(packet->data(), packet->length(), dest, NETWORK_PORT);
+        this->mSocket->writeDatagram(packet->data(), packet->length(), dest, UDP_NETWORK_PORT);
     }
 
     delete packet;
@@ -164,7 +164,7 @@ void DuktoProtocol::sendToAllBroadcast(QByteArray *packet)
             // 如果该网络接口的该IP地址是IPV4，并且有广播地址，则发送广播
             if ((addrs[j].ip().protocol() == QAbstractSocket::IPv4Protocol) && (addrs[j].broadcast().toString() != ""))
             {
-                mSocket->writeDatagram(packet->data(), packet->length(), addrs[j].broadcast(), NETWORK_PORT);
+                mSocket->writeDatagram(packet->data(), packet->length(), addrs[j].broadcast(), UDP_NETWORK_PORT);
                 mSocket->flush();
             }
         }

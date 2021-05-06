@@ -19,7 +19,7 @@
 
 include(qmlapplicationviewer/qmlapplicationviewer.pri)
 
-QT += core gui network dbus
+QT += core gui network dbus KWindowSystem
 
 lessThan(QT_MAJOR_VERSION, 5) {
  QT += declarative
@@ -122,6 +122,7 @@ RESOURCES += \
 
 include(qtsingleapplication/qtsingleapplication.pri)
 
-lupdate_only{
-    SOURCES = qml/dukto/*.qml
+lupdate_only{ 
+    SOURCES += qml/dukto/*.qml  \
+               guibehind.cpp 
 }

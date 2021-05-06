@@ -13,7 +13,8 @@ Build-Depends: debhelper,
                qtbase5-dev-tools,
                pkgconf,
                libgsettings-qt-dev,
-               libukui-log4qt-dev
+               libukui-log4qt-dev,
+               libkf5windowsystem-dev,
 Standards-Version: 4.4.0
 Homepage: https://github.com/ubuntukylin/kylin-ipmsg
 Vcs-Browser: https://github.com/ubuntukylin/kylin-ipmsg

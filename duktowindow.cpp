@@ -90,6 +90,27 @@ DuktoWindow::DuktoWindow(QWindow *parent) :
     }
 }
 
+// 判断是否有其他用户正在运行传书
+void DuktoWindow::judgeSingleUser()
+{
+    // 判断是否有其他用户正在运行传书
+    QProcess process;
+    // process.start("sh", QStringList() << "-c" << "ps -ef |grep -w kylin-ipmsg |grep -v grep | wc -l");
+    process.start("sh", QStringList() << "-c" << "netstat -pan|grep -w 9695 |wc -l");
+    process.waitForFinished();
+    QString res = process.readAllStandardOutput();
+    res = res.remove("\n");
+    // qDebug() << "res" << res;
+    if (res != "0") {
+        msgBox = new QMessageBox(QMessageBox::Warning,this->title(),tr("Messages has been opened by other user!"),QMessageBox::Yes);
+        msgBox->button(QMessageBox::Yes)->setText(tr("Confirm"));
+        qApp->setApplicationDisplayName(this->title());
+        msgBox->exec();
+
+        exit(0);
+    }
+}
+
 /*
 * Summary: set gui reference
 * Parameters:
