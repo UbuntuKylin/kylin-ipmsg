@@ -1,3 +1,12 @@
+kylin-ipmsg (1.1.23kord2) v101; urgency=medium
+
+  * BUG号：无.
+  * 需求号：26473.
+  * 其他改动说明：
+    - 更新传书用户手册中英文应用名.
+
+ -- caoliang <caoliang@kylinos.cn>  Fri, 07 May 2021 14:03:44 +0800
+
 kylin-ipmsg (1.1.23kord1) v101; urgency=medium
 
   * BUG号：44454, 44484.
