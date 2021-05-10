@@ -46,7 +46,7 @@ DuktoWindow::DuktoWindow(QWindow *parent) :
     }
 
 //    this->setIcon(QIcon(iconPath));
-    this->setIcon(QIcon::fromTheme("kylin-ipmsg"));
+    // this->setIcon(QIcon::fromTheme("kylin-ipmsg"));
 
     setOrientation(QmlApplicationViewer::ScreenOrientationLockPortrait);
 
@@ -77,7 +77,7 @@ DuktoWindow::DuktoWindow(QWindow *parent) :
                 QString currentIconTheme = themeSettings->get(key).toString();
                 qDebug() << "currentIconTheme: " << currentIconTheme;
 
-                this->setIcon(QIcon::fromTheme("kylin-ipmsg"));
+                // this->setIcon(QIcon::fromTheme("kylin-ipmsg"));
                 
                 // icon图标路径
                 QString iconPath = "/usr/share/icons/"+ currentIconTheme + "/64x64/apps/kylin-ipmsg.png";
