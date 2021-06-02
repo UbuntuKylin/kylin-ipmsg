@@ -75,7 +75,7 @@ greaterThan(QT_MAJOR_VERSION, 5) | greaterThan(QT_MINOR_VERSION, 9) {
     # message("QT_VERSION ("$$QT_VERSION")")
     DEFINES   += __V10Pro__
     guide.path = /usr/share/kylin-user-guide/data/guide/
-    guide.files = data/guide/kylin-ipmsg/
+    guide.files = data/guide/messages/
 
     INSTALLS += guide
 }

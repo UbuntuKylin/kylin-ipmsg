@@ -655,6 +655,6 @@ void GuiBehind::viewUserGuide()
 {
     if (!mDaemonIpcDbus->daemonIsNotRunning()){
         //增加标题栏帮助菜单、F1快捷键打开用户手册
-        mDaemonIpcDbus->showGuide("kylin-ipmsg");
+        mDaemonIpcDbus->showGuide("messages");
     }
 }

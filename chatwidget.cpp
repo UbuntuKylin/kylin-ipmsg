@@ -801,7 +801,7 @@ void ChatWidget::keyPressEvent(QKeyEvent *event)
     case Qt::Key_F1:
         if (!mDaemonIpcDbus->daemonIsNotRunning()){
             //增加标题栏帮助菜单、F1快捷键打开用户手册
-            mDaemonIpcDbus->showGuide("kylin-ipmsg");
+            mDaemonIpcDbus->showGuide("messages");
         }
         break;
 
@@ -848,11 +848,11 @@ void ChatWidget::openUrl(QUrl url){
 
 // 任务栏图标闪烁
 void ChatWidget::msgAlert(){
-    if(this->timeFlag % 2 == 0){
-        this->setWindowIcon(this->iconBlank);
-    }else{
-        this->setWindowIcon(this->iconDukto);
-    }
+    // if(this->timeFlag % 2 == 0){
+    //     this->setWindowIcon(this->iconBlank);
+    // }else{
+    //     this->setWindowIcon(this->iconDukto);
+    // }
     this->timeFlag ++;
 }
 
