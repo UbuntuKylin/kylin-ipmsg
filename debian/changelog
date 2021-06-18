@@ -1,3 +1,12 @@
+kylin-ipmsg (1.1.23kord4) v101; urgency=medium
+
+  * BUG号：58858.
+  * 需求号：无.
+  * 其他改动说明：
+    - 解决龙芯架构下加载qml的闪退问题.
+
+ -- caoliang <caoliang@kylinos.cn>  Mon, 07 Jun 2021 10:32:33 +0800
+
 kylin-ipmsg (1.1.23kord3) v101; urgency=medium
 
   * BUG号：无.

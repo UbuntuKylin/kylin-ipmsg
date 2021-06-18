@@ -23,6 +23,7 @@
 #include <QLocale>
 #include <QDebug>
 #include <ukui-log4qt.h>
+#include <QSysInfo>
 
 #include "qtsingleapplication.h"
 #include "qmlapplicationviewer.h"
@@ -53,6 +54,12 @@ int main(int argc, char *argv[])
     #if (QT_VERSION >= QT_VERSION_CHECK(5, 14, 0))
         QApplication::setHighDpiScaleFactorRoundingPolicy(Qt::HighDpiScaleFactorRoundingPolicy::PassThrough);
     #endif
+
+    // 龙芯3A5000架构下设置qml属性
+    QString arch = QSysInfo::currentCpuArchitecture();
+    if (arch.contains("loongarch")) {
+        QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
+    }
 
     // 需要给QtSingleApplication的传入参数id加DISPLAY标识
     QString id = QString("kylin-ipmsg"+ QLatin1String(getenv("DISPLAY")));
