@@ -1,0 +1,3 @@
+debian/changelog merge=ours
+deian/source/format merge=ours
+debian/compat
